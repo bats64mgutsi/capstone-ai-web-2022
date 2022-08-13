@@ -1,7 +1,7 @@
 // GENERATED CODE -- DO NOT EDIT!
 
 'use strict';
-var grpc = require('grpc');
+var grpc = require('@grpc/grpc-js');
 var api_pb = require('./api_pb.js');
 
 function serialize_backend_ListAuthorsRequest(arg) {

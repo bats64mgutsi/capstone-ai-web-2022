@@ -4,7 +4,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 import * as api_pb from "./api_pb";
 
 interface IAuthorServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
@@ -23,7 +23,7 @@ interface IAuthorServiceService_Ilist extends grpc.MethodDefinition<api_pb.ListA
 
 export const AuthorServiceService: IAuthorServiceService;
 
-export interface IAuthorServiceServer {
+export interface IAuthorServiceServer extends grpc.UntypedServiceImplementation {
     list: grpc.handleUnaryCall<api_pb.ListAuthorsRequest, api_pb.ListAuthorsResponse>;
 }
 
@@ -34,7 +34,7 @@ export interface IAuthorServiceClient {
 }
 
 export class AuthorServiceClient extends grpc.Client implements IAuthorServiceClient {
-    constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
     public list(request: api_pb.ListAuthorsRequest, callback: (error: grpc.ServiceError | null, response: api_pb.ListAuthorsResponse) => void): grpc.ClientUnaryCall;
     public list(request: api_pb.ListAuthorsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: api_pb.ListAuthorsResponse) => void): grpc.ClientUnaryCall;
     public list(request: api_pb.ListAuthorsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: api_pb.ListAuthorsResponse) => void): grpc.ClientUnaryCall;
