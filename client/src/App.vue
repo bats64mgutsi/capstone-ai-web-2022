@@ -1,24 +1,21 @@
-<script lang="ts" setup>
-</script>
-
 <template>
   <div>
     <main>
+      <!-- navbar -->
+      <Navbar />
+
       <router-view />
     </main>
   </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script lang="ts" setup>
+import { onMounted, ref, watch } from "vue";
+import store from "./store";
+import { useRouter } from "vue-router";
+import { AppMessage, getAccessToken, deleteAccessToken } from "./core";
+import Navbar from "./ui-components/nav.vue";
+import { backendClient } from "./rpc";
+
+const router = useRouter();
+</script>
