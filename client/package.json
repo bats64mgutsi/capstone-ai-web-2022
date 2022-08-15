@@ -5,9 +5,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "buildGrpc": "sh ./scripts/gen_protos.sh"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.6.9",
+    "grpc_tools_node_protoc_ts": "^5.3.2",
+    "grpc-tools": "^1.11.2",
     "moment": "^2.29.4",
     "vue": "^3.2.25",
     "vue-router": "^4.0.16"
