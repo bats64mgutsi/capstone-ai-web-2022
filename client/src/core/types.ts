@@ -4,5 +4,4 @@ export interface Author {
     initials: string;
     title: string;
     insitution: string;
-    province: string;
 }

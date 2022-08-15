@@ -1,13 +1,13 @@
 import { IBackendClient } from "./types";
-import { Author } from "../../core/types";
+import { Author } from "../types";
 
 export class BackendClient implements IBackendClient {
-    constructor () {
-        // TODO
-    }
+  constructor() {
+    // TODO
+  }
 
-    getAuthors(): Author[] {
-        // TODO
-        return [];
-    }
+  async getAuthors(): Promise<Author[]> {
+    // TODO
+    return [];
+  }
 }

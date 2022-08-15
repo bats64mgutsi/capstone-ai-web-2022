@@ -1,5 +1,5 @@
 import { Author } from "../types";
 
 export interface IBackendClient {
-    getAuthors(): Author[];
+    getAuthors(): Promise<Author[]>;
 }
