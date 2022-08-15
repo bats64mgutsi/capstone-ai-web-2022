@@ -3,101 +3,30 @@
  */
 package backend;
 
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
+import backend.data.ListAuthorsHttp;
+import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.net.InetSocketAddress;
+import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
-
-import  java.sql.*;
 
 public class App {
     private static final Logger logger = Logger.getLogger(App.class.getName());
-
-    private Server server;
 
     /**
      * Main launches the server from the command line.
      */
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
-//        final App server = new App();
-//        server.start();
-//        server.blockUntilShutdown();
+        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+        final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
-        TestConnection.main(args);
+        server.createContext("/authors/list", new ListAuthorsHttp());
+        server.setExecutor(threadPoolExecutor);
 
-    }
-
-    private void start() throws IOException {
-        int port = 443;
-        server = ServerBuilder.forPort(port)
-                .addService(new ServerImpl())
-                .build()
-                .start();
-
-        logger.info("Server started, listening on " + port);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // Use stderr here since the logger may have been reset by its JVM shutdown hook.
-            System.err.println("*** shutting down gRPC server since JVM is shutting down");
-            try {
-                App.this.stop();
-            } catch (InterruptedException e) {
-                e.printStackTrace(System.err);
-            }
-            System.err.println("*** server shut down");
-        }));
-    }
-
-    private void stop() throws InterruptedException {
-        if (server != null) {
-            server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
-        }
-    }
-
-    /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
-     */
-    private void blockUntilShutdown() throws InterruptedException {
-        if (server != null) {
-            server.awaitTermination();
-        }
-    }
-
-    // TODO: remove
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
-
-    private static class ServerImpl extends AuthorServiceGrpc.AuthorServiceImplBase {
-        @Override
-        public void list(Api.ListAuthorsRequest request, StreamObserver<Api.ListAuthorsResponse> responseObserver) {
-            final Api.ListAuthorsResponse response = Api.ListAuthorsResponse.newBuilder().build();
-            // Call Author controller to list authors
-
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        }
-    }
-
-    private static class TestConnection {
-        public static void main( String[] args ) throws SQLException {
-            System.out.println("Testing connection");
-            //create connection for a server installed in localhost, with a user "root" with no password
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root")) {
-                // create a Statement
-                try (Statement stmt = conn.createStatement()) {
-//                   stmt.executeQuery("");
-                    //execute query
-                    try (ResultSet rs = stmt.executeQuery("SELECT * FROM authors")) {
-                        //position result to first
-                        rs.next();
-                        System.out.println(rs.getString(4)); //result is "Hello World!"
-                    }
-                }
-            }
-        }
+        System.out.println("Server started at http://localhost:8001");
+        server.start();
     }
 }
