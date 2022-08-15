@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import  java.sql.*;
 
 public class App {
     private static final Logger logger = Logger.getLogger(App.class.getName());
@@ -20,10 +21,13 @@ public class App {
     /**
      * Main launches the server from the command line.
      */
-    public static void main(String[] args) throws IOException, InterruptedException {
-        final App server = new App();
-        server.start();
-        server.blockUntilShutdown();
+    public static void main(String[] args) throws IOException, InterruptedException, SQLException {
+//        final App server = new App();
+//        server.start();
+//        server.blockUntilShutdown();
+
+        TestConnection.main(args);
+
     }
 
     private void start() throws IOException {
@@ -75,6 +79,25 @@ public class App {
 
             responseObserver.onNext(response);
             responseObserver.onCompleted();
+        }
+    }
+
+    private static class TestConnection {
+        public static void main( String[] args ) throws SQLException {
+            System.out.println("Testing connection");
+            //create connection for a server installed in localhost, with a user "root" with no password
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root")) {
+                // create a Statement
+                try (Statement stmt = conn.createStatement()) {
+//                   stmt.executeQuery("");
+                    //execute query
+                    try (ResultSet rs = stmt.executeQuery("SELECT * FROM authors")) {
+                        //position result to first
+                        rs.next();
+                        System.out.println(rs.getString(4)); //result is "Hello World!"
+                    }
+                }
+            }
         }
     }
 }
