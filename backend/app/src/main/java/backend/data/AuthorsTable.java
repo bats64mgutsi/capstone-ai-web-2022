@@ -35,7 +35,7 @@ public class AuthorsTable {
 
     static private AuthorsTable authorsTable = null;
 
-    private static AuthorsTable getInstance() throws SQLException {
+    public static AuthorsTable getInstance() throws SQLException {
         if (authorsTable == null) {
             return authorsTable = new AuthorsTable(SqlConection.getConnection());
         } else {

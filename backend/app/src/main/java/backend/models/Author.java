@@ -1,7 +1,5 @@
 package backend.models;
 
-import java.util.*;
-
 public class Author {
     private String Surname;
     private String Initials;
@@ -36,16 +34,5 @@ public class Author {
     public String getRating() {
         return this.Rating;
     }
-
-     public Map<String, Object> toJson(){
-     final HashMap hm = new HashMap();
-     hm.put("surname",Surname)
-     hm.put("initials",Initials)
-     hm.put("title",Title)
-     hm.put("institution",Institution)
-     hm.put("rating",Rating)
-     
-         
-     }
 
 }
