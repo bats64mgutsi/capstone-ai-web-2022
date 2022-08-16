@@ -28,9 +28,14 @@ public class AuthorsHttpHandler implements HttpHandler {
             outString = e.toString();
         }
 
-        OutputStream out = exchange.getResponseBody();
         exchange.getResponseHeaders().add("Content-type", "application/json");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        exchange.getResponseHeaders().add("Access-Control-Max-Age", "86400");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
         exchange.sendResponseHeaders(200, outString.length());
+
+        OutputStream out = exchange.getResponseBody();
         out.write(outString.getBytes());
         out.flush();
         out.close();
