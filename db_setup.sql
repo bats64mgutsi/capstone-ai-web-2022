@@ -26,3 +26,14 @@ INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aldrich", 5)
 INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 2)
 INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 3)
 INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 1)
+
+
+CREATE TABLE IF NOT EXISTS publications (authorID varChar(255), title varChar(255), citationCount int, externalLink varChar(500), publicationDate varChar(255));
+INSERT INTO publications (authorID, title, citationCount, externalLink, publicationDate) VALUES ("Aharonson", "The automatic recognition of emotions in speech", 71, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:3fE2CSJIrl8C", "2011");
+INSERT INTO publications (authorID, title, citationCount, externalLink, publicationDate) VALUES ("Aldrich", "ANN-DT: an algorithm for extraction of decision trees from artificial neural networks", 176, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=iLJjvVYAAAAJ&citation_for_view=iLJjvVYAAAAJ:d1gkVwhDpl0C", "1999");
+INSERT INTO publications (authorID, title, citationCount, externalLink, publicationDate) VALUES ("Atemkeng Teufack", "NenUFAR: Instrument description and science case", 35, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=kO4LdnkAAAAJ&citation_for_view=kO4LdnkAAAAJ:YsMSGLbcyi4C", "2015")
+INSERT INTO publications (authorID, title, citationCount, externalLink, publicationDate) VALUES ("Bagula", "Online traffic engineering: the least interference optimization algorithm", 76, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7RjFNjIAAAAJ&citation_for_view=7RjFNjIAAAAJ:ZHo1McVdvXMC", "2004")
+INSERT INTO publications (authorID, title, citationCount, externalLink, publicationDate) VALUES ("Daramola", "Pattern-based security requirements specification using ontologies and boilerplates", 37, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=B2uyXAUAAAAJ&citation_for_view=B2uyXAUAAAAJ:YOwf2qJgpHMC", "2012")
+
+
+
