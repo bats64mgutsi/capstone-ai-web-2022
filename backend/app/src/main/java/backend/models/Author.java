@@ -1,38 +1,38 @@
 package backend.models;
 
 public class Author {
-    private String Surname;
-    private String Initials;
-    private String Title;
-    private String Institution;
-    private String Rating;
+    private String surname;
+    private String initials;
+    private String title;
+    private String institution;
+    private String rating;
 
     public Author(String surname, String initials, String title, String institution, String rating) {
-        this.Surname = surname;
-        this.Initials = initials;
-        this.Title = title;
-        this.Institution = institution;
-        this.Rating = rating;
+        this.surname = surname;
+        this.initials = initials;
+        this.title = title;
+        this.institution = institution;
+        this.rating = rating;
     }
 
     public String getName() {
-        return this.Surname;
+        return this.surname;
     }
 
     public String getInitials() {
-        return this.Initials;
+        return this.initials;
     }
 
     public String getTitle() {
-        return this.Title;
+        return this.title;
     }
 
     public String getInstitution() {
-        return this.Institution;
+        return this.institution;
     }
 
     public String getRating() {
-        return this.Rating;
+        return this.rating;
     }
 
 }
