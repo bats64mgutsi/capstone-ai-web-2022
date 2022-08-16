@@ -118,7 +118,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import store from "../../store";
-import { backendClient } from "../rpc";
 import { refreshData } from "../util";
 
 const authors = store.authors;

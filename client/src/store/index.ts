@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { Author } from "../core";
+import { Author } from "../core/types";
 
 /**
  * Bundle and expose variables/functionalities 

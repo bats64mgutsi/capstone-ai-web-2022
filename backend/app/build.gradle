@@ -26,24 +26,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'
-
-    // gRPC
-    runtimeOnly 'io.grpc:grpc-netty-shaded:1.48.1'
-    implementation 'io.grpc:grpc-protobuf:1.48.1'
-    implementation 'io.grpc:grpc-stub:1.48.1'
-    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
-    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.2-b01'
-
+    
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs 'build/generated/source/proto/main/grpc'
-            srcDirs 'build/generated/source/proto/main/java'
-        }
-    }
 }
 
 application {
@@ -52,20 +36,3 @@ application {
 }
 
 apply plugin: 'idea'
-
-protobuf {
-
-    protoc {
-    artifact = "com.google.protobuf:protoc:3.21.1"
-  }
-  plugins {
-    grpc {
-      artifact = 'io.grpc:protoc-gen-grpc-java:1.48.1'
-    }
-  }
-  generateProtoTasks {
-    all()*.plugins {
-      grpc {}
-    }
-  }
-}
