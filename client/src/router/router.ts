@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import MainPage from "../pages/main/main-page.vue";
+import ProfilePage from "../pages/profile/profile-page.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -7,6 +8,12 @@ const routes: Array<RouteRecordRaw> = [
         name: "main",
         component: MainPage
     },
+    {
+        path: "/authors/:id",
+        name: "profile",
+        component: ProfilePage
+    },
+
 ];
 
 export const router = createRouter({

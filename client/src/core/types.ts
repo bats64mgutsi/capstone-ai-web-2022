@@ -1,9 +1,10 @@
 export interface Author {
     id: number;
-    name: string;
+    surname: string;
     initials: string;
     title: string;
-    insitution: string;
+    institution: string;
+    rating: string;
 }
 
 export interface User {

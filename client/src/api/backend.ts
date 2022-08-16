@@ -18,7 +18,7 @@ import { LoginResult } from "../core/types";
 const injectAuthTokenHook: BeforeRequestHook = (config) => {
     const token = getAccessToken();
     if (token) {
-    config.headers.append("Authorization", `Bearer ${token}`);
+        config.headers.append("Authorization", `Bearer ${token}`);
     }
 };
 
