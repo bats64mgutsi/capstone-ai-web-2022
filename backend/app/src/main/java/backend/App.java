@@ -17,7 +17,7 @@ public class App {
     private static final Logger logger = Logger.getLogger(App.class.getName());
 
     private Server server;
-
+    static Connection conn;
     /**
      * Main launches the server from the command line.
      */
@@ -86,7 +86,8 @@ public class App {
         public static void main( String[] args ) throws SQLException {
             System.out.println("Testing connection");
             //create connection for a server installed in localhost, with a user "root" with no password
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root")) {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root");
+            try (conn) {
                 // create a Statement
                 try (Statement stmt = conn.createStatement()) {
 //                   stmt.executeQuery("");
@@ -99,5 +100,10 @@ public class App {
                 }
             }
         }
+
+        
+    }
+    public static Connection getCon()throws IOException, InterruptedException, SQLException{
+        return conn;
     }
 }
