@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { router } from "./router";
 import './styles/index.css'
 import App from './App.vue'
-import { initBackendClient } from "./rpc";
+import { initBackendClient } from "./api";
 
 initBackendClient();
 

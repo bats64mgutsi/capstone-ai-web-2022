@@ -1,5 +1,6 @@
 import { IBackendClient } from "../core";
 import { createBackendClient } from "./backend";
+import { API_URL } from "./urls";
 
 let _backendClient: IBackendClient;
 
@@ -9,10 +10,12 @@ let _backendClient: IBackendClient;
  * by calling `backendClient()`.
  * @param client The client to use. This should only
  * be passed during testing to mock the client.
+ * By default a client will be created based on the configured
+ * API_URL.
  * @returns The initialized backend client.
  */
 export function initBackendClient(client?: IBackendClient): IBackendClient {
-  _backendClient = client || createBackendClient();
+  _backendClient = client || createBackendClient(API_URL);
   return _backendClient;
 }
 
