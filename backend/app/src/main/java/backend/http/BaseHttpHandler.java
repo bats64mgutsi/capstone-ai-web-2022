@@ -1,23 +1,19 @@
 package backend.http;
 
-import backend.controllers.AuthorsController;
-import backend.models.Author;
-import com.google.gson.Gson;
+import backend.utils.UrlParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 public abstract class BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String outString = getResponseAsString();
+        System.out.printf("On new request to %s %s\n", (CharSequence) exchange.getRequestMethod(), (CharSequence) exchange.getRequestURI().getPath());
 
+        String outString = getResponseAsString(UrlParser.parsePaths(exchange.getRequestURI().getPath()));
         exchange.getResponseHeaders().add("Content-type", "application/json");
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
@@ -31,5 +27,5 @@ public abstract class BaseHttpHandler implements HttpHandler {
         out.close();
     }
 
-    protected abstract String getResponseAsString(List<String> pathValues);
+    protected abstract String getResponseAsString(String[] pathValues);
 }
