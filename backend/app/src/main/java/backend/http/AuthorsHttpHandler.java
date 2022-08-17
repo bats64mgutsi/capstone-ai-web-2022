@@ -12,11 +12,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AuthorsHttpHandler implements HttpHandler {
+public class AuthorsHttpHandler extends BaseHttpHandler {
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        String outString = "";
-
+    public void getResponseAsString() {
         try {
             if("GET".equals(exchange.getRequestMethod())) {
                 System.out.println("On new request to GET authors");
@@ -27,17 +25,5 @@ public class AuthorsHttpHandler implements HttpHandler {
         } catch (SQLException e) {
             outString = e.toString();
         }
-
-        exchange.getResponseHeaders().add("Content-type", "application/json");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        exchange.getResponseHeaders().add("Access-Control-Max-Age", "86400");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
-        exchange.sendResponseHeaders(200, outString.length());
-
-        OutputStream out = exchange.getResponseBody();
-        out.write(outString.getBytes());
-        out.flush();
-        out.close();
     }
 }

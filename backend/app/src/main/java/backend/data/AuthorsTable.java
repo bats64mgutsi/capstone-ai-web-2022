@@ -4,6 +4,8 @@ import java.util.*;
 
 import backend.App;
 import backend.models.Author;
+import backend.models.AuthorProfile;
+
 import java.sql.*;
 
 public class AuthorsTable {
@@ -31,6 +33,10 @@ public class AuthorsTable {
         }
 
         return out;
+    }
+
+    public List<AuthorProfile> getProfile(String authorId) {
+        return new LinkedList<>();
     }
 
     static private AuthorsTable authorsTable = null;
