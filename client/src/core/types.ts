@@ -18,6 +18,19 @@ export interface User {
     updatedAt: Date;
 }
 
+export interface Publication {
+    title: string;
+    numberOfCitations: number;
+    year: string;
+    externalLink: string;
+}
+
+export interface AuthorProfile {
+    author: Author;
+    subFields: string[];
+    publications: Publication[];
+}
+
 export interface AppMessage {
     type: string;
     message: string;
