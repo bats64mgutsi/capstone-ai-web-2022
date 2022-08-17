@@ -2,6 +2,8 @@ package backend.http;
 
 import backend.controllers.AuthorsController;
 import backend.models.Author;
+import backend.models.AuthorProfile;
+
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -22,8 +24,8 @@ public class AuthorsHttpHandler extends BaseHttpHandler {
                 return new Gson().toJson(authors);
             } else if (pathValues[1].equals("author")) {
                 final String authorId = pathValues[2];
-                System.out.printf("Getting author %s\n", authorId);
-                return "";
+                final AuthorProfile authorProfile = AuthorsController.getProfile(authorId);
+                return new Gson().toJson(authorProfile);
             }
         } catch (SQLException e) {
             return e.toString();
