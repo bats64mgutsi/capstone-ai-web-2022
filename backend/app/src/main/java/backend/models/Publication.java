@@ -6,8 +6,8 @@ public class Publication {
     private final String year;
     private final String externalLink;
 
-    public Publication(int numberOfPublications, String title, String year, String externalLink) {
-        this.numberOfCitations = numberOfPublications;
+    public Publication(int numberOfCitations, String title, String year, String externalLink) {
+        this.numberOfCitations = numberOfCitations;
         this.title = title;
         this.year = year;
         this.externalLink = externalLink;
