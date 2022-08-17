@@ -23,7 +23,7 @@ public class App {
         final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
-        server.createContext("/authors", new AuthorsHttpHandler());
+        server.createContext("/author", new AuthorsHttpHandler());
         server.setExecutor(threadPoolExecutor);
         System.out.println("Server started at http://localhost:8001");
         server.start();

@@ -14,16 +14,21 @@ import java.util.List;
 
 public class AuthorsHttpHandler extends BaseHttpHandler {
     @Override
-    public void getResponseAsString() {
+    public String getResponseAsString(String[] pathValues) {
         try {
-            if("GET".equals(exchange.getRequestMethod())) {
-                System.out.println("On new request to GET authors");
-                final LinkedList<Author> authors = new LinkedList<>();
+            if(pathValues[1].equals("authors")) {
+                final List<Author> authors = new LinkedList<>();
                 authors.addAll(AuthorsController.listAuthors());
-                outString = new Gson().toJson(authors);
+                return new Gson().toJson(authors);
+            } else if (pathValues[1].equals("author")) {
+                final String authorId = pathValues[2];
+                System.out.printf("Getting author %s\n", authorId);
+                return "";
             }
         } catch (SQLException e) {
-            outString = e.toString();
+            return e.toString();
         }
+
+        return "Unknown path in authors";
     }
 }
