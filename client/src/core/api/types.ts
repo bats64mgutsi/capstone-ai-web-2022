@@ -1,4 +1,4 @@
-import { Author } from "../types";
+import { Author, AuthorProfile } from "../types";
 
 export interface IHttpClient {
     baseUrl: string;
@@ -35,4 +35,5 @@ export interface IHttpClient {
 
 export interface IBackendClient {
     getAuthors(): Promise<Author[]>;
+    getAuthorProfile(authorId: string): Promise<AuthorProfile>;
 }
