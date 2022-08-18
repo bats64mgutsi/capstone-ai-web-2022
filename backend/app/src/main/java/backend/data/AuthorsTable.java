@@ -50,12 +50,13 @@ public class AuthorsTable {
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
 
-        rs.first();
+        rs.next();
         String surname = rs.getString(1);
         String initials = rs.getString(2);
         String title = rs.getString(3);
         String institution = rs.getString(4);
         String rating = rs.getString(5);
+
         Author author = new Author(surname, initials, title, institution, rating);
         return author;
     }
@@ -74,30 +75,26 @@ public class AuthorsTable {
             Publication publication = new Publication(numberOfCitations, title, year, externalLink);
             publications.add(publication);
         }
-        return publications;
 
+        return publications;
     }
 
     private List<String> getAuthorSubfields(String authorId) throws SQLException {
-//        PreparedStatement stmt = sqlConection.prepareStatement("SELECT * FROM authorSubfieldsMap WHERE authorID=?");
-//        stmt.setString(1, authorId);
-//        ResultSet rs = stmt.executeQuery();
-//
-//        List<Integer> authorSubFieldIds = new ArrayList<>();
-//
-//        while (rs.next()) {
-//            int subfieldID = rs.getInt(2);
-//
-//            stmt = sqlConection.prepareStatement("SELECT * FROM subFields WHERE ID=?");
-//            stmt.setInt(1, subfieldID);
-//            rs = stmt.executeQuery();
-//
-//            rs.first();
-//            out.add(rs.getString(2));
-//        }
+        PreparedStatement stmt = sqlConection.prepareStatement("SELECT * FROM authorSubfieldsMap WHERE authorID=?");
+        stmt.setString(1, authorId);
+        ResultSet rs = stmt.executeQuery();
 
         List<String> out = new ArrayList<>();
+        while (rs.next()) {
+            int subfieldID = rs.getInt(2);
 
+            stmt = sqlConection.prepareStatement("SELECT * FROM subFields WHERE ID=?");
+            stmt.setInt(1, subfieldID);
+            ResultSet innerRS = stmt.executeQuery();
+
+            innerRS.next();
+            out.add(innerRS.getString(2));
+        }
 
         return out;
     }
