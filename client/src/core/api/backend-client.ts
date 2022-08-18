@@ -13,6 +13,6 @@ export class BackendClient implements IBackendClient {
   }
 
   async getAuthorProfile(authorId: string): Promise<AuthorProfile> {
-    return await this.client.get<AuthorProfile>(`/authors/s{authorId}`);
+    return await this.client.get<AuthorProfile>(`/author/${authorId}`);
   }
 }
