@@ -19,7 +19,7 @@ import { Author, AuthorProfile } from "../core/types";
     }
   
     const currentlySelectedAuthor = computed(() =>
-      authors.value.find((p) => `${p.surname + p.initials}` === currentlySelectedAuthorId.value)
+      authors.value.find((p) => `${p.surname}` === currentlySelectedAuthorId.value)
     );
 
     function setCurrentlySelectedAuthorProfile(profile: AuthorProfile) {
