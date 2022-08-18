@@ -45,7 +45,7 @@ public class AuthorsTable {
         return out;
     }
 
-    private Author getAuthor(String authorId) throws SQLException {
+    public Author getAuthor(String authorId) throws SQLException {
         PreparedStatement stmt = sqlConection.prepareStatement("SELECT * FROM authors WHERE Surname=?");
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
@@ -61,7 +61,7 @@ public class AuthorsTable {
         return author;
     }
 
-    private List<Publication> getAuthorPublications(String authorId) throws SQLException {
+    public List<Publication> getAuthorPublications(String authorId) throws SQLException {
         PreparedStatement stmt = sqlConection.prepareStatement("SELECT * FROM publications WHERE authorID=?");
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
@@ -79,7 +79,7 @@ public class AuthorsTable {
         return publications;
     }
 
-    private List<String> getAuthorSubfields(String authorId) throws SQLException {
+    public List<String> getAuthorSubfields(String authorId) throws SQLException {
         PreparedStatement stmt = sqlConection.prepareStatement("SELECT * FROM authorSubfieldsMap WHERE authorID=?");
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
@@ -99,12 +99,5 @@ public class AuthorsTable {
         return out;
     }
 
-    public AuthorProfile getProfile(String authorId) throws SQLException {
-        Author author = getAuthor(authorId);
-        List<String> subFields = getAuthorSubfields(authorId);
-        List<Publication> publications = getAuthorPublications(authorId);
-
-        AuthorProfile authorProfile = new AuthorProfile(author, subFields, publications);
-        return authorProfile;
-    }
+    
 }

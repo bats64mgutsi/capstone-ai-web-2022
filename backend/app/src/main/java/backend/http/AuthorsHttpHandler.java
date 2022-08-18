@@ -1,6 +1,7 @@
 package backend.http;
 
 import backend.controllers.AuthorsController;
+import backend.data.AuthorsTable;
 import backend.models.Author;
 import backend.models.AuthorProfile;
 
