@@ -1,4 +1,4 @@
-package backend.models;
+package backend.DatabaseModels;
 
 public class Author {
     public String surname;

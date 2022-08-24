@@ -1,9 +1,9 @@
 package backend.http;
 
+import backend.DatabaseModels.Author;
+import backend.DatabaseModels.AuthorProfile;
 import backend.controllers.AuthorsController;
 import backend.data.AuthorsTable;
-import backend.models.Author;
-import backend.models.AuthorProfile;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;

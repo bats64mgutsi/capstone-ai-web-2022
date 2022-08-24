@@ -1,4 +1,4 @@
-package backend.models;
+package backend.DatabaseModels;
 
 public class Publication {
     public String id;
@@ -6,6 +6,7 @@ public class Publication {
     public final String title;
     public final String year;
     public final String externalLink;
+
 
     public Publication(String id, int numberOfCitations, String title, String year, String externalLink) {
         this.id =id;

@@ -1,9 +1,10 @@
 package backend.controllers;
 
+import backend.DatabaseModels.Author;
+import backend.DatabaseModels.AuthorProfile;
+import backend.DatabaseModels.Publication;
 import backend.data.AuthorsTable;
-import backend.models.Author;
-import backend.models.AuthorProfile;
-import backend.models.Publication;
+
 import java.sql.SQLException;
 import java.util.*;
 
