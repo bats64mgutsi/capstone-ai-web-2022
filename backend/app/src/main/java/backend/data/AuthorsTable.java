@@ -57,7 +57,7 @@ public class AuthorsTable {
         String institution = rs.getString(4);
         String rating = rs.getString(5);
 
-        Author author = new Author(surname, initials, title, institution, rating);
+        Author author = new Author(id, surname, initials, title, institution, rating);
         return author;
     }
 
@@ -99,5 +99,12 @@ public class AuthorsTable {
         return out;
     }
 
+    
+
+    public void insertAuthor(Author author) throws SQLException{
+        PreparedStatement stmt = sqlConection.prepareStatement("INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES (?, ?, ?, ?, ?");
+        stmt.setString(1, )
+
+    }
     
 }
