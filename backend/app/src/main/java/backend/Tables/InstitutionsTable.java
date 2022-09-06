@@ -7,7 +7,8 @@ import backend.DatabaseModels.Institution;
 
 public class InstitutionsTable {
     public List<Institution> listAll(){
-        List<Institution> institutions = new ArrayList<Institution>();
+        List<Institution> institutions = new ArrayList<>();
+        
         return institutions;
     }
 }

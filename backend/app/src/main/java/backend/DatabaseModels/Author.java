@@ -8,13 +8,19 @@ public class Author {
     public String institution;
     public String rating;
 
-    public Author(String id, String surname, String initials, String title, String institution, String rating) {
-        this.id = id;
+    public Author(String surname, String initials, String title, String institution, String rating) {
+        
         this.surname = surname;
         this.initials = initials;
         this.title = title;
         this.institution = institution;
         this.rating = rating;
+        this.id = generateID(surname,initials);
+    }
+
+    public String generateID(String surname, String initials){
+        String id = surname+initials;
+        return id;
     }
 }
 
