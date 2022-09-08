@@ -15,7 +15,13 @@ public class SubfieldsTable extends SqlTable {
         return inserted;
     }
 
-    public void clearAll(){
+    public boolean clearAll()throws SQLException{
+        boolean cleared = false;
+        PreparedStatement stmt = db.prepareStatement(
+                "DELETE * FROM subFields");
         
+        cleared = stmt.executeUpdate() > 0;
+       
+        return cleared;
     }
 }

@@ -35,5 +35,6 @@ INSERT INTO publications (ID, title, citationCount, externalLink, publicationDat
 INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Bagula", "Online traffic engineering: the least interference optimization algorithm", 76, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7RjFNjIAAAAJ&citation_for_view=7RjFNjIAAAAJ:ZHo1McVdvXMC", "2004");
 INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Daramola", "Pattern-based security requirements specification using ontologies and boilerplates", 37, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=B2uyXAUAAAAJ&citation_for_view=B2uyXAUAAAAJ:YOwf2qJgpHMC", "2012");
 
+CREATE TABLE IF NOT EXISTS institutions (ID int AUTO_INCREMENT, institutionName varChar(255), latitute int, longitute int, PRIMARY KEY(ID));
 
 
