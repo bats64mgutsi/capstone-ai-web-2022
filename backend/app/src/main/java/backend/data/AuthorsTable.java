@@ -1,8 +1,7 @@
 package backend.data;
 
-import backend.models.Author;
-import backend.models.AuthorProfile;
-import backend.models.Publication;
+import backend.DatabaseModels.Author;
+import backend.DatabaseModels.Publication;
 
 import java.sql.*;
 import java.util.ArrayList;
