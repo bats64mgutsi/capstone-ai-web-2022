@@ -1,9 +1,5 @@
 package backend.Tables;
 
-<<<<<<< HEAD
-public class InstitutionsTable {
-    
-=======
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,5 +24,4 @@ public class InstitutionsTable extends SqlTable {
 
         return out;
     }
->>>>>>> master
 }
