@@ -6,6 +6,7 @@ import backend.controllers.AuthorsController;
 import backend.data.AuthorsTable;
 
 import com.google.gson.Gson;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class AuthorsHttpHandler extends BaseHttpHandler {
     @Override
-    public String getResponseAsString(String[] pathValues) {
+    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) {
         try {
             if(pathValues[1].equals("authors")) {
                 final List<Author> authors = new LinkedList<>();

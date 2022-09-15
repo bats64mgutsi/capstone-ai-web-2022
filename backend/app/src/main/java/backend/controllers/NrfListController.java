@@ -26,22 +26,18 @@ public class NrfListController {
     final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
     final SubfieldsTable subfieldsTable = (SubfieldsTable) Locator.instance.get(SubfieldsTable.class);
 
-    public void setAuthors(List<NrfAuthor> authors) {
-        try {
-            clearTables();
-            final Set<Subfield> allSubFields = new HashSet<>();
+    public void setAuthors(List<NrfAuthor> authors) throws SQLException {
+        clearTables();
+        final Set<Subfield> allSubFields = new HashSet<>();
 
-            for(NrfAuthor nrfAuthor: authors) {
-                final String authorId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.initials).add(nrfAuthor.surname).build());
-                insertAuthor(nrfAuthor, authorId);
-                insertAuthorPublications(nrfAuthor, authorId);
-                insertAuthorSubfields(nrfAuthor, authorId, allSubFields);
-            }
-
-            insertAllSubfields(allSubFields);
-        } catch(SQLException e) {
-            throw new RuntimeException(e);
+        for(NrfAuthor nrfAuthor: authors) {
+            final String authorId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.initials).add(nrfAuthor.surname).build());
+            insertAuthor(nrfAuthor, authorId);
+            insertAuthorPublications(nrfAuthor, authorId);
+            insertAuthorSubfields(nrfAuthor, authorId, allSubFields);
         }
+
+        insertAllSubfields(allSubFields);
     }
 
     private void clearTables() throws SQLException {
@@ -95,7 +91,7 @@ public class NrfListController {
         }
     }
 
-    public void insertAllSubfields(Set<Subfield> allSubfields) throws SQLException {
+    private void insertAllSubfields(Set<Subfield> allSubfields) throws SQLException {
         for(Subfield subfield: allSubfields) {
             subfieldsTable.insertSubfield(subfield);
         }
