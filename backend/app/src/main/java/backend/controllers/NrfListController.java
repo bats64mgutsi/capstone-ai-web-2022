@@ -30,7 +30,7 @@ public class NrfListController {
         clearTables();
         final Set<Subfield> allSubFields = new HashSet<>();
 
-        for(NrfAuthor nrfAuthor: authors) {
+        for (NrfAuthor nrfAuthor : authors) {
             final String authorId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.initials).add(nrfAuthor.surname).build());
             insertAuthor(nrfAuthor, authorId);
             insertAuthorPublications(nrfAuthor, authorId);
@@ -50,21 +50,14 @@ public class NrfListController {
 
     private void insertAuthor(NrfAuthor nrfAuthor, String authorId) throws SQLException {
         final String institutionId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.institution).build());
-        final Author author = new Author(
-                authorId,
-                nrfAuthor.surname,
-                nrfAuthor.initials,
-                nrfAuthor.title,
-                institutionId,
-                nrfAuthor.rating
-        );
+        final Author author = new Author(authorId, nrfAuthor.surname, nrfAuthor.initials, nrfAuthor.title, institutionId, nrfAuthor.rating);
 
         authorsTable.insertAuthor(author);
     }
 
     private void insertAuthorPublications(NrfAuthor author, String authorId) throws SQLException {
         final List<GoogleScholarPublication> googleScholarPublications = googleScholarService.listPublications(author.initials, author.surname, author.initials);
-        for(final GoogleScholarPublication googleScholarPublication: googleScholarPublications) {
+        for (final GoogleScholarPublication googleScholarPublication : googleScholarPublications) {
             final String publicationId = uniqueIdService.uuidv4();
             final Publication publication = googleScholarPublication.publication;
             publication.id = publicationId;
@@ -80,7 +73,8 @@ public class NrfListController {
     }
 
     private void insertAuthorSubfields(NrfAuthor author, String authorId, Set<Subfield> allSubfields) throws SQLException {
-        for(String subFieldStr: Stream.concat(author.primaryResearchFields.stream(), author.secondaryResearchFields.stream()).toList()) {
+        final List<String> authorSubfields = Stream.concat(Stream.concat(author.primaryResearchFields.stream(), author.secondaryResearchFields.stream()).toList().stream(), author.specialisations.stream()).toList();
+        for (String subFieldStr : authorSubfields) {
             final String subFieldId = hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).build());
             final Subfield subField = new Subfield(subFieldId, subFieldStr);
             allSubfields.add(subField);
@@ -92,7 +86,7 @@ public class NrfListController {
     }
 
     private void insertAllSubfields(Set<Subfield> allSubfields) throws SQLException {
-        for(Subfield subfield: allSubfields) {
+        for (Subfield subfield : allSubfields) {
             subfieldsTable.insertSubfield(subfield);
         }
     }
