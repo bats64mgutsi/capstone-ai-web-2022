@@ -13,7 +13,6 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
         String outString = "";
         try {
             String requestBody = IOUtils.toString(exchange.getRequestBody());
@@ -37,5 +36,5 @@ public abstract class BaseHttpHandler implements HttpHandler {
         out.close();
     }
 
-    protected abstract String getResponseAsString(String[] pathValues, Headers requestHeaders, String body);
+    protected abstract String getResponseAsString(String[] pathValues, Headers requestHeaders, String body) throws Exception;
 }

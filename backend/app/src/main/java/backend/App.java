@@ -3,7 +3,9 @@
  */
 package backend;
 
+import backend.http.AuthorizationHttpHandler;
 import backend.http.AuthorsHttpHandler;
+import backend.http.NrfListHttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -24,6 +26,8 @@ public class App {
         final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
         server.createContext("/author", new AuthorsHttpHandler());
+        server.createContext("/nrfList", new NrfListHttpHandler());
+        server.createContext("/validate", new AuthorizationHttpHandler());
         server.setExecutor(threadPoolExecutor);
         System.out.println("Server started at http://localhost:8001");
         server.start();
