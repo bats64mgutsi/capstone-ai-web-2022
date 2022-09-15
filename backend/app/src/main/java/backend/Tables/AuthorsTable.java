@@ -63,4 +63,7 @@ public class AuthorsTable extends SqlTable {
 
         return out;
     }
+
+    public void clearAll() {
+    }
 }

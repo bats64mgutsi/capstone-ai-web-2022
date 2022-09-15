@@ -4,7 +4,7 @@ import java.util.*;
 import backend.DatabaseModels.Publication;
 
 public class GoogleScholarPublication {
-    Publication publication;
+    public Publication publication;
     public List<String> coAuthors;
 
     public GoogleScholarPublication(Publication publication, List<String> coAuthors)

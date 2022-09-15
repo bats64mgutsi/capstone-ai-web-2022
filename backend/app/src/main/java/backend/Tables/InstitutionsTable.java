@@ -1,9 +1,7 @@
 package backend.Tables;
 
-<<<<<<< HEAD
-public class InstitutionsTable {
-    
-=======
+import backend.DatabaseModels.Institution;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +10,7 @@ import backend.DatabaseModels.Institution;
 
 public class InstitutionsTable extends SqlTable {
     
-    public List<Institution> listAll() throws SQLException {
+    public List<Institution> listAll() throws SQLException, SQLException {
         LinkedList<Institution> out = new LinkedList<>();
 
         Statement stmt = db.createStatement();
@@ -28,5 +26,4 @@ public class InstitutionsTable extends SqlTable {
 
         return out;
     }
->>>>>>> master
 }

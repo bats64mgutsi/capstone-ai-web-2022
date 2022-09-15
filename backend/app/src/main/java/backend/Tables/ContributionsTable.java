@@ -15,5 +15,7 @@ public class ContributionsTable extends SqlTable {
             stmt.executeUpdate();
         }
 
+    public void clearAll() {
     }
+}
 

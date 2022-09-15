@@ -42,4 +42,7 @@ public class PublicationsTable extends SqlTable {
         Publication publication = new Publication(id, citationCount, title, year, externalLink);
         return publication;
     }
+
+    public void clearAll() {
+    }
 }
