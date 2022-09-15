@@ -7,3 +7,4 @@ CREATE TABLE IF NOT EXISTS publications (id varChar(255), title varChar(255), ci
 CREATE TABLE IF NOT EXISTS subFields (id varChar(255), name varChar(255));
 
 -- Populate institutions table
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("Aharonson", "V", "Prof", "University of the Witwatersrand", "C" );

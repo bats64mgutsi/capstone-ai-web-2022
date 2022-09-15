@@ -11,6 +11,7 @@ public class AdminsTable extends SqlTable {
         stmt.setString(1, username);
         stmt.setString(2, hashedPassword);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         int id = rs.getInt(1);
         Admin admin = new Admin(id, username, hashedPassword);
         return admin;
