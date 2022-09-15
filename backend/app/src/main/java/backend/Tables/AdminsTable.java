@@ -1,9 +1,7 @@
 package backend.Tables;
 
-<<<<<<< HEAD
-public class AdminsTable {
-    
-=======
+import backend.DatabaseModels.Admin;
+
 import java.sql.*;
 
 import backend.DatabaseModels.Admin;
@@ -20,5 +18,4 @@ public class AdminsTable extends SqlTable {
         Admin admin = new Admin(Username, HashedPassword);
         return admin;
     }
->>>>>>> master
 }
