@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import backend.DatabaseModels.Author;
+import backend.DatabaseModels.Publication;
 
 public class AuthorsTable extends SqlTable {
     public boolean insertAuthor(Author author) throws SQLException {
@@ -64,6 +65,22 @@ public class AuthorsTable extends SqlTable {
         return out;
     }
 
-    public void clearAll() {
+    public boolean clearAll() throws SQLException {
+        boolean deleted = false;
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM authors");
+        deleted = stmt.executeUpdate() > 0;
+        return deleted;
+    }
+
+    public Author get(String authorId) {
+        throw new UnsupportedOperationException();
+    }
+
+    public List<String> getAuthorSubfields(String authorId) {
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Publication> getAuthorPublications(String authorId) {
+        throw new UnsupportedOperationException();
     }
 }
