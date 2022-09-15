@@ -7,4 +7,29 @@ CREATE TABLE IF NOT EXISTS publications (id varChar(255), title varChar(255), ci
 CREATE TABLE IF NOT EXISTS subFields (id varChar(255), name varChar(255));
 
 -- Populate institutions table
-INSERT INTO institutions (id, name, latitude, longitude) VALUES ("Aharonson", "V", "Prof", "University of the Witwatersrand", "C" );
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_south_africa", "University of South Africa", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("north-west_university", "North-West University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_pretoria", "University of Pretoria", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("tshwane_university_of_technology", "Tshwane University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_johannesburg", "University of Johannesburg", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_kwaZulu-Natal", "University of KwaZulu-Natal", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_free_state", "University of the Free State", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("cape_peninsula_university_of_technology", "Cape Peninsula University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_witwatersrand", "University of the Witwatersrand", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_stellenbosch", "University of Stellenbosch", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_cape_town", "University of Cape Town", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("nelson_mandela_metropolitan_university", "Nelson Mandela Metropolitan University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("walter_sisulu_university", "Walter Sisulu University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("durban_university_of_technology", "Durban University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_limpopo", "University of Limpopo", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("vaal_university_of_technology", "Vaal University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_zululand", "University of Zululand", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_western_cape", "University of the Western Cape", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("central_university_of_technology", "Central University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_fort_hare", "University of Fort Hare", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_venda", "University of Venda", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("mangosuthu_university_of_technology", "Mangosuthu University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("rhodes_university", "Rhodes University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sefako_makgatho_health_sciences_university", "Sefako Makgatho Health Sciences University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_mpumalanga", "University of Mpumalanga", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sol_plaatje_university", "Sol Plaatje University", 0.000, 0.000);
