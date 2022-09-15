@@ -49,7 +49,7 @@ public class NrfListController {
     }
 
     private void insertAuthor(NrfAuthor nrfAuthor, String authorId) throws SQLException {
-        final String institutionId = hashingService.flatten(new ImmutableList.Builder().add(nrfAuthor.institution).build());
+        final String institutionId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.institution).build());
         final Author author = new Author(
                 authorId,
                 nrfAuthor.surname,

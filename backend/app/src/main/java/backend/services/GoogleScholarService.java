@@ -4,7 +4,6 @@ import backend.ApplicationModels.GoogleScholarPublication;
 import backend.DatabaseModels.Publication;
 import backend.Locator;
 import backend.httpClient.HttpClient;
-import com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -44,7 +43,6 @@ public class GoogleScholarService {
 
         String authorProfileLink = null;
         for (Element el : authorListElements) {
-            final String html = el.html();
             if (el.html().contains("<b>")) {
                 authorProfileLink = el.attr("href");
                 break;

@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 
 import java.nio.file.InvalidPathException;
-import java.sql.SQLException;
 
 public class AuthorizationHttpHandler extends BaseHttpHandler {
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance.get(AuthorizationController.class);

@@ -13,11 +13,8 @@ import java.net.InetSocketAddress;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.logging.Logger;
 
 public class App {
-    private static final Logger logger = Logger.getLogger(App.class.getName());
-
     /**
      * Main launches the server from the command line.
      */

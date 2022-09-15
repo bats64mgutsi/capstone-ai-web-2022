@@ -3,15 +3,10 @@ package backend.http;
 import backend.DatabaseModels.Author;
 import backend.DatabaseModels.AuthorProfile;
 import backend.controllers.AuthorsController;
-import backend.data.AuthorsTable;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;

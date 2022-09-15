@@ -1,6 +1,5 @@
-package services;
+package backend.services;
 
-import backend.services.HashingService;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
@@ -27,14 +26,14 @@ public class HashingServiceTest {
     @Test
     public void flatten_shouldReturnWordsInLowerCase() {
         final HashingService instance = new HashingService();
-        final List input = new ImmutableList.Builder<String>().add("Abc", "DEF").build();
+        final List<String> input = new ImmutableList.Builder<String>().add("Abc", "DEF").build();
         assertEquals("abc_def", instance.flatten(input));
     }
 
     @Test
     public void flatten_shouldReplaceWhitespacesWithUnderscore() {
         final HashingService instance = new HashingService();
-        final List input = new ImmutableList.Builder<String>().add("a\nb\tc d").build();
+        final List<String> input = new ImmutableList.Builder<String>().add("a\nb\tc d").build();
         assertEquals("a_b_c_d", instance.flatten(input));
     }
 }
