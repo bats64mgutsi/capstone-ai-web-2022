@@ -1,7 +1,5 @@
 package backend.Tables;
 
-import backend.DatabaseModels.Institution;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
