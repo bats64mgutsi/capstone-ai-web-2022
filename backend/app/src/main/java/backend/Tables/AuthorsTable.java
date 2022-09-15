@@ -1,17 +1,19 @@
 package backend.Tables;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import backend.DatabaseModels.Author;
 import backend.DatabaseModels.Publication;
+import backend.DatabaseModels.Subfield;
 
 public class AuthorsTable extends SqlTable {
     public boolean insertAuthor(Author author) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT into authors (ID, Surname, Initials, Title, Institution, Rating) VALUES (?, ?, ?, ?, ?");
+                "INSERT into authors (id, surname, initials, title, institution, rating) VALUES (?, ?, ?, ?, ?, ?");
         stmt.setString(1, author.id);
         stmt.setString(2, author.surname);
         stmt.setString(3, author.initials);
@@ -26,14 +28,14 @@ public class AuthorsTable extends SqlTable {
     public boolean updateAuthor(String authorId, Author author) throws SQLException {
         boolean updated = false;
         PreparedStatement stmt = db.prepareStatement(
-                "UPDATE authors SET ID = ?, Surname = ?, Initials = ?, Title = ?, Institution = ?, Rating = ? WHERE authorId = ?");
-                stmt.setString(1, author.id);
-                stmt.setString(2, author.surname);
-                stmt.setString(3, author.initials);
-                stmt.setString(4, author.title);
-                stmt.setString(5, author.institution);
-                stmt.setString(6, author.rating);
-                stmt.setString(7, authorId);
+                "UPDATE authors SET surname = ?, initials = ?, title = ?, institution = ?, rating = ? WHERE authorId = ?");
+        stmt.setString(1, author.surname);
+        stmt.setString(2, author.initials);
+        stmt.setString(3, author.title);
+        stmt.setString(4, author.institution);
+        stmt.setString(5, author.rating);
+        stmt.setString(6, authorId);
+
         updated = stmt.executeUpdate() > 0;
         return updated;
     }
@@ -72,15 +74,42 @@ public class AuthorsTable extends SqlTable {
         return deleted;
     }
 
-    public Author get(String authorId) {
-        throw new UnsupportedOperationException();
+    public Author get(String authorId) throws SQLException {
+        PreparedStatement stmt = db
+                .prepareStatement("SELECT id, surname, initials, title, institution, rating WHERE authorId = ?");
+        stmt.setString(1, authorId);
+        ResultSet rs = stmt.executeQuery();
+        String id = rs.getString(1);
+        String surname = rs.getString(2);
+        String initials = rs.getString(3);
+        String title = rs.getString(4);
+        String institution = rs.getString(5);
+        String rating = rs.getString(6);
+
+        Author author = new Author(id, surname, initials, title, institution, rating);
+
+        return author;
+
     }
 
-    public List<String> getAuthorSubfields(String authorId) {
-        throw new UnsupportedOperationException();
-    }
+    public List<Subfield> getAuthorSubfields(String authorId) throws SQLException {
+        PreparedStatement stmt = db.prepareStatement("SELECT subFieldID FROM authorSubfieldsMap WHERE authorId = ?");
+        List<Subfield> subfields = new ArrayList<>();
+        stmt.setString(1, authorId);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String id = rs.getString(1);
+            String subFieldID = rs.getString(2);
 
-    public List<Publication> getAuthorPublications(String authorId) {
-        throw new UnsupportedOperationException();
+            PreparedStatement stmt2 = db.prepareStatement("SELECT name FROM subFields WHERE id  = ?");
+            stmt2.setString(1, subFieldID);
+            ResultSet rs2 = stmt2.executeQuery();
+            rs2.next();
+            String name = rs.getString(1);
+            Subfield subfield = new Subfield(id, name);
+            subfields.add(subfield);
+        }
+        return subfields;
+
     }
 }
