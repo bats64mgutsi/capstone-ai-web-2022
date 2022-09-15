@@ -7,13 +7,12 @@ import backend.DatabaseModels.Admin;
 public class AdminsTable extends SqlTable {
 
     public Admin getAdmin(String username, String hashedPassword) throws SQLException {
-        PreparedStatement stmt = db.prepareStatement("SELECT username, hashedPassword WHERE username = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT id WHERE username = ? AND hashedPassword = ?");
         stmt.setString(1, username);
+        stmt.setString(2, hashedPassword);
         ResultSet rs = stmt.executeQuery();
-        String Username = rs.getString(1);
-        String HashedPassword = rs.getString(2);
-
-        Admin admin = new Admin(Username, HashedPassword);
+        int id = rs.getInt(1);
+        Admin admin = new Admin(id, username, hashedPassword);
         return admin;
     }
 }
