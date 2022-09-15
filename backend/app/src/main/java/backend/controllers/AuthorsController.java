@@ -8,12 +8,12 @@ import backend.data.AuthorsTable;
 import java.sql.SQLException;
 import java.util.*;
 
-abstract public class AuthorsController {
-    public static List<Author> listAuthors() throws SQLException {
+public class AuthorsController {
+    public List<Author> listAuthors() throws SQLException {
         return AuthorsTable.getInstance().listAuthors();
     }
 
-    public static AuthorProfile getProfile(String authorId) throws SQLException {
+    public AuthorProfile getProfile(String authorId) throws SQLException {
         Author author = AuthorsTable.getInstance().getAuthor(authorId);
         List<String> subFields = AuthorsTable.getInstance().getAuthorSubfields(authorId);
         List<Publication> publications = AuthorsTable.getInstance().getAuthorPublications(authorId);

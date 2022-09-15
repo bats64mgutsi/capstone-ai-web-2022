@@ -19,6 +19,8 @@ public class App {
      * Main launches the server from the command line.
      */
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
+        LocatorSetup.setupLocator();
+
         final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
