@@ -12,8 +12,15 @@ import backend.services.GoogleScholarService;
 import backend.services.HashingService;
 import backend.services.UniqueIdService;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public abstract class LocatorSetup {
-    public static void setupLocator() {
+    public static void setupLocator() throws SQLException {
+        final Connection sqlCon = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root");
+        Locator.instance.registerSingleton(sqlCon);
+
         Locator.instance.registerSingleton(new AdminsTable());
         Locator.instance.registerSingleton(new AuthorsTable());
         Locator.instance.registerSingleton(new AuthorToSubfieldTable());

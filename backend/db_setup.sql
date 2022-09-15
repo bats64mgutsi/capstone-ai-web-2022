@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username, hashedPassword);
+CREATE DATABASE IF NOT EXISTS aiweb;
+USE aiweb;
+
+CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username varChar(255), hashedPassword varChar(255), PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authorToSubfieldsMap (authorId varChar(255), subfieldId varChar(255));
 CREATE TABLE IF NOT EXISTS contributions (publicationId varChar(255), contributorId varChar(255), type Enum("MainAuthor", "CoAuthor"));
@@ -33,3 +36,5 @@ INSERT INTO institutions (id, name, latitude, longitude) VALUES ("rhodes_univers
 INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sefako_makgatho_health_sciences_university", "Sefako Makgatho Health Sciences University", 0.000, 0.000);
 INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_mpumalanga", "University of Mpumalanga", 0.000, 0.000);
 INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sol_plaatje_university", "Sol Plaatje University", 0.000, 0.000);
+
+INSERT INTO admins (username, hashedPassword) VALUES ("admin", "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2");

@@ -7,7 +7,6 @@ import java.util.List;
 import backend.DatabaseModels.Institution;
 
 public class InstitutionsTable extends SqlTable {
-    
     public List<Institution> listAll() throws SQLException, SQLException {
         LinkedList<Institution> out = new LinkedList<>();
 
