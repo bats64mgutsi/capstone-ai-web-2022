@@ -15,4 +15,8 @@ export class BackendClient implements IBackendClient {
   async getAuthorProfile(authorId: string): Promise<AuthorProfile> {
     return await this.client.get<AuthorProfile>(`/author/${authorId}`);
   }
+
+  // async uploadNrfResearchers(data): Promise<Author[]> {
+  //   return await this.client.post<Author[]>(`/authors/`, { data });
+  // }
 }

@@ -123,8 +123,8 @@
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                            <button data-modal-toggle="large-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                            <button data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                            <button @click="handleSubmitEvent()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                            <button data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Close</button>
                         </div>
                     </div>
                 </div>
@@ -256,11 +256,16 @@ const parseUploadedFile = () => {
 const setHeaders = () => {
     if (content.value.length) {
         headers.value = content.value[0].includes('Surname') ? content.value[0] : content.value[1];
+        removeUnnecessaryHeaders();
     }
 }
 
 const formatContent = () => {
     removeHeadersFromContent();
+
+    removeUnnecessaryContent();
+
+    console.log('content.value[0]: ', content.value[0]);
 
     content.value.forEach((row) => {
         headers.value.forEach((header, index) => {
@@ -269,6 +274,16 @@ const formatContent = () => {
 
         row.unshift({ columnName: 'isSelected', columnValue: false });
     });
+}
+
+const removeUnnecessaryHeaders = () => {
+    headers.value = headers.value.filter((header) => !(['Rating Start', 'Rating End'].includes(header)));
+    console.log('headers.value: ', headers.value);
+}
+
+const removeUnnecessaryContent = () => {
+    content.value.forEach((value) => value.splice(5, 2));
+    console.log('content.value: ', content.value);
 }
 
 const applyFilters = (data, filters) => {
@@ -317,5 +332,56 @@ const handleSearchFileInput = () => {
 const handleSelectAll = (value) => {
     selectAll.value = !selectAll.value;
     console.log('Inside selectAll.value: ', selectAll.value);
+}
+
+const handleSubmitEvent = () => {
+    isProcessing.Value = true;
+    const data = getContentForBackend();
+    isProcessing.Value = false;
+}
+
+const getContentForBackend = () => {
+    const data = JSON.parse(JSON.stringify(content.value));
+    removeIsSelectedObjectValueFromRows(data);
+    formatResearchFieldValues(data);
+    convertRowsToObjects(data);
+    return data;
+}
+
+const convertRowsToObjects = (data) => {
+    data = data.map((row) => convertRowToObject(row));
+    console.log('data in convertRowsToObjects: ', data);
+}
+
+const convertRowToObject = (row) => {
+    let object = {};
+    row.forEach((value, index) => {
+        object = { ...object, [formatColumnName(headers.value[index])]: value.columnValue };
+    });
+
+    return object;
+}
+
+const formatColumnName = (columnName) => {
+    const columnNameSplit = columnName.split(' ');
+    columnNameSplit[0] = columnNameSplit[0].toLowerCase();
+    return columnNameSplit.join('');
+}
+
+const removeIsSelectedObjectValueFromRows = (data) => {
+    data.forEach((row) => row.splice(0, 1));
+    console.log('data: ', data);
+}
+
+const formatResearchFieldValues = (data) => {
+    data.forEach((row) => {
+        row.forEach((value) => {
+            if (['Primary Research Fields', 'Secondary Research Fields', 'Specialisations'].includes(value.columnName)) {
+                value.columnValue = value.columnValue.split('; ');
+            }
+        })
+    });
+
+    console.log('inside formatResearchFieldValues data: ', data);
 }
 </script>

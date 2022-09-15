@@ -12,3 +12,7 @@ export const refreshData = async () => {
         store.setCurrentlySelectedAuthorProfile(profile);
     }
 }
+
+// export const uploadNrfResearchers = async (data) => {
+//     await backendClient().uploadNrfResearchers(data);
+// }
