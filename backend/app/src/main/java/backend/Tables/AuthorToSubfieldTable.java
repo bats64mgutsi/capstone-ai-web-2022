@@ -11,7 +11,7 @@ public class AuthorToSubfieldTable extends SqlTable {
     public boolean insertAuthorToSubfield(AuthorToSubfield entry) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT into authorSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
+                "INSERT into authorToSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
         stmt.setString(1, entry.authorId);
         stmt.setString(2, entry.subfieldId);
         inserted = stmt.executeUpdate() > 0;
@@ -20,7 +20,7 @@ public class AuthorToSubfieldTable extends SqlTable {
     }
 
     public List<AuthorToSubfield> getAuthorSubfields(String authorId) throws SQLException {
-        PreparedStatement stmt = db.prepareStatement("SELECT subFieldId FROM authorSubfieldsMap WHERE authorId = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT subFieldId FROM authorToSubfieldsMap WHERE authorId = ?");
         List<Subfield> subfields = new ArrayList<>();
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
@@ -37,7 +37,7 @@ public class AuthorToSubfieldTable extends SqlTable {
     public boolean clearAll() throws SQLException {
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement(
-                "DELETE * FROM authorSubfieldsMap");
+                "DELETE FROM authorToSubfieldsMap");
 
         cleared = stmt.executeUpdate() > 0;
 

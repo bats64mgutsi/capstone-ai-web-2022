@@ -7,7 +7,7 @@ import java.io.IOException;
 public class HttpClient {
     public String fetchWebPage(String path) {
         try {
-            return Jsoup.connect("").get().html();
+            return Jsoup.connect(path).get().html();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

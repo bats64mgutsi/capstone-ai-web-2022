@@ -14,11 +14,13 @@ public abstract class BaseHttpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String outString = "";
+        int statusCode = 200;
         try {
             String requestBody = IOUtils.toString(exchange.getRequestBody());
             outString = getResponseAsString(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody);
         } catch (Exception e) {
             outString = e.toString();
+            statusCode = 500;
         }
 
         System.out.printf("On new request to %s %s\n", (CharSequence) exchange.getRequestMethod(), (CharSequence) exchange.getRequestURI().getPath());
@@ -28,7 +30,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         exchange.getResponseHeaders().add("Access-Control-Max-Age", "86400");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
-        exchange.sendResponseHeaders(200, outString.length());
+        exchange.sendResponseHeaders(statusCode, outString.getBytes().length);
 
         OutputStream out = exchange.getResponseBody();
         out.write(outString.getBytes());

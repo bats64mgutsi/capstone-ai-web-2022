@@ -14,7 +14,7 @@ import java.nio.file.InvalidPathException;
 import java.util.LinkedList;
 
 public class NrfListHttpHandler extends BaseHttpHandler {
-    final NrfListController nrfListController = (NrfListController) Locator.instance.get(NrfListHttpHandler.class);
+    final NrfListController nrfListController = (NrfListController) Locator.instance.get(NrfListController.class);
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance.get(AuthorizationController.class);
 
     @Override

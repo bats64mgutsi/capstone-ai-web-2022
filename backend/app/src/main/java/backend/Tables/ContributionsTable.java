@@ -9,19 +9,21 @@ import backend.DatabaseModels.Contribution.ContributionType;
 
 public class ContributionsTable extends SqlTable {
     public void setContribution(Contribution contribution) throws SQLException {
-        
-            PreparedStatement stmt = db.prepareStatement(
-                    "INSERT into contributions (publicationId, contributorId, type) VALUES (?, ?, ?)");
-                    stmt.setString(1, contribution.publicationId);
-                    stmt.setString(2, contribution.contributorId);
-                    if (contribution.type == ContributionType.MainAuthor)
-                        stmt.setString(3, "MainAuthor");
-                    else {stmt.setString(3, "CoAuthor");}
-            stmt.executeUpdate();
+        PreparedStatement stmt = db.prepareStatement(
+                "INSERT INTO contributions (publicationId, contributorId, type) VALUES (?, ?, ?)");
+        stmt.setString(1, contribution.publicationId);
+        stmt.setString(2, contribution.contributorId);
+
+        if (contribution.type == ContributionType.MainAuthor) {
+            stmt.setString(3, "MainAuthor");
+        } else {
+            stmt.setString(3, "CoAuthor");
         }
+        stmt.executeUpdate();
+    }
 
     public List<Contribution> listForAuthor(String authorId) throws SQLException{
-        PreparedStatement stmt = db.prepareStatement("SELECT publicationId, contributorId, contributionType FROM contributions WHERE contributorId = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT publicationId, contributorId, type FROM contributions WHERE contributorId = ?");
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
         List<Contribution> contributions = new ArrayList<>(); 
@@ -38,7 +40,7 @@ public class ContributionsTable extends SqlTable {
     public boolean clearAll()throws SQLException{
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement(
-                "DELETE * FROM contributions");
+                "DELETE FROM contributions");
         
         cleared = stmt.executeUpdate() > 0;
        

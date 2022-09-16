@@ -9,7 +9,7 @@ public class PublicationsTable extends SqlTable {
     public boolean insertPublication(Publication publication) throws SQLException{
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT into publications (id, title, citationCount, externalLink, year) VALUES (?, ?, ?, ?, ?");
+                "INSERT INTO publications (id, title, citationCount, externalLink, year) VALUES (?, ?, ?, ?, ?)");
         stmt.setString(1, publication.id);
         stmt.setString(2, publication.title);
         stmt.setInt(3, publication.citationCount);
@@ -31,9 +31,10 @@ public class PublicationsTable extends SqlTable {
     }
 
     public Publication getItemWithId(String publicationId) throws SQLException{
-        PreparedStatement stmt = db.prepareStatement("SELECT ID, title, citationCount, externalLink, publicationDate WHERE ID = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT id, title, citationCount, externalLink, year FROM publications WHERE id = ?");
         stmt.setString(1, publicationId);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         String id = rs.getString(1);
         String title = rs.getString(2);
         int citationCount = rs.getInt(3);
@@ -45,7 +46,7 @@ public class PublicationsTable extends SqlTable {
 
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
-        PreparedStatement stmt = db.prepareStatement("DELETE * FROM publications");
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM publications");
         deleted = stmt.executeUpdate() > 0;
         return deleted;
     }

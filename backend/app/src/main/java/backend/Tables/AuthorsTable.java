@@ -13,7 +13,7 @@ public class AuthorsTable extends SqlTable {
     public boolean insertAuthor(Author author) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT into authors (id, surname, initials, title, institution, rating) VALUES (?, ?, ?, ?, ?, ?");
+                "INSERT INTO authors (id, surname, initials, title, institution, rating) VALUES (?, ?, ?, ?, ?, ?)");
         stmt.setString(1, author.id);
         stmt.setString(2, author.surname);
         stmt.setString(3, author.initials);
@@ -69,16 +69,17 @@ public class AuthorsTable extends SqlTable {
 
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
-        PreparedStatement stmt = db.prepareStatement("DELETE * FROM authors");
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM authors");
         deleted = stmt.executeUpdate() > 0;
         return deleted;
     }
 
     public Author get(String authorId) throws SQLException {
         PreparedStatement stmt = db
-                .prepareStatement("SELECT id, surname, initials, title, institution, rating WHERE authorId = ?");
+                .prepareStatement("SELECT id, surname, initials, title, institution, rating FROM authors WHERE id = ?");
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         String id = rs.getString(1);
         String surname = rs.getString(2);
         String initials = rs.getString(3);
