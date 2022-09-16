@@ -14,9 +14,12 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class NrfListController {
+    final Logger logger = Logger.getLogger(NrfListController.class.getName());
     final HashingService hashingService = (HashingService) Locator.instance.get(HashingService.class);
     final GoogleScholarService googleScholarService = (GoogleScholarService) Locator.instance.get(GoogleScholarService.class);
     final UniqueIdService uniqueIdService = (UniqueIdService) Locator.instance.get(UniqueIdService.class);
@@ -35,6 +38,8 @@ public class NrfListController {
             insertAuthor(nrfAuthor, authorId);
             insertAuthorPublications(nrfAuthor, authorId);
             insertAuthorSubfields(nrfAuthor, authorId, allSubFields);
+
+            logger.log(Level.INFO, String.format("Flushed author %s %s", nrfAuthor.initials, nrfAuthor.surname));
         }
 
         insertAllSubfields(allSubFields);
