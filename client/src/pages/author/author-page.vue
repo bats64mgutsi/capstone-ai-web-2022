@@ -380,16 +380,21 @@ const handleSelectAll = (value) => {
 }
 
 const handleSubmitEvent = async () => {
-    isProcessing.Value = true;
-    const data = getContentForBackend();
-    await uploadNrfResearchers({
-        day: day.value,
-        month:  month.value,
-        year: year.value,
-        data
-    });
-    resetFileUploadingData();
-    isProcessing.Value = false;
+    try {
+        isProcessing.Value = true;
+        const data = getContentForBackend();
+        await uploadNrfResearchers({
+            day: day.value,
+            month:  month.value,
+            year: year.value,
+            data
+        });
+        resetFileUploadingData();
+        isProcessing.Value = false;
+    }
+    catch (e) {
+        console.log(e);
+    }
 }
 
 const resetFileUploadingData = () => {
