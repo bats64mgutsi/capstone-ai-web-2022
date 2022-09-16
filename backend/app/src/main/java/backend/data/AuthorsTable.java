@@ -1,8 +1,7 @@
 package backend.data;
 
-import backend.models.Author;
-import backend.models.AuthorProfile;
-import backend.models.Publication;
+import backend.DatabaseModels.Author;
+import backend.DatabaseModels.Publication;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class AuthorsTable {
             String title = rs.getString(3);
             String institution = rs.getString(4);
             String rating = rs.getString(5);
-            Author author = new Author(surname, initials, title, institution, rating);
+            Author author = new Author("Id", surname, initials, title, institution, rating);
             out.add(author);
         }
 
@@ -57,7 +56,7 @@ public class AuthorsTable {
         String institution = rs.getString(4);
         String rating = rs.getString(5);
 
-        Author author = new Author(id, surname, initials, title, institution, rating);
+        Author author = new Author(authorId, surname, initials, title, institution, rating);
         return author;
     }
 
@@ -72,7 +71,7 @@ public class AuthorsTable {
             int numberOfCitations = rs.getInt(3);
             String externalLink = rs.getString(4);
             String year = rs.getString(5);
-            Publication publication = new Publication(numberOfCitations, title, year, externalLink);
+            Publication publication = new Publication("id", numberOfCitations, title, year, externalLink);
             publications.add(publication);
         }
 
@@ -103,7 +102,7 @@ public class AuthorsTable {
 
     public void insertAuthor(Author author) throws SQLException{
         PreparedStatement stmt = sqlConection.prepareStatement("INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES (?, ?, ?, ?, ?");
-        stmt.setString(1, )
+//        stmt.setString(1, )
 
     }
     

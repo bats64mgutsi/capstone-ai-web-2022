@@ -1,0 +1,41 @@
+[
+    {
+        "surname": "Bagula",
+        "initials": "BA",
+        "title": "Prof",
+        "institution": "Univerisity of the Western Cape",
+        "rating": "C",
+        "primaryResearchFields": [
+            "Artificial Intelligence",
+            "Machine Learning"
+        ],
+        "secondaryResearchFields": [
+            "Deep Learning",
+            "Machine Vission"
+        ],
+        "specialisations": [
+            "Speech Processing",
+            "Artificial Neural Networks"
+        ]
+    },
+
+    {
+        "surname": "Daramola",
+        "initials": "JO",
+        "title": "Prof",
+        "institution": "Cape Peninsula University of Technology",
+        "rating": "C",
+        "primaryResearchFields": [
+            "Artificial Intelligence",
+            "Applied Artificial Intelligence"
+        ],
+        "secondaryResearchFields": [
+            "Deep Learning",
+            "Machine Vision"
+        ],
+        "specialisations": [
+            "Speech Processing",
+            "Artificial Neural Networks"
+        ]
+    }
+]

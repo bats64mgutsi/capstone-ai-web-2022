@@ -1,24 +1,40 @@
 package backend.controllers;
 
-import backend.DatabaseModels.Author;
-import backend.DatabaseModels.AuthorProfile;
-import backend.DatabaseModels.Publication;
-import backend.data.AuthorsTable;
+import backend.DatabaseModels.*;
+import backend.Locator;
+import backend.Tables.*;
 
 import java.sql.SQLException;
 import java.util.*;
 
-abstract public class AuthorsController {
-    public static List<Author> listAuthors() throws SQLException {
-        return AuthorsTable.getInstance().listAuthors();
+public class AuthorsController {
+    final AuthorsTable authorsTable = (AuthorsTable) Locator.instance.get(AuthorsTable.class);
+    final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
+    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance.get(AuthorToSubfieldTable.class);
+    final SubfieldsTable subfieldsTable = (SubfieldsTable) Locator.instance.get(SubfieldsTable.class);
+    final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
+
+    public List<Author> listAuthors() throws SQLException {
+        return authorsTable.listAll();
     }
 
-    public static AuthorProfile getProfile(String authorId) throws SQLException {
-        Author author = AuthorsTable.getInstance().getAuthor(authorId);
-        List<String> subFields = AuthorsTable.getInstance().getAuthorSubfields(authorId);
-        List<Publication> publications = AuthorsTable.getInstance().getAuthorPublications(authorId);
+    public AuthorProfile getProfile(String authorId) throws SQLException {
+        final Author author = authorsTable.get(authorId);
 
-        AuthorProfile authorProfile = new AuthorProfile(author, subFields, publications);
-        return authorProfile;
+        final List<Contribution> authorContributions = contributionsTable.listForAuthor(authorId);
+        final List<Publication> publications = new LinkedList<>();
+        for (final Contribution contribution : authorContributions) {
+            final Publication publication = publicationsTable.getItemWithId(contribution.publicationId);
+            publications.add(publication);
+        }
+
+        final List<AuthorToSubfield> authorToSubfields = authorToSubfieldTable.getAuthorSubfields(authorId);
+        final List<String> subfields = new LinkedList<>();
+        for (final AuthorToSubfield authorToSubfield : authorToSubfields) {
+            final Subfield subfield = subfieldsTable.getSubfield(authorToSubfield.subfieldId);
+            subfields.add(subfield.name);
+        }
+
+        return new AuthorProfile(author, subfields, publications);
     }
 }

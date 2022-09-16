@@ -1,11 +1,9 @@
 package backend.Tables;
 
+import backend.Locator;
+
 import java.sql.Connection;
 
-public class SqlTable {
-    Connection db;
-
-    public SqlTable(Connection db) {
-        this.db = db;
-    }
+public abstract class SqlTable {
+    final Connection db = (Connection) Locator.instance.get(Connection.class);
 }
