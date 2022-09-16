@@ -40,3 +40,20 @@ export interface LoginResult {
     user: User;
     token: string;
 }
+
+export interface NrfResearcher {
+    surname: string;
+    initials: string;
+    title: string;
+    rating: string;
+    primaryResearchFields: string[];
+    secondaryResearchFields: string[];
+    specialisations: string[];
+}
+
+export interface UploadNrfResearchersArgs {
+    day: number;
+    month: number;
+    year: number;
+    data: NrfResearcher[]
+}

@@ -190,6 +190,9 @@ const searchedContent = ref<Array>([]);
 const submittableContent = ref<Array>([]);
 const pageContent = ref<Array>([]);
 const page = ref<Number>(1);
+const day = ref<Number>(0);
+const month = ref<Number>(0);
+const year = ref<Number>(0);
 const headers = ref<Array>([]);
 const isProcessing = ref<Boolean>(false);
 const searchFileInput = ref<String>('');
@@ -242,6 +245,7 @@ const parseUploadedFile = () => {
     readXlsxFile(uploadedFile.value).then((rows) => {
         content.value = rows;
 
+        setDayMonthAndYear();
         setHeaders();
         formatContent();
         applyFilters(content, filters);
@@ -257,6 +261,51 @@ const setHeaders = () => {
     if (content.value.length) {
         headers.value = content.value[0].includes('Surname') ? content.value[0] : content.value[1];
         removeUnnecessaryHeaders();
+    }
+}
+
+const setDayMonthAndYear = () => {
+    if (content.value[0][0].includes('Updated')) {
+        const data = content.value[0][0].split(' ');
+        data.splice(0, 1);
+        day.value = parseInt(data[0]);
+        month.value = getMonthNumber(data[1]);
+        year.value = parseInt(data[2]);
+        console.log('Inside setYearAndMonth, day: ', day.value);
+        console.log('Inside setYearAndMonth, month: ', month.value);
+        console.log('Inside setYearAndMonth, year: ', year.value);
+    }
+}
+
+const getMonthNumber = (month) => {
+    month = month.toLowerCase().trim().substring(0, 3);
+    switch (month) {
+        case 'jan':
+            return 1;
+        case 'feb':
+            return 1;
+        case 'mar':
+            return 3;
+        case 'apr':
+            return 4;
+        case 'may':
+            return 5;
+        case 'jun':
+            return 6;
+        case 'jul':
+            return 7;
+        case 'aug':
+            return 8;
+        case 'sep':
+            return 9;
+        case 'oct':
+            return 11;
+        case 'nov':
+            return 1;
+        case 'dec':
+            return 12;
+        default:
+            return 0;
     }
 }
 
@@ -311,10 +360,6 @@ const setPageContent = () => {
     pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), ((page.value - 1) * 10) + 10);
 }
 
-const getPaginationNumbers = () => {
-
-}
-
 const handleSearchFileInput = () => {
     console.log('searchFileInput: ', searchFileInput.value);
     isProcessing.value = true;
@@ -334,10 +379,32 @@ const handleSelectAll = (value) => {
     console.log('Inside selectAll.value: ', selectAll.value);
 }
 
-const handleSubmitEvent = () => {
+const handleSubmitEvent = async () => {
     isProcessing.Value = true;
     const data = getContentForBackend();
+    await uploadNrfResearchers({
+        day: day.value,
+        month:  month.value,
+        year: year.value,
+        data
+    });
+    resetFileUploadingData();
     isProcessing.Value = false;
+}
+
+const resetFileUploadingData = () => {
+    uploadedFile.value = ref<Object>();
+    content.value = ref<Array>([]);
+    searchedContent = ref<Array>([]);
+    submittableContent = ref<Array>([]);
+    pageContent = ref<Array>([]);
+    page.value = ref<Number>(1);
+    day.value = ref<Number>(0);
+    month.value = ref<Number>(0);
+    year.value = ref<Number>(0);
+    headers.value = ref<Array>([]);
+    isProcessing.value = ref<Boolean>(false);
+    searchFileInput.value = ref<String>('');
 }
 
 const getContentForBackend = () => {

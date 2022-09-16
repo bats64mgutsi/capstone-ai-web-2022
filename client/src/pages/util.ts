@@ -1,5 +1,6 @@
 import store from "../store";
 import { backendClient } from "../api";
+import { UploadNrfResearchersArgs } from "../core";
 
 export const refreshData = async () => {
     if (!store.authors.value.length) {
@@ -13,6 +14,6 @@ export const refreshData = async () => {
     }
 }
 
-// export const uploadNrfResearchers = async (data) => {
-//     await backendClient().uploadNrfResearchers(data);
-// }
+export const uploadNrfResearchers = async (data: UploadNrfResearchersArgs) => {
+    await backendClient().uploadNrfResearchers(data);
+}

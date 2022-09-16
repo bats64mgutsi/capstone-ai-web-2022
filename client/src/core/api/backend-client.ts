@@ -1,4 +1,4 @@
-import { Author, AuthorProfile } from "../types";
+import { Author, AuthorProfile, UploadNrfResearchersArgs, NrfResearcher } from "../types";
 import { IHttpClient, IBackendClient } from "./types";
 
 export class BackendClient implements IBackendClient {
@@ -16,7 +16,13 @@ export class BackendClient implements IBackendClient {
     return await this.client.get<AuthorProfile>(`/author/${authorId}`);
   }
 
-  // async uploadNrfResearchers(data): Promise<Author[]> {
-  //   return await this.client.post<Author[]>(`/authors/`, { data });
-  // }
+  async uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]> {
+    return await this.client.post<NrfResearcher[], NrfResearcher[]>(
+      `/nrfList/`, 
+      args.data, 
+      {
+        
+      }
+    );
+  }
 }
