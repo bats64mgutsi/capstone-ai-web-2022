@@ -37,16 +37,7 @@ import store from "../../store";
 import { refreshData } from "../util";
 import { useRouter } from "vue-router";
 
-const data = ref<Array>([]);
-
-onMounted(async () => {
-  try {
-    data.value = JSON.parse(localStorage.getItem('AI Reseacrhers'));
-    console.log('Data retrieved: ', data.value);
-  } catch (e) {
-    console.log("Error: ", e);
-  }
-});
+onMounted(async () => {});
 
 const options = {
   chart: {

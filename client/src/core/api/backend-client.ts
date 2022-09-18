@@ -1,4 +1,4 @@
-import { Author, AuthorProfile, UploadNrfResearchersArgs, NrfResearcher } from "../types";
+import { Author, AuthorProfile, UploadNrfResearchersArgs, NrfResearcher, AdminLoginArgs, LoginResult } from "../types";
 import { IHttpClient, IBackendClient } from "./types";
 
 export class BackendClient implements IBackendClient {
@@ -24,5 +24,9 @@ export class BackendClient implements IBackendClient {
         
       }
     );
+  }
+
+  async login(args: AdminLoginArgs): Promise<LoginResult> {
+    return await this.client.post<AdminLoginArgs, LoginResult>("/admin/login", args);
   }
 }

@@ -57,3 +57,18 @@ export interface UploadNrfResearchersArgs {
     year: number;
     data: NrfResearcher[]
 }
+
+export interface AppMessage {
+    type: string;
+    message: string;
+}
+
+export interface AdminLoginArgs {
+    username: string;
+    password: string;
+}
+
+export interface LoginResult {
+    user: User;
+    token: string;
+}

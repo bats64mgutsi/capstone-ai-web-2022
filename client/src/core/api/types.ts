@@ -1,4 +1,4 @@
-import { Author, AuthorProfile, NrfResearcher, UploadNrfResearchersArgs } from "../types";
+import { Author, AuthorProfile, NrfResearcher, UploadNrfResearchersArgs, AdminLoginArgs, LoginResult } from "../types";
 
 export interface IHttpClient {
     baseUrl: string;
@@ -37,4 +37,5 @@ export interface IBackendClient {
     getAuthors(): Promise<Author[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
     uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]>;
+    login(args: AdminLoginArgs): Promise<LoginResult>;
 }

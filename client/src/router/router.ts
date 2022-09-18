@@ -6,6 +6,7 @@ import SubfieldPage from "../pages/subfield/subfield-page.vue";
 import CommunityPage from "../pages/community/community-page.vue";
 import ImpactPage from "../pages/impact/impact-page.vue";
 import ProfilePage from "../pages/profile/profile-page.vue";
+import LoginPage from "../pages/auth/login-page.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -48,6 +49,16 @@ const routes: Array<RouteRecordRaw> = [
         name: "impact",
         component: ImpactPage
     },
+    {
+        path: "/admin/auth/login",
+        name: "login",
+        component: LoginPage
+    },
+    {
+        path: "/admin/authors",
+        name: "authors",
+        component: AuthorPage
+    }
 
 ];
 
