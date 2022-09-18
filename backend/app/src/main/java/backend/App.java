@@ -3,7 +3,9 @@
  */
 package backend;
 
+import backend.http.AuthorizationHttpHandler;
 import backend.http.AuthorsHttpHandler;
+import backend.http.NrfListHttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -11,19 +13,20 @@ import java.net.InetSocketAddress;
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.logging.Logger;
 
 public class App {
-    private static final Logger logger = Logger.getLogger(App.class.getName());
-
     /**
      * Main launches the server from the command line.
      */
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
+        LocatorSetup.setupLocator();
+
         final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
         server.createContext("/author", new AuthorsHttpHandler());
+        server.createContext("/nrfList", new NrfListHttpHandler());
+        server.createContext("/validate", new AuthorizationHttpHandler());
         server.setExecutor(threadPoolExecutor);
         System.out.println("Server started at http://localhost:8001");
         server.start();

@@ -1,6 +1,6 @@
 package backend.DatabaseModels;
 
-public class Contribution {
+public class  Contribution {
     public String publicationId;
     public String contributorId;
     public ContributionType type;

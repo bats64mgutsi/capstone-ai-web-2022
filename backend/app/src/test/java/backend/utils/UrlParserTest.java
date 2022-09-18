@@ -1,6 +1,5 @@
-package utils;
+package backend.utils;
 
-import backend.utils.UrlParser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

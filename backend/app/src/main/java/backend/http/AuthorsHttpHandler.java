@@ -2,36 +2,32 @@ package backend.http;
 
 import backend.DatabaseModels.Author;
 import backend.DatabaseModels.AuthorProfile;
+import backend.Locator;
 import backend.controllers.AuthorsController;
-import backend.data.AuthorsTable;
 
 import com.google.gson.Gson;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.Headers;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.file.InvalidPathException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AuthorsHttpHandler extends BaseHttpHandler {
-    @Override
-    public String getResponseAsString(String[] pathValues) {
-        try {
-            if(pathValues[1].equals("authors")) {
-                final List<Author> authors = new LinkedList<>();
-                authors.addAll(AuthorsController.listAuthors());
-                return new Gson().toJson(authors);
-            } else if (pathValues[1].equals("author")) {
-                final String authorId = pathValues[2];
-                final AuthorProfile authorProfile = AuthorsController.getProfile(authorId);
-                return new Gson().toJson(authorProfile);
-            }
-        } catch (SQLException e) {
-            return e.toString();
-        }
+    final AuthorsController authorsController = (AuthorsController) Locator.instance.get(AuthorsController.class);
 
-        return "Unknown path in authors";
+    @Override
+    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
+        if(pathValues[1].equals("authors")) {
+            final List<Author> authors = new LinkedList<>();
+            authors.addAll(authorsController.listAuthors());
+            return new Gson().toJson(authors);
+        } else if (pathValues[1].equals("author")) {
+            final String authorId = pathValues[2];
+            final AuthorProfile authorProfile = authorsController.getProfile(authorId);
+            return new Gson().toJson(authorProfile);
+        } else {
+            throw new InvalidPathException(pathValues[1], "No such path in AuthorsHttpHandler", -1);
+        }
     }
 }
