@@ -1,40 +1,40 @@
-CREATE TABLE IF NOT EXISTS authors (Surname varChar(255) NOT NULL, Initials varChar(255), Title varChar(255), Institution varChar(255), Rating Char, PRIMARY KEY(Surname));
-INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES ("Aharonson", "V", "Prof", "University of the Witwatersrand", "C" );
-INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES ("Aldrich", "C", "Prof", "Stellenbosch University", "B" );
-INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES ("Atemkeng Teufack", "M", "Dr", "Rhodes University", "Y" );
-INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES ("Bagula", "BA", "Prof", "University of the Western Cape", "C" );
-INSERT INTO authors (Surname, Initials, Title, Institution, Rating) VALUES ("Daramola", "JO", "Prof", "Cape Peninsula University of Technology", "C" );
+CREATE DATABASE IF NOT EXISTS aiweb;
+USE aiweb;
 
-CREATE TABLE IF NOT EXISTS subFields (ID int AUTO_INCREMENT, subField varChar(255), PRIMARY KEY(ID));
-INSERT INTO subFields (subField) VALUES ("Applied Artificial Intelligence");
-INSERT INTO subFields (subField) VALUES ("Machine Learning");
-INSERT INTO subFields (subField) VALUES ("Speech Processing");
-INSERT INTO subFields (subField) VALUES ("Artificial neural networks");
-INSERT INTO subFields (subField) VALUES ("Machine Vision");
-INSERT INTO subFields (subField) VALUES ("Deep learning");
-INSERT INTO subFields (subField) VALUES ("Artificial Intelligence");
+CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username varChar(255), hashedPassword varChar(255), PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS authorToSubfieldsMap (authorId varChar(255), subfieldId varChar(255));
+CREATE TABLE IF NOT EXISTS contributions (publicationId varChar(255), contributorId varChar(255), type Enum("MainAuthor", "CoAuthor"));
+CREATE TABLE IF NOT EXISTS institutions (id varChar(255), name varChar(255), latitude Decimal(8, 8), longitude Decimal(8, 8));
+CREATE TABLE IF NOT EXISTS publications (id varChar(255), title varChar(255), citationCount int, externalLink varChar(500), year varChar(255));
+CREATE TABLE IF NOT EXISTS subFields (id varChar(255), name varChar(255));
 
-CREATE TABLE IF NOT EXISTS authorSubfieldsMap (authorID varChar(255), subFieldID int);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Daramola", 1);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Bagula", 7);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Atemkeng Teufack", 7 );
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Atemkeng Teufack", 2 );
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Atemkeng Teufack", 6 );
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aldrich", 2);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aldrich", 4);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aldrich", 5);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 2);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 3);
-INSERT INTO authorSubfieldsMap (authorID, subFieldID) VALUES ("Aharonson", 1);
+-- Populate institutions table
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_south_africa", "University of South Africa", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("north-west_university", "North-West University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_pretoria", "University of Pretoria", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("tshwane_university_of_technology", "Tshwane University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_johannesburg", "University of Johannesburg", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_kwaZulu-Natal", "University of KwaZulu-Natal", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_free_state", "University of the Free State", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("cape_peninsula_university_of_technology", "Cape Peninsula University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_witwatersrand", "University of the Witwatersrand", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_stellenbosch", "University of Stellenbosch", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_cape_town", "University of Cape Town", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("nelson_mandela_metropolitan_university", "Nelson Mandela Metropolitan University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("walter_sisulu_university", "Walter Sisulu University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("durban_university_of_technology", "Durban University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_limpopo", "University of Limpopo", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("vaal_university_of_technology", "Vaal University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_zululand", "University of Zululand", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_the_western_cape", "University of the Western Cape", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("central_university_of_technology", "Central University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_fort_hare", "University of Fort Hare", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_venda", "University of Venda", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("mangosuthu_university_of_technology", "Mangosuthu University of Technology", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("rhodes_university", "Rhodes University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sefako_makgatho_health_sciences_university", "Sefako Makgatho Health Sciences University", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_mpumalanga", "University of Mpumalanga", 0.000, 0.000);
+INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sol_plaatje_university", "Sol Plaatje University", 0.000, 0.000);
 
-
-CREATE TABLE IF NOT EXISTS publications (ID varChar(255), title varChar(255), citationCount int, externalLink varChar(500), publicationDate varChar(255));
-INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Aharonson", "The automatic recognition of emotions in speech", 71, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:3fE2CSJIrl8C", "2011");
-INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Aldrich", "ANN-DT: an algorithm for extraction of decision trees from artificial neural networks", 176, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=iLJjvVYAAAAJ&citation_for_view=iLJjvVYAAAAJ:d1gkVwhDpl0C", "1999");
-INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Atemkeng Teufack", "NenUFAR: Instrument description and science case", 35, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=kO4LdnkAAAAJ&citation_for_view=kO4LdnkAAAAJ:YsMSGLbcyi4C", "2015");
-INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Bagula", "Online traffic engineering: the least interference optimization algorithm", 76, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7RjFNjIAAAAJ&citation_for_view=7RjFNjIAAAAJ:ZHo1McVdvXMC", "2004");
-INSERT INTO publications (ID, title, citationCount, externalLink, publicationDate) VALUES ("Daramola", "Pattern-based security requirements specification using ontologies and boilerplates", 37, "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=B2uyXAUAAAAJ&citation_for_view=B2uyXAUAAAAJ:YOwf2qJgpHMC", "2012");
-
-CREATE TABLE IF NOT EXISTS institutions (ID int AUTO_INCREMENT, institutionName varChar(255), latitute int, longitute int, PRIMARY KEY(ID));
-
-
+INSERT INTO admins (username, hashedPassword) VALUES ("admin", "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2");
