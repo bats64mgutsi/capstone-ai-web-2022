@@ -1,6 +1,8 @@
 package backend.services;
 
+import backend.ApplicationModels.GoogleScholarAuthorProfile;
 import backend.ApplicationModels.GoogleScholarPublication;
+import backend.ApplicationModels.NrfAuthor;
 import backend.DatabaseModels.Publication;
 import backend.Locator;
 import backend.httpClient.HttpClient;
@@ -12,13 +14,13 @@ import org.junit.Test;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class GoogleScholarServiceTest {
-
     String scholarAuthorSearch;
     String scholarAuthorProfile;
 
@@ -42,15 +44,44 @@ public class GoogleScholarServiceTest {
         when(mockedHttpClient.fetchWebPage("https://scholar.google.com/citations?user=MlXzlYQAAAAJ&hl=en&oi=sra")).thenReturn(scholarAuthorProfile);
 
         final List<GoogleScholarPublication> extractedPublications = new GoogleScholarService().listPublications("V", "Aharonson", "University of the Witwatesrand");
-        final List<GoogleScholarPublication> expectedListContains = new ImmutableList.Builder<GoogleScholarPublication>()
-                .add(new GoogleScholarPublication(new Publication("", 241, "The relevance of feature type for the automatic classification of emotional user states: low level descriptors and functionals", "2007", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:zYLM7Y9cAGgC"), new ImmutableList.Builder<String>().build()))
-                .add(new GoogleScholarPublication(new Publication("", 50, "Patterns, prototypes, performance: classifying emotional user states", "2008", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:Tyk-4Ss8FVUC"), new ImmutableList.Builder<String>().build()))
-                .add(new GoogleScholarPublication(new Publication("", 18, "The response of peripheral microcirculation to gravity-induced changes", "2018", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:NaGl4SEjCO4C"), new ImmutableList.Builder<String>().build()))
-                .build();
+        final List<GoogleScholarPublication> expectedListContains = new ImmutableList.Builder<GoogleScholarPublication>().add(new GoogleScholarPublication(new Publication("", 241, "The relevance of feature type for the automatic classification of emotional user states: low level descriptors and functionals", "2007", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:zYLM7Y9cAGgC"), new ImmutableList.Builder<String>().build())).add(new GoogleScholarPublication(new Publication("", 50, "Patterns, prototypes, performance: classifying emotional user states", "2008", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:Tyk-4Ss8FVUC"), new ImmutableList.Builder<String>().build())).add(new GoogleScholarPublication(new Publication("", 18, "The response of peripheral microcirculation to gravity-induced changes", "2018", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:NaGl4SEjCO4C"), new ImmutableList.Builder<String>().build())).build();
 
         assertEquals(20, extractedPublications.size());
         assertEquals(expectedListContains.get(0), extractedPublications.get(0));
         assertEquals(expectedListContains.get(1), extractedPublications.get(8));
         assertEquals(expectedListContains.get(2), extractedPublications.get(19));
+    }
+
+    @Test
+    public void fetchProfiles_shouldReturnAllAuthorsProfiles() {
+        final List<String> emptyStringList = new LinkedList<>();
+        final NrfAuthor testAuthor = new NrfAuthor("", "Aharonson", "V", "", "University of the Witwatesrand", "", emptyStringList, emptyStringList, emptyStringList);
+        final List<NrfAuthor> authors = new ImmutableList.Builder<NrfAuthor>().add(testAuthor).add(testAuthor).build();
+
+        final HttpClient mockedHttpClient = mock(HttpClient.class);
+        Locator.instance.registerSingleton(mockedHttpClient);
+
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=V+Aharonson+University+of+the+Witwatesrand&btnG")).thenReturn(scholarAuthorSearch);
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/citations?user=MlXzlYQAAAAJ&hl=en&oi=sra")).thenReturn(scholarAuthorProfile);
+
+        final List<String> expectedSubfieldsList = new ImmutableList.Builder<String>().add("Medical Engineering", "Signal Processing").build();
+        final List<GoogleScholarPublication> expectedPublicationsListContains = new ImmutableList.Builder<GoogleScholarPublication>().add(new GoogleScholarPublication(new Publication("", 241, "The relevance of feature type for the automatic classification of emotional user states: low level descriptors and functionals", "2007", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:zYLM7Y9cAGgC"), new ImmutableList.Builder<String>().build())).add(new GoogleScholarPublication(new Publication("", 50, "Patterns, prototypes, performance: classifying emotional user states", "2008", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:Tyk-4Ss8FVUC"), new ImmutableList.Builder<String>().build())).add(new GoogleScholarPublication(new Publication("", 18, "The response of peripheral microcirculation to gravity-induced changes", "2018", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&citation_for_view=MlXzlYQAAAAJ:NaGl4SEjCO4C"), new ImmutableList.Builder<String>().build())).build();
+
+        final List<GoogleScholarAuthorProfile> profiles = new GoogleScholarService().fetchProfiles(authors);
+
+        assertEquals(2, profiles.size());
+
+        assertEquals(expectedSubfieldsList, profiles.get(0).subFields);
+        assertEquals(expectedSubfieldsList, profiles.get(1).subFields);
+
+        assertEquals(20, profiles.get(0).publications.size());
+        assertEquals(expectedPublicationsListContains.get(0), profiles.get(0).publications.get(0));
+        assertEquals(expectedPublicationsListContains.get(1), profiles.get(0).publications.get(8));
+        assertEquals(expectedPublicationsListContains.get(2), profiles.get(0).publications.get(19));
+
+        assertEquals(20, profiles.get(1).publications.size());
+        assertEquals(expectedPublicationsListContains.get(0), profiles.get(1).publications.get(0));
+        assertEquals(expectedPublicationsListContains.get(1), profiles.get(1).publications.get(8));
+        assertEquals(expectedPublicationsListContains.get(2), profiles.get(1).publications.get(19));
     }
 }

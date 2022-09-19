@@ -1,9 +1,12 @@
 package backend.services;
 
+import backend.ApplicationModels.GoogleScholarAuthorProfile;
 import backend.ApplicationModels.GoogleScholarPublication;
+import backend.ApplicationModels.NrfAuthor;
 import backend.DatabaseModels.Publication;
 import backend.Locator;
 import backend.httpClient.HttpClient;
+import com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,8 +37,43 @@ public class GoogleScholarService {
      * @param institution    the institution of the author as found in teh NRF list.
      * @return all the publications of the author.
      */
-    public List<GoogleScholarPublication> listPublications(String authorInitials, String authorSurname, String institution) {
-        final String q = String.format("%s %s %s", authorInitials, authorSurname, institution).replaceAll(" ", "+");
+    @Deprecated public List<GoogleScholarPublication> listPublications(String authorInitials, String authorSurname, String institution) {
+        final NrfAuthor author = new NrfAuthor("", authorSurname, authorInitials, "", institution, "", null, null, null);
+        final Document authorProfileDoc = getAuthorProfileDoc(author);
+        final Elements publicationElements = authorProfileDoc.getElementById("gsc_a_b").children();
+        final List<GoogleScholarPublication> out = new LinkedList<>();
+        for (final Element tr : publicationElements) {
+            final Element titleElement = tr.children().first().children().first();
+            final Element citationsElement = tr.child(1);
+            final Element yearElement = tr.children().last().children().first();
+
+            out.add(new GoogleScholarPublication(new Publication("", Integer.valueOf(citationsElement.text()), titleElement.text(), yearElement.text(), "https://scholar.google.com" + titleElement.attr("href")), new LinkedList<>()));
+        }
+
+        return out;
+    }
+
+    /**
+     * Crawls Google Scholar for the given authors profiles.
+     * @param authors
+     * @return
+     */
+    public List<GoogleScholarAuthorProfile> fetchProfiles(List<NrfAuthor> authors) {
+        final List<GoogleScholarAuthorProfile> out = new LinkedList<>();
+        for(final NrfAuthor author: authors) {
+            final Document authorProfileDoc = getAuthorProfileDoc(author);
+            final List<GoogleScholarPublication> publications = listPublications(authorProfileDoc);
+            final List<String> subfields = listSubFields(authorProfileDoc);
+
+            final GoogleScholarAuthorProfile profile = new GoogleScholarAuthorProfile(subfields, publications);
+            out.add(profile);
+        }
+
+        return out;
+    }
+
+    private Document getAuthorProfileDoc(NrfAuthor author) {
+        final String q = String.format("%s %s %s", author.initials, author.surname, author.institution).replaceAll(" ", "+");
         final String searchPath = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" + q + "&btnG";
 
         final Document doc = Jsoup.parse(client.fetchWebPage(searchPath));
@@ -50,8 +88,10 @@ public class GoogleScholarService {
         }
 
         final String fullAuthorProfileLink = "https://scholar.google.com" + authorProfileLink;
-        final Document authorProfileDoc = Jsoup.parse(client.fetchWebPage(fullAuthorProfileLink));
+        return Jsoup.parse(client.fetchWebPage(fullAuthorProfileLink));
+    }
 
+    private List<GoogleScholarPublication> listPublications(Document authorProfileDoc) {
         final Elements publicationElements = authorProfileDoc.getElementById("gsc_a_b").children();
         final List<GoogleScholarPublication> out = new LinkedList<>();
         for (final Element tr : publicationElements) {
@@ -65,4 +105,8 @@ public class GoogleScholarService {
         return out;
     }
 
+    private List<String> listSubFields(Document authorProfileDoc) {
+        final Element listElement = authorProfileDoc.getElementById("gsc_prf_int");
+        return listElement.children().stream().map(el -> el.text()).toList();
+    }
 }
