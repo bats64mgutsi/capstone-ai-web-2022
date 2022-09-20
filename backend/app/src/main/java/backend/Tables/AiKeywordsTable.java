@@ -30,7 +30,7 @@ public class AiKeywordsTable extends SqlTable {
 
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
-        PreparedStatement stmt = db.prepareStatement("DELETE * FROM aiKeywords");
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM aiKeywords");
         deleted = stmt.executeUpdate() > 0;
         return deleted;
     }
