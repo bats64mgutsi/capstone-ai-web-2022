@@ -1,5 +1,5 @@
 import { ref, computed } from "vue";
-import { Author, AuthorProfile, AppMessage, User } from "../core/types";
+import { Author, AuthorProfile, InstitutionStat, SubfieldStat, CommunityStat, AppMessage, User } from "../core/types";
 
 /**
  * Bundle and expose variables/functionalities 
@@ -34,6 +34,93 @@ import { Author, AuthorProfile, AppMessage, User } from "../core/types";
         currentlySelectedAuthorId,
         currentlySelectedAuthorProfile,
         authors,
+    };
+}
+
+/**
+ * Bundle and expose variables/functionalities 
+ * to do with the managing of institution stats in the system
+ */
+ function initInstitutionStats() {
+    const institutionStats = ref<InstitutionStat[]>([]);
+    const currentlySelectedInstitutionStatId = ref<string>("");
+  
+    function setInstitutionStats(list: InstitutionStat[]) {
+        institutionStats.value = list;
+    }
+
+    function setCurrentlySelectedInstitutionStat(id: string) {
+        currentlySelectedInstitutionStatId.value = id;
+    }
+  
+    const currentlySelectedInstitutionStat = computed(() =>
+    institutionStats.value.find((i) => `${i.id}` === currentlySelectedInstitutionStatId.value)
+    );
+  
+    return {
+        setInstitutionStats,
+        setCurrentlySelectedInstitutionStat,
+        currentlySelectedInstitutionStat,
+        currentlySelectedInstitutionStatId,
+        institutionStats,
+    };
+}
+
+/**
+ * Bundle and expose variables/functionalities 
+ * to do with the managing of subfield stats in the system
+ */
+ function initSubfieldStats() {
+    const subfieldStats = ref<SubfieldStat[]>([]);
+    const currentlySelectedSubfieldStatId = ref<string>("");
+  
+    function setSubfieldStats(list: SubfieldStat[]) {
+        subfieldStats.value = list;
+    }
+
+    function setCurrentlySelectedSubfieldStat(id: string) {
+        currentlySelectedSubfieldStatId.value = id;
+    }
+  
+    const currentlySelectedSubfieldStat = computed(() =>
+        subfieldStats.value.find((i) => `${i.id}` === currentlySelectedSubfieldStatId.value)
+    );
+  
+    return {
+        setSubfieldStats,
+        setCurrentlySelectedSubfieldStat,
+        currentlySelectedSubfieldStat,
+        currentlySelectedSubfieldStatId,
+        subfieldStats,
+    };
+}
+
+/**
+ * Bundle and expose variables/functionalities 
+ * to do with the managing of community stats in the system
+ */
+ function initCommunityStats() {
+    const communityStats = ref<CommunityStat[]>([]);
+    const currentlySelectedCommunityStatId = ref<string>("");
+  
+    function setCommunityStats(list: CommunityStat[]) {
+        communityStats.value = list;
+    }
+
+    function setCurrentlySelectedCommunityStat(id: string) {
+        currentlySelectedCommunityStatId.value = id;
+    }
+  
+    const currentlySelectedCommunityStat = computed(() =>
+        communityStats.value.find((i) => `${i.id}` === currentlySelectedCommunityStatId.value)
+    );
+  
+    return {
+        setCommunityStats,
+        setCurrentlySelectedCommunityStat,
+        currentlySelectedCommunityStat,
+        currentlySelectedCommunityStatId,
+        communityStats,
     };
 }
 
@@ -78,6 +165,9 @@ import { Author, AuthorProfile, AppMessage, User } from "../core/types";
 
 const store = {
     ...initAuthors(),
+    ...initInstitutionStats(),
+    ...initSubfieldStats(),
+    ...initCommunityStats(),
     ...initAppMessage(),
     ...initAdmin(),
 };

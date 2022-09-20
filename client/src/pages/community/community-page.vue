@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stat in communityStats" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr v-for="stat in stats" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="py-4 px-6">
                         {{stat.rating}}
                     </td>
@@ -36,7 +36,7 @@ import store from "../../store";
 import { refreshData } from "../util";
 import { useRouter, useRoute } from "vue-router";
 
-const communityStats = store.communityStats;
+const stats = store.communityStats;
 const router = useRouter();
 const route = useRoute();
 

@@ -12,6 +12,21 @@ export const refreshData = async () => {
         const profile = await backendClient().getAuthorProfile(store.currentlySelectedAuthorId.value);
         store.setCurrentlySelectedAuthorProfile(profile);
     }
+
+    if (!store.institutionStats.value.length) {
+        const stats = await backendClient().getInstitutionStats();
+        store.setInstitutionStats(stats);
+    }
+
+    if (!store.subfieldStats.value.length) {
+        const stats = await backendClient().getSubfieldStats();
+        store.setSubfieldStats(stats);
+    }
+
+    if (!store.communityStats.value.length) {
+        const stats = await backendClient().getCommunityStats();
+        store.setCommunityStats(stats);
+    }
 }
 
 export const uploadNrfResearchers = async (data: UploadNrfResearchersArgs) => {

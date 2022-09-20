@@ -15,20 +15,20 @@ const routes: Array<RouteRecordRaw> = [
         component: MainPage
     },
     {
-        path: "/authors/search/field/:field/value/:value",
-        name: "authors",
-        component: AuthorPage
-    },
-    {
-        path: "/authors/:id",
-        name: "profile",
-        component: ProfilePage
-    },
-    {
         path: "/authors",
         name: "authors",
         component: AuthorPage
     },
+    // {
+    //     path: "/authors/:id",
+    //     name: "profile",
+    //     component: ProfilePage
+    // },
+    // {
+    //     path: "/authors/search/field/:field/value/:value",
+    //     name: "authors",
+    //     component: AuthorPage
+    // },
     {
         path: "/institutions",
         name: "institutions",
