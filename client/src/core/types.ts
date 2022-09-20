@@ -105,3 +105,8 @@ export interface LoginResult {
     user: User;
     token: string;
 }
+
+export interface AIFilter {
+    id: string;
+    name: string;
+}

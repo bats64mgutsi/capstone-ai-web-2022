@@ -1,5 +1,14 @@
 import { ref, computed } from "vue";
-import { Author, AuthorProfile, InstitutionStat, SubfieldStat, CommunityStat, AppMessage, User } from "../core/types";
+import { 
+    Author, 
+    AuthorProfile, 
+    InstitutionStat, 
+    SubfieldStat, 
+    CommunityStat, 
+    AppMessage, 
+    User,
+    AIFilter
+ } from "../core/types";
 
 /**
  * Bundle and expose variables/functionalities 
@@ -95,6 +104,36 @@ import { Author, AuthorProfile, InstitutionStat, SubfieldStat, CommunityStat, Ap
     };
 }
 
+
+/**
+ * Bundle and expose variables/functionalities 
+ * to do with the managing of AI filters in the system
+ */
+ function initAIFilters() {
+    const aiFilters = ref<AIFilter[]>([]);
+    const currentlySelectedAIFilterId = ref<string>("");
+  
+    function setAIFilters(list: AIFilter[]) {
+        aiFilters.value = list;
+    }
+
+    function setCurrentlySelectedAIFilter(id: string) {
+        currentlySelectedAIFilterId.value = id;
+    }
+  
+    const currentlySelectedAIFilter = computed(() =>
+        aiFilters.value.find((i) => `${i.id}` === currentlySelectedAIFilterId.value)
+    );
+  
+    return {
+        setAIFilters,
+        setCurrentlySelectedAIFilter,
+        currentlySelectedAIFilter,
+        currentlySelectedAIFilterId,
+        aiFilters,
+    };
+}
+
 /**
  * Bundle and expose variables/functionalities 
  * to do with the managing of community stats in the system
@@ -167,6 +206,7 @@ const store = {
     ...initAuthors(),
     ...initInstitutionStats(),
     ...initSubfieldStats(),
+    ...initAIFilters(),
     ...initCommunityStats(),
     ...initAppMessage(),
     ...initAdmin(),

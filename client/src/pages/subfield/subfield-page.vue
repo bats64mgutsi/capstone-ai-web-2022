@@ -25,7 +25,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody v-if="!isProcessing">
+            <tbody  v-if="!isProcessing">
                 <tr v-for="stat in stats" @click="goToAuthorsPage('specializations', `${stat.subfield}`)" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="py-4 px-6">
                         {{stat.subfield}}

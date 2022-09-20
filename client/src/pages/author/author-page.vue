@@ -334,6 +334,10 @@ const setSearchedContent = () => {
     searchedContent.value = JSON.parse(JSON.stringify(formattedContent.value));
 }
 
+const resetPage = () => {
+    page.value = 1;
+}
+
 const handleSearchFileInput = () => {
     console.log('searchFileInput: ', searchFileInput.value);
     isProcessing.value = true;
@@ -345,6 +349,7 @@ const handleSearchFileInput = () => {
         console.log('searchedContent after filters: ', searchedContent.value);
     }
 
+    resetPage();
     setPageContent();
 
     isProcessing.value = false;
