@@ -1,5 +1,6 @@
 package backend.controllers;
 
+import backend.ApplicationModels.GoogleScholarAuthorProfile;
 import backend.ApplicationModels.GoogleScholarPublication;
 import backend.ApplicationModels.NrfAuthor;
 import backend.DatabaseModels.*;
@@ -12,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -32,18 +34,27 @@ public class NrfListController {
     public void setAuthors(List<NrfAuthor> authors) throws SQLException {
         clearTables();
         final Set<Subfield> allSubFields = new HashSet<>();
+        final List<GoogleScholarAuthorProfile> authorProfiles = googleScholarService.fetchProfiles(authors);
 
-        for (NrfAuthor nrfAuthor : authors) {
-            final String authorId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.initials).add(nrfAuthor.surname).build());
+        for (int iii = 0; iii < authorProfiles.size(); iii++) {
+            final NrfAuthor nrfAuthor = authors.get(iii);
+            final GoogleScholarAuthorProfile authorProfile = authorProfiles.get(iii);
+
+            final String authorId = makeAuthorId(nrfAuthor);
             insertAuthor(nrfAuthor, authorId);
-            insertAuthorPublications(nrfAuthor, authorId);
-            insertAuthorSubfields(nrfAuthor, authorId, allSubFields);
+            insertAuthorPublications(authorProfile.publications, authorId);
+            insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields);
 
             logger.log(Level.INFO, String.format("Flushed author %s %s", nrfAuthor.initials, nrfAuthor.surname));
         }
 
         insertAllSubfields(allSubFields);
     }
+
+    private String makeAuthorId(NrfAuthor author) {
+        return hashingService.flatten(new ImmutableList.Builder<String>().add(author.initials).add(author.surname).build());
+    }
+
 
     private void clearTables() throws SQLException {
         authorToSubfieldTable.clearAll();
@@ -60,8 +71,7 @@ public class NrfListController {
         authorsTable.insertAuthor(author);
     }
 
-    private void insertAuthorPublications(NrfAuthor author, String authorId) throws SQLException {
-        final List<GoogleScholarPublication> googleScholarPublications = googleScholarService.listPublications(author.initials, author.surname, author.initials);
+    private void insertAuthorPublications(List<GoogleScholarPublication> googleScholarPublications, String authorId) throws SQLException {
         for (final GoogleScholarPublication googleScholarPublication : googleScholarPublications) {
             final String publicationId = uniqueIdService.uuidv4();
             final Publication publication = googleScholarPublication.publication;
@@ -77,8 +87,13 @@ public class NrfListController {
         contributionsTable.setContribution(contribution);
     }
 
-    private void insertAuthorSubfields(NrfAuthor author, String authorId, Set<Subfield> allSubfields) throws SQLException {
-        final List<String> authorSubfields = Stream.concat(Stream.concat(author.primaryResearchFields.stream(), author.secondaryResearchFields.stream()).toList().stream(), author.specialisations.stream()).toList();
+    private void insertAuthorSubfields(NrfAuthor author, GoogleScholarAuthorProfile profile, String authorId, Set<Subfield> allSubfields) throws SQLException {
+        final List<String> authorSubfields = new LinkedList<>();
+        authorSubfields.addAll(author.primaryResearchFields);
+        authorSubfields.addAll(author.secondaryResearchFields);
+        authorSubfields.addAll(author.specialisations);
+        authorSubfields.addAll(profile.subFields);
+
         for (String subFieldStr : authorSubfields) {
             final String subFieldId = hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).build());
             final Subfield subField = new Subfield(subFieldId, subFieldStr);
