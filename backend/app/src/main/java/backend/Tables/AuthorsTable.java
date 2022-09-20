@@ -42,7 +42,7 @@ public class AuthorsTable extends SqlTable {
 
     public boolean deleteAuthor(String authorId) throws SQLException {
         boolean deleted = false;
-        PreparedStatement stmt = db.prepareStatement("DELETE FROM authors WHERE authorId = ?");
+        PreparedStatement stmt = db.prepareStatement("DELETE * FROM authors WHERE authorId = ?");
         stmt.setString(1, authorId);
         deleted = stmt.executeUpdate() > 0;
         return deleted;
@@ -69,7 +69,7 @@ public class AuthorsTable extends SqlTable {
 
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
-        PreparedStatement stmt = db.prepareStatement("DELETE FROM authors");
+        PreparedStatement stmt = db.prepareStatement("DELETE * FROM authors");
         deleted = stmt.executeUpdate() > 0;
         return deleted;
     }
