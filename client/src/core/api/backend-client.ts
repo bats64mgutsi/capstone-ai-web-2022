@@ -44,7 +44,7 @@ export class BackendClient implements IBackendClient {
       `/nrfList/`, 
       args.data, 
       {
-        
+        Year: args.year
       }
     );
   }
