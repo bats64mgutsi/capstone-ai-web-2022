@@ -33,6 +33,27 @@
                 </tr>
             </tbody>
         </table>
+        <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
+            <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                Showing
+                <span class="font-semibold text-gray-900 dark:text-white">{{getFirstRecordNumberForGivenPage(page)}}-{{getLastRecordNumberForGivenPage(page)}}</span>
+                of <span class="font-semibold text-gray-900 dark:text-white">{{searchedContent.length}}</span>
+            </span>
+            <ul class="inline-flex items-center -space-x-px">
+                <li>
+                    <a href="#" @click="handlePreviousBtnClickEvent()" class="inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                        Previous
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click="handleNextBtnClickEvent()" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Next
+                        <svg aria-hidden="true" class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
 <script lang="ts" setup>
@@ -40,18 +61,66 @@ import { onMounted, ref, watch } from "vue";
 import store from "../../store";
 import { refreshData } from "../util";
 import { useRouter, useRoute } from "vue-router";
+import { InstitutionStat } from "../../core";
 
 const stats = store.institutionStats;
 const router = useRouter();
 const route = useRoute();
+const isProcessing = ref<boolean>(false);
+const searchInput = ref<string>('');
+const searchedContent = ref<Array<InstitutionStat>>([]);
+const pageContent = ref<Array<InstitutionStat>>([]);
+const page = ref<number>(1);
 
 onMounted(async () => {
     try {
+        isProcessing.value = true;
         refreshData();
+        initLocalVars();
+        isProcessing.value = false;
     } catch (e) {
         console.log("Error: ", e);
     }
 });
+
+const initLocalVars = () => {
+    setSearchedContent();
+    setPageContent();
+}
+
+const setSearchedContent = () => {
+    searchedContent.value = stats.value.length ? JSON.parse(JSON.stringify(stats.value)) : [];
+}
+
+const setPageContent = () => {
+    pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), getValidEndIndex(searchedContent.value, ((page.value - 1) * 10) + 10));
+}
+
+const getValidEndIndex = (content: Array<InstitutionStat>, endIndex: number) => {
+    return (endIndex >= content.length) ? (content.length + 1) : endIndex;
+}
+
+const handlePreviousBtnClickEvent = () => {
+    page.value = ((page.value - 1) <= 0) ? page.value : (isValidPageNumber(page.value - 1) ? (page.value - 1) : page.value);
+    setPageContent();
+}
+
+const handleNextBtnClickEvent = () => {
+    page.value = isValidPageNumber(page.value + 1) ? (page.value + 1) : page.value;
+    setPageContent();
+}
+
+const isValidPageNumber = (pageNumber: number) => {
+    return getFirstRecordNumberForGivenPage(pageNumber) < searchedContent.value.length;
+}
+
+const getFirstRecordNumberForGivenPage = (page: number) => {
+    return ((page * 10) - 10) + 1;
+}
+
+const getLastRecordNumberForGivenPage = (page: number) => {
+    return (page * 10) > searchedContent.value.length ? searchedContent.value.length : (page * 10);
+}
 
 const goToAuthorsPage = (field: string, value: string) => {
     router.push({ name: "authors", params: { field, value } });

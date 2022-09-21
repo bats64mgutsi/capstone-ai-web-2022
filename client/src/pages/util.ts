@@ -1,6 +1,6 @@
 import store from "../store";
 import { backendClient } from "../api";
-import { UploadNrfResearchersArgs, getAccessToken, deleteAccessToken, AdminLoginArgs } from "../core";
+import { UploadNrfResearchersArgs, getAccessToken, deleteAccessToken, AdminLoginArgs, AIFilterAddArgs } from "../core";
 
 export const refreshData = async () => {
     if (!store.authors.value.length) {
@@ -26,6 +26,11 @@ export const refreshData = async () => {
     if (!store.communityStats.value.length) {
         const stats = await backendClient().getCommunityStats();
         store.setCommunityStats(stats);
+    }
+
+    if (!store.aiFilters.value.length) {
+        const filters = await backendClient().getAIFilters();
+        store.setAIFilters(filters);
     }
 }
 
@@ -76,4 +81,9 @@ export const goToPage = (page: string) => {
 export const logAdminOut = () => {
     // TODO
     deleteAccessToken();
+}
+
+export const addFilter = async (args: AIFilterAddArgs) => {
+    const res = await backendClient().addFilter(args);
+    store.setAdmin(res.filter);
 }

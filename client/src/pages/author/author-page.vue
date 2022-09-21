@@ -313,9 +313,6 @@ const getValidEndIndex = (content: Array<Array<{ columnName: string; columnValue
 }
 
 const handlePreviousBtnClickEvent = () => {
-    console.log('Inside handlePreviousBtnClickEvent');
-    console.log('searchedContent.value: ', searchedContent.value);
-    console.log('searchedContent.value.length: ', searchedContent.value.length);
     page.value = ((page.value - 1) <= 0) ? page.value : (isValidPageNumber(page.value - 1) ? (page.value - 1) : page.value);
     setPageContent();
 }

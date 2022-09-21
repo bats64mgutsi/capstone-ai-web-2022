@@ -51,12 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         component: FilterPage
     },
     {
-        path: "/impact",
-        name: "impact",
-        component: ImpactPage
-    },
-    {
-        path: "/admin/auth/login",
+        path: "/auth/login",
         name: "login",
         component: LoginPage
     },
