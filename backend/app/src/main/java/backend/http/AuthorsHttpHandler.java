@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 
 import java.nio.file.InvalidPathException;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
