@@ -60,11 +60,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "login",
         component: LoginPage
     },
-    {
-        path: "/admin/authors",
-        name: "authors",
-        component: AuthorPage
-    }
+    // {
+    //     path: "/admin/authors",
+    //     name: "authors",
+    //     component: AuthorPage
+    // }
 
 ];
 

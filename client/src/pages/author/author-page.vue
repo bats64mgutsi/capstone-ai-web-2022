@@ -75,9 +75,8 @@
                                 
                                 <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
                                     <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                        Showing 
-                                        <span v-if="searchedContent.length >= 10" class="font-semibold text-gray-900 dark:text-white">1-10</span> 
-                                        <span v-else class="font-semibold text-gray-900 dark:text-white">1-{{searchedContent.length}}</span>
+                                        Showing
+                                        <span class="font-semibold text-gray-900 dark:text-white">{{getFirstRecordNumberForGivenPage(page)}}-{{getLastRecordNumberForGivenPage(page)}}</span>
                                         of <span class="font-semibold text-gray-900 dark:text-white">{{searchedContent.length}}</span>
                                     </span>
                                     <ul class="inline-flex items-center -space-x-px">
@@ -306,19 +305,39 @@ const getContentWithFiltersApplied = (formattedContent: Array<Array<{columnName:
 };
 
 const setPageContent = () => {
-    pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), ((page.value - 1) * 10) + 10);
+    pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), getValidEndIndex(searchedContent.value, ((page.value - 1) * 10) + 10));
+}
+
+const getValidEndIndex = (content: Array<Array<{ columnName: string; columnValue: any}>>, endIndex: number) => {
+    return (endIndex >= content.length) ? (content.length + 1) : endIndex;
 }
 
 const handlePreviousBtnClickEvent = () => {
     console.log('Inside handlePreviousBtnClickEvent');
-    page.value = (page.value - 10) < 0 ? 1 : (page.value - 10);
+    console.log('searchedContent.value: ', searchedContent.value);
+    console.log('searchedContent.value.length: ', searchedContent.value.length);
+    page.value = ((page.value - 1) <= 0) ? page.value : (isValidPageNumber(page.value - 1) ? (page.value - 1) : page.value);
     setPageContent();
 }
 
 const handleNextBtnClickEvent = () => {
     console.log('Inside handleNextBtnClickEvent');
-    page.value = (page.value + 10) >= searchedContent.value.length ? page.value : (page.value + 10);
+    console.log('searchedContent.value: ', searchedContent.value);
+    console.log('searchedContent.value.length: ', searchedContent.value.length);
+    page.value = isValidPageNumber(page.value + 1) ? (page.value + 1) : page.value;
     setPageContent();
+}
+
+const isValidPageNumber = (pageNumber: number) => {
+    return getFirstRecordNumberForGivenPage(pageNumber) < searchedContent.value.length;
+}
+
+const getFirstRecordNumberForGivenPage = (page: number) => {
+    return ((page * 10) - 10) + 1;
+}
+
+const getLastRecordNumberForGivenPage = (page: number) => {
+    return (page * 10) > searchedContent.value.length ? searchedContent.value.length : (page * 10);
 }
 
 
