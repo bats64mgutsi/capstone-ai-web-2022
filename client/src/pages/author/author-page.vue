@@ -360,13 +360,11 @@ const handleSubmitEvent = async () => {
         isProcessing.value = true;
         const data = getContentForBackend();
         console.log('data inside handleSubmitEvent: ', data);
-        // await uploadNrfResearchers({
-        //     day: day.value,
-        //     month:  month.value,
-        //     year: year.value,
-        //     data
-        // });
-        // resetFileUploadingData();
+        await uploadNrfResearchers({
+            year: year.value,
+            data
+        });
+        resetFileUploadingData();
         isProcessing.value = false;
     }
     catch (e) {

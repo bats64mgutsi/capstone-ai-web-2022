@@ -85,8 +85,6 @@ export interface NrfResearcher {
 }
 
 export interface UploadNrfResearchersArgs {
-    day: number;
-    month: number;
     year: number;
     data: NrfResearcher[]
 }
