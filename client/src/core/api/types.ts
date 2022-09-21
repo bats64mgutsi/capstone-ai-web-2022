@@ -1,4 +1,14 @@
-import { Author, AuthorProfile, NrfResearcher, UploadNrfResearchersArgs } from "../types";
+import { 
+    Author, 
+    AuthorProfile, 
+    NrfResearcher, 
+    UploadNrfResearchersArgs, 
+    AdminLoginArgs, 
+    LoginResult, 
+    InstitutionStat, 
+    CommunityStat, 
+    SubfieldStat 
+} from "../types";
 
 export interface IHttpClient {
     baseUrl: string;
@@ -35,6 +45,10 @@ export interface IHttpClient {
 
 export interface IBackendClient {
     getAuthors(): Promise<Author[]>;
+    getInstitutionStats(): Promise<InstitutionStat[]>;
+    getSubfieldStats(): Promise<SubfieldStat[]>;
+    getCommunityStats(): Promise<CommunityStat[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
     uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]>;
+    login(args: AdminLoginArgs): Promise<LoginResult>;
 }

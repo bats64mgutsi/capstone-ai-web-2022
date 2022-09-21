@@ -27,8 +27,41 @@ export interface Publication {
 
 export interface AuthorProfile {
     author: Author;
-    subFields: string[];
+    subFields: Subfield[];
     publications: Publication[];
+}
+
+export interface InstitutionStat {
+    id: string;
+    institution: string;
+    numberOfResearchers: number;
+}
+
+export interface Subfield {
+    id: string;
+    name: string;
+}
+
+export interface SubfieldStat {
+    id: string;
+    subfield: Subfield;
+    numberOfResearchers: number;
+    numberOfPublications: number;
+}
+
+export enum Rating {
+    A = 'A',
+    B = 'B',
+    C = 'C',
+    Y = 'Y',
+    P = 'P'
+}
+
+export interface CommunityStat {
+    id: string;
+    rating: Rating;
+    numberOfResearchers: number;
+    numberOfPublications: number;
 }
 
 export interface AppMessage {
@@ -56,4 +89,24 @@ export interface UploadNrfResearchersArgs {
     month: number;
     year: number;
     data: NrfResearcher[]
+}
+
+export interface AppMessage {
+    type: string;
+    message: string;
+}
+
+export interface AdminLoginArgs {
+    username: string;
+    password: string;
+}
+
+export interface LoginResult {
+    user: User;
+    token: string;
+}
+
+export interface AIFilter {
+    id: string;
+    name: string;
 }

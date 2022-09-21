@@ -6,15 +6,22 @@ import backend.ApplicationModels.NrfAuthor;
 import backend.DatabaseModels.Publication;
 import backend.Locator;
 import backend.httpClient.HttpClient;
+import com.google.common.collect.Lists;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GoogleScholarService {
+
+    final Logger logger = Logger.getLogger(GoogleScholarService.class.getName());
 
     private static final int MAX_PUBLICATIONS_PER_SCHOLAR_AUTHOR_PROFILE = 100;
 
@@ -40,16 +47,27 @@ public class GoogleScholarService {
      * @return the list of author profiles.
      */
     public List<GoogleScholarAuthorProfile> fetchProfiles(List<NrfAuthor> authors) {
-        // TODO: (@Batandwa) use threads to make this faster.
         final List<GoogleScholarAuthorProfile> out = new LinkedList<>();
-        for(final NrfAuthor author: authors) {
-            final Document authorProfileDoc = getAuthorProfileDoc(author, 0);
-            final List<GoogleScholarPublication> publications = listPublications(author, authorProfileDoc);
+
+        logger.log(Level.INFO, "Fetching author profiles in parallel...");
+        final List<Document> authorProfileDocs = getAuthorProfileDocsParallel(authors);
+        logger.log(Level.INFO, "Got all author profiles.");
+
+        logger.log(Level.INFO, "Fetching publications in parallel...");
+        final Map<NrfAuthor, List<GoogleScholarPublication>> authorsToPublications = listPublicationsParallel(authors, authorProfileDocs);
+        logger.log(Level.INFO, "Got all author publications.");
+
+        logger.log(Level.INFO, "Putting data together...");
+        for(int iii = 0; iii < authors.size(); iii++) {
+            final NrfAuthor author = authors.get(iii);
+            final Document authorProfileDoc = authorProfileDocs.get(iii);
+            final List<GoogleScholarPublication> publications = authorsToPublications.get(author);
             final List<String> subfields = listSubFields(authorProfileDoc);
 
             final GoogleScholarAuthorProfile profile = new GoogleScholarAuthorProfile(subfields, publications);
             out.add(profile);
         }
+        logger.log(Level.INFO, "Done putting data together.");
 
         return out;
     }
@@ -71,6 +89,57 @@ public class GoogleScholarService {
 
         final String fullAuthorProfileLink = "https://scholar.google.com" + authorProfileLink + String.format("&cstart=%d&pagesize=%d", pageStart, GoogleScholarService.MAX_PUBLICATIONS_PER_SCHOLAR_AUTHOR_PROFILE);
         return Jsoup.parse(client.fetchWebPage(fullAuthorProfileLink));
+    }
+
+    private Map<NrfAuthor, List<GoogleScholarPublication>> listPublicationsParallel(List<NrfAuthor> authors, List<Document> authorProfileDocs) {
+        final Map<NrfAuthor, List<GoogleScholarPublication>> out = new HashMap<>();
+
+        final int workPerThread = computeWorkPerThread(authors.size());
+        final List<List<NrfAuthor>> authorPartitions = Lists.partition(authors, workPerThread);
+        final List<List<Document>> authorProfileDocsPartitions = Lists.partition(authorProfileDocs, workPerThread);
+
+        final List<PublicationsWorker> publicationsWorkers = new LinkedList<>();
+        for(int iii = 0; iii < authorPartitions.size(); iii++) {
+            final PublicationsWorker worker = new PublicationsWorker(authorPartitions.get(iii), authorProfileDocsPartitions.get(iii));
+            worker.start();
+            publicationsWorkers.add(worker);
+        }
+
+        for(final PublicationsWorker worker: publicationsWorkers) {
+            try {
+                worker.join();
+                out.putAll(worker.publications);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return out;
+    }
+
+    private List<Document> getAuthorProfileDocsParallel(List<NrfAuthor> authors) {
+        final List<Document> out = new LinkedList<>();
+
+        final int workPerThread = computeWorkPerThread(authors.size());
+        final List<List<NrfAuthor>> authorPartitions = Lists.partition(authors, workPerThread);
+
+        final List<ProfileDocWorker> profileDocWorkers = new LinkedList<>();
+        for(int iii = 0; iii < authorPartitions.size(); iii++) {
+            final ProfileDocWorker worker = new ProfileDocWorker(authorPartitions.get(iii));
+            worker.start();
+            profileDocWorkers.add(worker);
+        }
+
+        for(final ProfileDocWorker worker: profileDocWorkers) {
+            try {
+                worker.join();
+                out.addAll(worker.authorProfileDocs);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return out;
     }
 
     private List<GoogleScholarPublication> listPublications(NrfAuthor author, Document authorProfileDoc) {
@@ -118,5 +187,52 @@ public class GoogleScholarService {
     private List<String> listSubFields(Document authorProfileDoc) {
         final Element listElement = authorProfileDoc.getElementById("gsc_prf_int");
         return listElement.children().stream().map(el -> el.text()).toList();
+    }
+
+    private int computeWorkPerThread(int n) {
+        final int numOfThreads = Runtime.getRuntime().availableProcessors();
+
+        // Let each thread handle 1 work since it takes seconds to complete 1 work.
+        if(n <= numOfThreads) return 1;
+
+        return (int) Math.ceil(n/numOfThreads);
+    }
+
+    private class PublicationsWorker extends Thread {
+        final List<NrfAuthor> authors;
+        final List<Document> authorProfileDocs;
+
+        final public Map<NrfAuthor, List<GoogleScholarPublication>> publications = new HashMap<>();
+
+        public PublicationsWorker(List<NrfAuthor> authors, List<Document> authorProfileDocs) {
+            this.authors = authors;
+            this.authorProfileDocs = authorProfileDocs;
+        }
+
+        @Override
+        public void run() {
+            for(int iii = 0; iii < authors.size(); iii++) {
+                final List<GoogleScholarPublication> googleScholarPublications = listPublications(authors.get(iii), authorProfileDocs.get(iii));
+                publications.put(authors.get(iii), googleScholarPublications);
+            }
+        }
+    }
+
+    private class ProfileDocWorker extends Thread {
+        final List<NrfAuthor> authors;
+
+        final public List<Document> authorProfileDocs = new LinkedList<>();
+
+        public ProfileDocWorker(List<NrfAuthor> authors) {
+            this.authors = authors;
+        }
+
+        @Override
+        public void run() {
+            for (NrfAuthor author : authors) {
+                final Document profileDoc = getAuthorProfileDoc(author, 0);
+                authorProfileDocs.add(profileDoc);
+            }
+        }
     }
 }

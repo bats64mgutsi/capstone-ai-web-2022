@@ -6,6 +6,8 @@ import SubfieldPage from "../pages/subfield/subfield-page.vue";
 import CommunityPage from "../pages/community/community-page.vue";
 import ImpactPage from "../pages/impact/impact-page.vue";
 import ProfilePage from "../pages/profile/profile-page.vue";
+import LoginPage from "../pages/auth/login-page.vue";
+import FilterPage from "../pages/ai-filter/ai-filter-page.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -14,20 +16,20 @@ const routes: Array<RouteRecordRaw> = [
         component: MainPage
     },
     {
-        path: "/authors/search/field/:field/value/:value",
-        name: "authors",
-        component: AuthorPage
-    },
-    {
-        path: "/authors/:id",
-        name: "profile",
-        component: ProfilePage
-    },
-    {
         path: "/authors",
         name: "authors",
         component: AuthorPage
     },
+    // {
+    //     path: "/authors/:id",
+    //     name: "profile",
+    //     component: ProfilePage
+    // },
+    // {
+    //     path: "/authors/search/field/:field/value/:value",
+    //     name: "authors",
+    //     component: AuthorPage
+    // },
     {
         path: "/institutions",
         name: "institutions",
@@ -44,10 +46,25 @@ const routes: Array<RouteRecordRaw> = [
         component: CommunityPage
     },
     {
+        path: "/filters",
+        name: "filters",
+        component: FilterPage
+    },
+    {
         path: "/impact",
         name: "impact",
         component: ImpactPage
     },
+    {
+        path: "/admin/auth/login",
+        name: "login",
+        component: LoginPage
+    },
+    {
+        path: "/admin/authors",
+        name: "authors",
+        component: AuthorPage
+    }
 
 ];
 

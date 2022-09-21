@@ -27,7 +27,7 @@
                             <h3 class="text-xl font-medium text-gray-900 dark:text-white">
                                 Upload CSV file
                             </h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="large-modal">
+                            <button @click="handleCloseEvent" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="large-modal">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
@@ -51,20 +51,13 @@
                                         <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                         </div>
-                                        <input type="text" v-model="searchFileInput" @input="handleSearchFileInput($event)" id="table-search-users" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search file">
+                                        <input type="text" v-model="searchFileInput" @input="handleSearchFileInput()" id="table-search-users" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search file">
                                     </div>
                                 </div>
                                 <div class="overflow-x-auto relative">
                                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead v-if="headers.length" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
-                                                <th scope="col" class="p-4">
-                                                    <div class="flex items-center">
-                                                        <input v-if="selectAll" checked id="checkbox-all" @change="handleSelectAll($event)" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                        <input v-else id="checkbox-all" @change="handleSelectAll($event)" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                        <label for="checkbox-all" class="sr-only">checkbox</label>
-                                                    </div>
-                                                </th>
                                                 <th v-for="header in headers" scope="col" class="py-3 px-6">
                                                     {{truncate(header, 10)}}
                                                 </th>
@@ -72,14 +65,7 @@
                                         </thead>
                                         <tbody v-if="!isProcessing">
                                             <tr v-for="row in pageContent" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                <td class="p-4 w-4">
-                                                    <div class="flex items-center">
-                                                        <input v-if="row[0].columnValue === true" checked id="checkbox-table-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                        <input v-else id="checkbox-table-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                        <label for="checkbox-table-1" class="sr-only">checkbox</label>
-                                                    </div>
-                                                </td>
-                                                <td v-for="data in row.slice(1)" class="py-4 px-6">
+                                                <td v-for="data in row" class="py-4 px-6">
                                                     {{truncate(data.columnValue.toString(), 10)}}
                                                 </td>
                                             </tr>
@@ -88,33 +74,23 @@
                                 </div>
                                 
                                 <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
-                                    <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">{{searchedContent.length}}</span></span>
+                                    <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                        Showing 
+                                        <span v-if="searchedContent.length >= 10" class="font-semibold text-gray-900 dark:text-white">1-10</span> 
+                                        <span v-else class="font-semibold text-gray-900 dark:text-white">1-{{searchedContent.length}}</span>
+                                        of <span class="font-semibold text-gray-900 dark:text-white">{{searchedContent.length}}</span>
+                                    </span>
                                     <ul class="inline-flex items-center -space-x-px">
                                         <li>
-                                            <a href="#" class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                                <span class="sr-only">Previous</span>
-                                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                            <a href="#" @click="handlePreviousBtnClickEvent()" class="inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                                <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                                                Previous
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" aria-current="page" class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                                <span class="sr-only">Next</span>
-                                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <a href="#" @click="handleNextBtnClickEvent()" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                                Next
+                                                <svg aria-hidden="true" class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                             </a>
                                         </li>
                                     </ul>
@@ -122,9 +98,9 @@
                             </div>
                         </div>
                         <!-- Modal footer -->
-                        <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+                        <div v-if="!isProcessing" class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                             <button @click="handleSubmitEvent()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                            <button data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Close</button>
+                            <button @click="handleCloseEvent" data-modal-toggle="large-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Close</button>
                         </div>
                     </div>
                 </div>
@@ -175,47 +151,32 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import store from "../../store";
-import { refreshData } from "../util";
+import { refreshData, uploadNrfResearchers } from "../util";
 import { useRouter, useRoute } from "vue-router";
 import readXlsxFile from 'read-excel-file';
 import truncate from 'truncate';
+import { NrfResearcher } from '../../core';
 
 const authors = store.authors;
 const router = useRouter();
 const route = useRoute();
 
-const uploadedFile = ref<Object>();
-const content = ref<Array>([]);
-const searchedContent = ref<Array>([]);
-const submittableContent = ref<Array>([]);
-const pageContent = ref<Array>([]);
-const page = ref<Number>(1);
-const day = ref<Number>(0);
-const month = ref<Number>(0);
-const year = ref<Number>(0);
-const headers = ref<Array>([]);
+const uploadedFile = ref<File>();
+const content = ref<Array<Array<any>>>([]);
+const formattedContent = ref<Array<Array<{ columnName: string; columnValue: any}>>>([]);
+
+const searchedContent = ref<Array<Array<{ columnName: string; columnValue: any}>>>([]);
+const pageContent = ref<Array<Array<{ columnName: string; columnValue: any}>>>([]);
+const page = ref<number>(1);
+const day = ref<number>(0);
+const month = ref<number>(0);
+const year = ref<number>(0);
+const headers = ref<Array<string>>([]);
 const isProcessing = ref<Boolean>(false);
-const searchFileInput = ref<String>('');
-const filters = [
-    'artificial intelligence', 
-    'machine learning', 
-    'neural networks', 
-    'cognitive computing', 
-    'natural language processing', 
-    'computer vision',
-    'image processing',
-    'pattern recognition',
-    'deep learning',
-    'deep reinforcement learning',
-    'speech recognition',
-    'brain-computer interfacing',
-    'automatic speech recognition',
-];
+const searchFileInput = ref<string>('');
 
-const selectAll = ref<Boolean>(false);
-
-const searchField = ref<String>('');
-const searchValue = ref<String>('');
+const searchField = ref<Array<string> | string>('');
+const searchValue = ref<Array<string> | string>('');
 
 
 onMounted(async () => {
@@ -242,26 +203,23 @@ const handleFileUpload = async ( event: any ) => {
 }
 
 const parseUploadedFile = () => {
-    readXlsxFile(uploadedFile.value).then((rows) => {
-        content.value = rows;
-
-        setDayMonthAndYear();
-        setHeaders();
-        formatContent();
-        applyFilters(content, filters);
-        setSearchedContent();
-        localStorage.setItem('AI Reseacrhers', JSON.stringify(content.value));
-        setPageContent();
-
-        isProcessing.value = false;
-    });
+    if (uploadedFile.value) {
+        readXlsxFile(uploadedFile.value).then((rows) => {
+            content.value = rows;
+            isProcessing.value = true;
+            processContent();
+            isProcessing.value = false;
+        });
+    }
 }
 
-const setHeaders = () => {
-    if (content.value.length) {
-        headers.value = content.value[0].includes('Surname') ? content.value[0] : content.value[1];
-        removeUnnecessaryHeaders();
-    }
+const processContent = () => {
+    console.log('Inside processContent...');
+    setDayMonthAndYear();
+    setHeaders();
+    formatContent();
+    setSearchedContent();
+    setPageContent();
 }
 
 const setDayMonthAndYear = () => {
@@ -277,7 +235,7 @@ const setDayMonthAndYear = () => {
     }
 }
 
-const getMonthNumber = (month) => {
+const getMonthNumber = (month: string) => {
     month = month.toLowerCase().trim().substring(0, 3);
     switch (month) {
         case 'jan':
@@ -309,20 +267,11 @@ const getMonthNumber = (month) => {
     }
 }
 
-const formatContent = () => {
-    removeHeadersFromContent();
-
-    removeUnnecessaryContent();
-
-    console.log('content.value[0]: ', content.value[0]);
-
-    content.value.forEach((row) => {
-        headers.value.forEach((header, index) => {
-            row[index] = { columnName: header, columnValue: row[index] };
-        });
-
-        row.unshift({ columnName: 'isSelected', columnValue: false });
-    });
+const setHeaders = () => {
+    if (content.value.length) {
+        headers.value = content.value[0].includes('Surname') ? content.value[0] : content.value[1];
+        removeUnnecessaryHeaders();
+    }
 }
 
 const removeUnnecessaryHeaders = () => {
@@ -330,103 +279,143 @@ const removeUnnecessaryHeaders = () => {
     console.log('headers.value: ', headers.value);
 }
 
-const removeUnnecessaryContent = () => {
-    content.value.forEach((value) => value.splice(5, 2));
-    console.log('content.value: ', content.value);
+const formatContent = () => {
+    const contentWithoutHeaders = getContentWithoutHeaders();
+    removeUnnecessaryContent(contentWithoutHeaders)
+    const contentWithoutUnnecessaryContent = JSON.parse(JSON.stringify(contentWithoutHeaders));
+    contentWithoutUnnecessaryContent.forEach((row: Array<any>) => {
+        headers.value.forEach((header, index) => {
+            row[index] = { columnName: header, columnValue: row[index] };
+        });
+    });
+
+    formattedContent.value = JSON.parse(JSON.stringify(contentWithoutUnnecessaryContent));
 }
 
-const applyFilters = (data, filters) => {
-    data.value = data.value.filter(row => containsFilters(row, filters));
-    console.log('data.value: ', data.value);
+const getContentWithoutHeaders = () => {
+    const content_copy = JSON.parse(JSON.stringify(content.value));
+    return content_copy[0].includes('Surname') ? content_copy.slice(1) : content_copy.slice(2);
 }
 
-const containsFilters = (row, filters) => {
-    return row.some((value) => containsSomeFilters(value, filters));
+const removeUnnecessaryContent = (content: Array<Array<any>>) => {
+    content.forEach((value: Array<any>) => value.splice(5, 2));
 }
 
-const containsSomeFilters = (value, filters) => {
-    return filters.some(filter => (value.columnValue && value.columnValue.toString().toLowerCase().includes(filter.toLowerCase( ))));
-}
-
-const setSearchedContent = () => {
-    searchedContent.value = JSON.parse(JSON.stringify(content.value));
-}
-
-const removeHeadersFromContent = () => {
-    content.value = content.value[0].includes('Surname') ? content.value.slice(1) : content.value.slice(2);
-}
+const getContentWithFiltersApplied = (formattedContent: Array<Array<{columnName: string; columnValue: any }>>, filters: Array<string>) => {
+    return formattedContent.filter(row => containsFilters(row, filters));
+};
 
 const setPageContent = () => {
     pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), ((page.value - 1) * 10) + 10);
 }
 
+const handlePreviousBtnClickEvent = () => {
+    console.log('Inside handlePreviousBtnClickEvent');
+    page.value = (page.value - 10) < 0 ? 1 : (page.value - 10);
+    setPageContent();
+}
+
+const handleNextBtnClickEvent = () => {
+    console.log('Inside handleNextBtnClickEvent');
+    page.value = (page.value + 10) >= searchedContent.value.length ? page.value : (page.value + 10);
+    setPageContent();
+}
+
+
+const containsFilters = (row: Array<{columnName: string; columnValue: string}>, filters: Array<string>) => {
+    return row.some((value) => containsSomeFilters(value, filters));
+}
+
+const containsSomeFilters = (value: {columnName: string; columnValue: string}, filters: Array<string>) => {
+    return filters.some((filter: string) => (value.columnValue && value.columnValue.toString().toLowerCase().includes(filter.toLowerCase( ))));
+}
+
+const setSearchedContent = () => {
+    searchedContent.value = JSON.parse(JSON.stringify(formattedContent.value));
+}
+
+const resetPage = () => {
+    page.value = 1;
+}
+
 const handleSearchFileInput = () => {
     console.log('searchFileInput: ', searchFileInput.value);
     isProcessing.value = true;
+    
+    setSearchedContent();
 
-    searchedContent.value = JSON.parse(JSON.stringify(content.value));
     if (searchFileInput.value.length) {
-        applyFilters(searchedContent, [searchFileInput.value]);
+        searchedContent.value = getContentWithFiltersApplied(searchedContent.value, [searchFileInput.value]);
+        console.log('searchedContent after filters: ', searchedContent.value);
     }
 
+    resetPage();
     setPageContent();
 
     isProcessing.value = false;
 }
 
-const handleSelectAll = (value) => {
-    selectAll.value = !selectAll.value;
-    console.log('Inside selectAll.value: ', selectAll.value);
-}
-
 const handleSubmitEvent = async () => {
     try {
-        isProcessing.Value = true;
+        isProcessing.value = true;
         const data = getContentForBackend();
-        await uploadNrfResearchers({
-            day: day.value,
-            month:  month.value,
-            year: year.value,
-            data
-        });
-        resetFileUploadingData();
-        isProcessing.Value = false;
+        console.log('data inside handleSubmitEvent: ', data);
+        // await uploadNrfResearchers({
+        //     day: day.value,
+        //     month:  month.value,
+        //     year: year.value,
+        //     data
+        // });
+        // resetFileUploadingData();
+        isProcessing.value = false;
     }
     catch (e) {
         console.log(e);
     }
 }
 
+const handleCloseEvent = () => {
+    resetFileUploadingData();
+}
+
 const resetFileUploadingData = () => {
-    uploadedFile.value = ref<Object>();
-    content.value = ref<Array>([]);
-    searchedContent = ref<Array>([]);
-    submittableContent = ref<Array>([]);
-    pageContent = ref<Array>([]);
-    page.value = ref<Number>(1);
-    day.value = ref<Number>(0);
-    month.value = ref<Number>(0);
-    year.value = ref<Number>(0);
-    headers.value = ref<Array>([]);
-    isProcessing.value = ref<Boolean>(false);
-    searchFileInput.value = ref<String>('');
+    uploadedFile.value = undefined;
+    content.value = [];
+    formattedContent.value = [];
+    searchedContent.value = [];
+    pageContent.value = [];
+    page.value = 1;
+    day.value = 0;
+    month.value = 0;
+    year.value = 0;
+    headers.value = [];
+    isProcessing.value = false;
+    searchFileInput.value = '';;
 }
 
 const getContentForBackend = () => {
-    const data = JSON.parse(JSON.stringify(content.value));
-    removeIsSelectedObjectValueFromRows(data);
+    const data = JSON.parse(JSON.stringify(formattedContent.value));
     formatResearchFieldValues(data);
-    convertRowsToObjects(data);
-    return data;
+    return convertRowsToObjects(data);
 }
 
-const convertRowsToObjects = (data) => {
-    data = data.map((row) => convertRowToObject(row));
-    console.log('data in convertRowsToObjects: ', data);
+const convertRowsToObjects = (data: Array<Array<{ columnName: string; columnValue: any}>>) => {
+    const convertedData = data.map((row: Array<{ columnName: string; columnValue: any}>) => convertRowToObject(row));
+    console.log('convertedData in convertRowsToObjects: ', convertedData);
+    return convertedData;
 }
 
-const convertRowToObject = (row) => {
-    let object = {};
+const convertRowToObject = (row: Array<{ columnName: string; columnValue: any}>) => {
+    let object: NrfResearcher = {
+        surname: "",
+        initials: "",
+        title: "",
+        rating: "",
+        primaryResearchFields: [],
+        secondaryResearchFields: [],
+        specialisations: []
+    };
+
     row.forEach((value, index) => {
         object = { ...object, [formatColumnName(headers.value[index])]: value.columnValue };
     });
@@ -434,21 +423,16 @@ const convertRowToObject = (row) => {
     return object;
 }
 
-const formatColumnName = (columnName) => {
+const formatColumnName = (columnName: string) => {
     const columnNameSplit = columnName.split(' ');
     columnNameSplit[0] = columnNameSplit[0].toLowerCase();
     return columnNameSplit.join('');
 }
 
-const removeIsSelectedObjectValueFromRows = (data) => {
-    data.forEach((row) => row.splice(0, 1));
-    console.log('data: ', data);
-}
-
-const formatResearchFieldValues = (data) => {
+const formatResearchFieldValues = (data: Array<Array<{ columnName: string; columnValue: any}>>) => {
     data.forEach((row) => {
         row.forEach((value) => {
-            if (['Primary Research Fields', 'Secondary Research Fields', 'Specialisations'].includes(value.columnName)) {
+            if (value.columnValue && ['Primary Research Fields', 'Secondary Research Fields', 'Specialisations'].includes(value.columnName)) {
                 value.columnValue = value.columnValue.split('; ');
             }
         })

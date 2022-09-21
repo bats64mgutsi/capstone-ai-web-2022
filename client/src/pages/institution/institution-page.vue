@@ -23,12 +23,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="institution in institutions" @click="goToAuthorsPage(`${institution}`)" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr v-for="stat in stats" @click="goToAuthorsPage('institution', `${stat.institution}`)" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="py-4 px-6">
-                        {{institution}}
+                        {{stat.institution}}
                     </td>
                     <td class="py-4 px-6">
-                        {{numberOfResearchers}}
+                        {{stat.numberOfResearchers}}
                     </td>
                 </tr>
             </tbody>
@@ -41,7 +41,7 @@ import store from "../../store";
 import { refreshData } from "../util";
 import { useRouter, useRoute } from "vue-router";
 
-const institutions = store.institutions;
+const stats = store.institutionStats;
 const router = useRouter();
 const route = useRoute();
 
