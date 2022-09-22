@@ -17,7 +17,7 @@ public class AuthorsHttpHandler extends BaseHttpHandler {
     final AuthorsController authorsController = (AuthorsController) Locator.instance.get(AuthorsController.class);
 
     @Override
-    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
+    public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
         if(pathValues[1].equals("authors")) {
             final List<PopulatedAuthor> populatedAuthors = new LinkedList<>();
             populatedAuthors.addAll(authorsController.listAuthors());

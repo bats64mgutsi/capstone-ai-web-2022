@@ -21,7 +21,7 @@ public class NrfListHttpHandler extends BaseHttpHandler {
     Thread asyncSetAuthors = null;
 
     @Override
-    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
+    public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
         if(asyncSetAuthors != null && asyncSetAuthors.isAlive()) {
             throw new RuntimeException("Author update is still in progress.");
         }

@@ -16,7 +16,7 @@ public class InstitutionsHttpHandler extends BaseHttpHandler {
             .get(InstitutionsController.class);
 
     @Override
-    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody)
+    public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody)
             throws Exception {
         if (pathValues[1].equals("institutions")) {
             final List<Institution> institutions = new LinkedList<>();
