@@ -10,17 +10,20 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class BaseHttpHandler implements HttpHandler {
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String outString = "";
         int statusCode = 200;
-        try {
-            String requestBody = IOUtils.toString(exchange.getRequestBody());
-            outString = getResponseAsString(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody);
-        } catch (Exception e) {
-            outString = e.toString();
-            statusCode = 500;
+        if(!exchange.getRequestMethod().equals("OPTIONS")) {
+            try {
+                String requestBody = IOUtils.toString(exchange.getRequestBody());
+                outString = getResponseAsString(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody);
+            } catch (Exception e) {
+                outString = e.toString();
+                System.err.println(e);
+                e.printStackTrace();
+                statusCode = 500;
+            }
         }
 
         System.out.printf("On new request to %s %s\n", (CharSequence) exchange.getRequestMethod(), (CharSequence) exchange.getRequestURI().getPath());

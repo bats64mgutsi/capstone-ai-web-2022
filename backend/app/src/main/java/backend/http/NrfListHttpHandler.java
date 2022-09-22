@@ -11,14 +11,21 @@ import com.sun.net.httpserver.Headers;
 
 import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 public class NrfListHttpHandler extends BaseHttpHandler {
     final NrfListController nrfListController = (NrfListController) Locator.instance.get(NrfListController.class);
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance.get(AuthorizationController.class);
 
+    Thread asyncSetAuthors = null;
+
     @Override
     public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
+        if(asyncSetAuthors != null && asyncSetAuthors.isAlive()) {
+            throw new RuntimeException("Author update is still in progress.");
+        }
+
         if(pathValues[1].equals("nrfList")) {
             final String basicAuthString = requestHeaders.getFirst("Authorization");
             final String[] credentials = BasicAuth.getUsernameAndPassword(basicAuthString);
@@ -31,7 +38,15 @@ public class NrfListHttpHandler extends BaseHttpHandler {
             Type listType = new TypeToken<LinkedList<NrfAuthor>>(){}.getType();
             LinkedList<NrfAuthor> nrfAuthors = new Gson().fromJson(requestBody, listType);
 
-            nrfListController.setAuthors(nrfAuthors);
+            asyncSetAuthors = new Thread(() -> {
+                try {
+                    nrfListController.setAuthors(nrfAuthors);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            asyncSetAuthors.start();
 
             return new Gson().toJson(nrfAuthors);
         } else {
