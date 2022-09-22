@@ -72,31 +72,49 @@ public class GoogleScholarService {
         return out;
     }
 
-    private Document getAuthorProfileDoc(NrfAuthor author, int pageStart) throws NoGoogleScholarProfileException {
-        final String q = String.format("%s %s %s", author.title, author.surname, author.institution).replaceAll(" ", "+");
+    private Document getAuthorProfileDocTolerant(NrfAuthor author, int pageStart) throws NoGoogleScholarProfileException {
+        // First search for author with initials (specific).
+        // If not found search for author excluding initials (less specific).
+        try {
+            return getAuthorProfileDoc(author, pageStart, true);
+        } catch (NoGoogleScholarProfileException e) {
+            return getAuthorProfileDoc(author, pageStart, false);
+        }
+    }
+
+    private Document getAuthorProfileDoc(NrfAuthor author, int pageStart, boolean addInitials) throws NoGoogleScholarProfileException {
+        String q = String.format("%s %s %s", author.title, author.surname, author.institution);
+        if(addInitials) {
+            q = String.format("%s %s %s %s", author.title, author.initials, author.surname, author.institution);
+        }
+
+        q = q.replaceAll(" ", "+");
         final String searchPath = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" + q + "&btnG";
 
         final String webPage = client.fetchWebPage(searchPath);
         final Document doc = Jsoup.parse(webPage);
-        if(doc.getElementsByClass("gs_a").first() == null) {
-            System.out.print(doc.getElementsByClass("gs_a").first());
-        }
-        final Elements authorListElements = doc.getElementsByClass("gs_a").first().children();
-
-        String authorProfileLink = null;
-        for (Element el : authorListElements) {
-            if (el.html().contains("<b>")) {
-                authorProfileLink = el.attr("href");
-                break;
-            }
-        }
-
-        if(authorProfileLink == null) {
+        final Elements containersOfAuthorListElements = doc.getElementsByClass("gs_a");
+        if(containersOfAuthorListElements.isEmpty()) {
+            // No results for given query page.
             throw new NoGoogleScholarProfileException(author);
         }
 
-        final String fullAuthorProfileLink = "https://scholar.google.com" + authorProfileLink + String.format("&cstart=%d&pagesize=%d", pageStart, GoogleScholarService.MAX_PUBLICATIONS_PER_SCHOLAR_AUTHOR_PROFILE);
-        return Jsoup.parse(client.fetchWebPage(fullAuthorProfileLink));
+        // Sometimes the first results has an accent and therefore not marked bold since the
+        // Nrf list surnames do not always include accents.
+
+        for(final Element containerOfAuthorListElements: containersOfAuthorListElements) {
+            final Elements authorListElements = containerOfAuthorListElements.children();
+
+            for (Element el : authorListElements) {
+                if (el.html().contains("<b>")) {
+                    final String authorProfileLink = el.attr("href");
+                    final String fullAuthorProfileLink = "https://scholar.google.com" + authorProfileLink + String.format("&cstart=%d&pagesize=%d", pageStart, GoogleScholarService.MAX_PUBLICATIONS_PER_SCHOLAR_AUTHOR_PROFILE);
+                    return Jsoup.parse(client.fetchWebPage(fullAuthorProfileLink));
+                }
+            }
+        }
+
+        throw new NoGoogleScholarProfileException(author);
     }
     private Map<NrfAuthor, List<GoogleScholarPublication>> listPublicationsParallel(List<NrfAuthor> authors, Map<NrfAuthor, Document> authorToProfileDocs) {
         final Map<NrfAuthor, List<GoogleScholarPublication>> out = new HashMap<>();
@@ -156,7 +174,7 @@ public class GoogleScholarService {
         boolean hasMorePublications = hasMorePublications(authorProfileDoc);
         while(hasMorePublications) {
             try {
-                authorProfileDoc = getAuthorProfileDoc(author, pageStart);
+                authorProfileDoc = getAuthorProfileDocTolerant(author, pageStart);
             } catch (NoGoogleScholarProfileException e) {
                 throw new RuntimeException(e);
             }
@@ -209,7 +227,7 @@ public class GoogleScholarService {
         final int numOfThreads = Runtime.getRuntime().availableProcessors();
 
         // Let each thread handle 1 work since it takes seconds to complete 1 work.
-        if(n <= numOfThreads) return 1; // TODO: Bring back to 1
+        if(n <= numOfThreads) return 1;
 
         return (int) Math.ceil(n/numOfThreads);
     }
@@ -253,7 +271,7 @@ public class GoogleScholarService {
         public void run() {
             for (NrfAuthor author : authors) {
                 try {
-                    final Document profileDoc = getAuthorProfileDoc(author, 0);
+                    final Document profileDoc = getAuthorProfileDocTolerant(author, 0);
                     authorToProfileDocs.put(author, profileDoc);
                 } catch(NoGoogleScholarProfileException e) {
                     logger.log(Level.INFO, String.format("Author %s, does not have a Google Scholar Profile", author.surname));

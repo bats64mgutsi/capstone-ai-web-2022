@@ -27,6 +27,7 @@ public abstract class LocatorSetup {
         Locator.instance.registerSingleton(new ContributionsTable());
         Locator.instance.registerSingleton(new PublicationsTable());
         Locator.instance.registerSingleton(new SubfieldsTable());
+        Locator.instance.registerSingleton(new InstitutionsTable());
 
         Locator.instance.registerSingleton(new HttpClient());
 

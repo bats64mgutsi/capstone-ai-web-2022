@@ -59,7 +59,7 @@ public class GoogleScholarServiceTest {
         final HttpClient mockedHttpClient = mock(HttpClient.class);
         Locator.instance.registerSingleton(mockedHttpClient);
 
-        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Prof+Aharonson+University+of+the+Witwatesrand&btnG")).thenReturn(scholarAuthorSearch);
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Prof+V+Aharonson+University+of+the+Witwatesrand&btnG")).thenReturn(scholarAuthorSearch);
         when(mockedHttpClient.fetchWebPage("https://scholar.google.com/citations?user=MlXzlYQAAAAJ&hl=en&oi=sra&cstart=0&pagesize=100")).thenReturn(scholarAuthorProfile0_100);
         when(mockedHttpClient.fetchWebPage("https://scholar.google.com/citations?user=MlXzlYQAAAAJ&hl=en&oi=sra&cstart=100&pagesize=100")).thenReturn(scholarAuthorProfile100_100);
 
@@ -96,6 +96,7 @@ public class GoogleScholarServiceTest {
         final HttpClient mockedHttpClient = mock(HttpClient.class);
         Locator.instance.registerSingleton(mockedHttpClient);
 
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Dr+S+Abel+Cape+Peninsula+University+of+Technology&btnG")).thenReturn(scholarAuthorSearchNoProfile);
         when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Dr+Abel+Cape+Peninsula+University+of+Technology&btnG")).thenReturn(scholarAuthorSearchNoProfile);
 
         final List<String> expectedSubfieldsList = new ImmutableList.Builder<String>().build();
@@ -107,5 +108,21 @@ public class GoogleScholarServiceTest {
 
         assertEquals(expectedSubfieldsList, profiles.get(0).subFields);
         assertEquals(expectedPublicationsList, profiles.get(0).publications);
+    }
+
+    @Test
+    public void fetchProfiles_shouldIncludeInitialsInSearchWhenAuthorIsNotInGoogleScholar() {
+        final List<String> emptyStringList = new LinkedList<>();
+        final NrfAuthor testAuthor = new NrfAuthor("", "Abel", "S", "Dr", "Cape Peninsula University of Technology", "", emptyStringList, emptyStringList, emptyStringList);
+        final List<NrfAuthor> authors = new ImmutableList.Builder<NrfAuthor>().add(testAuthor).build();
+
+        final HttpClient mockedHttpClient = mock(HttpClient.class);
+        Locator.instance.registerSingleton(mockedHttpClient);
+
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Dr+S+Abel+Cape+Peninsula+University+of+Technology&btnG")).thenReturn(scholarAuthorSearchNoProfile);
+        when(mockedHttpClient.fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Dr+Abel+Cape+Peninsula+University+of+Technology&btnG")).thenReturn(scholarAuthorSearchNoProfile);
+        new GoogleScholarService().fetchProfiles(authors);
+
+        verify(mockedHttpClient, times(1)).fetchWebPage("https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Dr+Abel+Cape+Peninsula+University+of+Technology&btnG");
     }
 }

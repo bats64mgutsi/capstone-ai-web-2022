@@ -47,6 +47,7 @@ public class NrfListController {
             logger.log(Level.INFO, String.format("Flushed author %s %s", nrfAuthor.initials, nrfAuthor.surname));
         }
 
+        logger.log(Level.INFO, "System data successfully updated!");
         insertAllSubfields(allSubFields);
     }
 

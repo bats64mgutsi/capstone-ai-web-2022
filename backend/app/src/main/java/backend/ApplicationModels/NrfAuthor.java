@@ -25,7 +25,31 @@ public class NrfAuthor {
         this.specialisations=specialisations;
     }
 
-   // public static NrfAuthor fromJson(Map<String,Object>json){
+    @Override
+    public String toString() {
+        return "NrfAuthor{" +
+                "surname='" + surname + '\'' +
+                ", id='" + id + '\'' +
+                ", initials='" + initials + '\'' +
+                ", title='" + title + '\'' +
+                ", institution='" + institution + '\'' +
+                ", rating='" + rating + '\'' +
+                ", primaryResearchFields=" + primaryResearchFields +
+                ", secondaryResearchFields=" + secondaryResearchFields +
+                ", specialisations=" + specialisations +
+                '}';
+    }
 
-    //}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NrfAuthor author = (NrfAuthor) o;
+        return Objects.equals(surname, author.surname) && Objects.equals(id, author.id) && Objects.equals(initials, author.initials) && Objects.equals(title, author.title) && Objects.equals(institution, author.institution) && Objects.equals(rating, author.rating) && Objects.equals(primaryResearchFields, author.primaryResearchFields) && Objects.equals(secondaryResearchFields, author.secondaryResearchFields) && Objects.equals(specialisations, author.specialisations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(surname, id, initials, title, institution, rating, primaryResearchFields, secondaryResearchFields, specialisations);
+    }
 }
