@@ -1,5 +1,6 @@
 <template>  
     <div class="w-11/12 mt-2 mx-auto overflow-x-auto relative shadow-md sm:rounded-lg">
+        <!-- <div id="map"></div> -->
         <div class="flex flex-row justify-between items-center mb-3">
             <div class="bg-white dark:bg-gray-900 flex flex-row items-center">
                 <label for="table-search" class="sr-only">Search</label>
@@ -62,6 +63,20 @@ import store from "../../store";
 import { refreshData } from "../util";
 import { useRouter, useRoute } from "vue-router";
 import { InstitutionStat } from "../../core";
+// import { Map, View } from 'ol';
+// import TileLayer from 'ol/layer/Tile';
+// import OSM from 'ol/source/OSM';
+
+// const map = new Map({
+//     target: 'map',
+//     layers: [
+//         new TileLayer({ source: new OSM() })
+//     ],
+//     view: new View({
+//         center: [0, 0],
+//         zoom: 2
+//     })
+// });
 
 const stats = store.institutionStats;
 const router = useRouter();
