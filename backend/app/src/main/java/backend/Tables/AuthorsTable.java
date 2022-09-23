@@ -92,6 +92,24 @@ public class AuthorsTable extends SqlTable {
         return author;
 
     }
+    public List<Author> getAuthors (String institutionID) throws SQLException{
+        List<Author> authors = new ArrayList<>();
+        PreparedStatement stmt = db
+                .prepareStatement("SELECT * FROM authors WHERE institution = ?");
+        stmt.setString(1, institutionID);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String id = rs.getString(1);
+            String surname = rs.getString(2);
+            String initials = rs.getString(3);
+            String title = rs.getString(4);
+            String institution = rs.getString(5);
+            String rating = rs.getString(6);
+            Author author = new Author(id, surname, initials, title, institution, rating);
+            authors.add(author);
+        }
+        return authors;
+    }
 
     
 }
