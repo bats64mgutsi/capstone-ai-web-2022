@@ -11,6 +11,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.6.9",
     "apexcharts": "^3.35.5",
+    "buffer": "^6.0.3",
     "moment": "^2.29.4",
     "read-excel-file": "^5.4.7",
     "truncate": "^3.0.0",

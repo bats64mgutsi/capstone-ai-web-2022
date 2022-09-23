@@ -53,6 +53,6 @@ export interface IBackendClient {
     getAIFilters(): Promise<AIFilter[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
     uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]>;
-    login(args: AdminLoginArgs): Promise<LoginResult>;
+    login(args: AdminLoginArgs): Promise<void>;
     addFilter(args: AIFilterAddArgs): Promise<AIFilter>;
 }

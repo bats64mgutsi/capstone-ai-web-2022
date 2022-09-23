@@ -55,8 +55,8 @@ export class BackendClient implements IBackendClient {
     );
   }
 
-  async login(args: AdminLoginArgs): Promise<LoginResult> {
-    return await this.client.post<AdminLoginArgs, LoginResult>("/admin/login", args);
+  async login(args: AdminLoginArgs): Promise<void> {
+    await this.client.post<AdminLoginArgs, null>("/validate", args);
   }
 
   async addFilter(args: AIFilterAddArgs): Promise<AIFilter> {

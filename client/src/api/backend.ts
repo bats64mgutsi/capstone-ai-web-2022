@@ -16,8 +16,7 @@ import { LoginResult } from "../core/types";
  * @param config Configuration values of an api request
  */
 const injectAuthTokenHook: BeforeRequestHook = (config) => {
-    // const token = getAccessToken();
-    const token = 'YWRtaW46cm9vdA==';
+    const token = getAccessToken();
     if (token) {
         config.headers.append("Authorization", `Basic ${token}`);
     }

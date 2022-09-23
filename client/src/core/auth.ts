@@ -1,4 +1,4 @@
-const TOKEN_KEY = "token";
+const TOKEN_KEY = "aiWebToken";
 
 export function setAccessToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token);

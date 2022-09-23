@@ -34,14 +34,12 @@ const loginCreds = reactive({ email: "", password: "" });
 
 const login = async () => {
     try {
-        // Must uncomment
         await logAdminIn({
             email: loginCreds.email,
             password: loginCreds.password,
         });
 
-        // goToPage('authors');
-        router.push({ path: '/authors' });
+        router.push({ name: 'authors' });
     } catch (e) {
         handleError(e);
     }

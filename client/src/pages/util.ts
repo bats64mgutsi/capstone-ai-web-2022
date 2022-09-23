@@ -11,8 +11,10 @@ import {
     deleteAccessToken, 
     AdminLoginArgs, 
     AIFilterAddArgs,
-    AIFilter
+    AIFilter,
+    setAccessToken
 } from "../core";
+import { Buffer } from 'buffer';
 
 export const refreshData = async () => {
     if (!store.authors.value.length) {
@@ -137,8 +139,10 @@ export const handleError = (e: any) => {
 }
 
 export const logAdminIn = async (args: AdminLoginArgs) => {
-    const res = await backendClient().login(args);
-    store.setAdmin(res.user);
+    await backendClient().login(args);
+    const token = Buffer.from(`${args.email}:${args.password}`).toString('base64');
+    setAccessToken(token);
+    store.setAdmin({ email: args.email });
 }
 
 export const goToPage = (page: string) => {
