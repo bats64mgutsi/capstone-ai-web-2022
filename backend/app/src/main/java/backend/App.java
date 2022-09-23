@@ -3,10 +3,7 @@
  */
 package backend;
 
-import backend.http.AuthorizationHttpHandler;
-import backend.http.AuthorsHttpHandler;
-import backend.http.NrfListHttpHandler;
-import backend.http.StaticFileServer;
+import backend.http.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -28,6 +25,7 @@ public class App {
         server.createContext("/author", new AuthorsHttpHandler());
         server.createContext("/nrfList", new NrfListHttpHandler());
         server.createContext("/validate", new AuthorizationHttpHandler());
+        server.createContext("/institutions", new InstitutionsHttpHandler());
 
         final StaticFileServer staticFileServer = new StaticFileServer();
         server.createContext("/static", staticFileServer);

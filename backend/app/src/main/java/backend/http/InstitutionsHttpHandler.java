@@ -1,5 +1,6 @@
 package backend.http;
 
+import backend.ApplicationModels.PopulatedInstitution;
 import backend.DatabaseModels.Institution;
 import backend.Locator;
 import backend.controllers.InstitutionsController;
@@ -19,7 +20,7 @@ public class InstitutionsHttpHandler extends BaseHttpHandler {
     public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody)
             throws Exception {
         if (pathValues[1].equals("institutions")) {
-            final List<Institution> institutions = new LinkedList<>();
+            final List<PopulatedInstitution> institutions = new LinkedList<>();
             institutions.addAll(institutionsController.listInstitutions());
             return new Gson().toJson(institutions);
         } else {
