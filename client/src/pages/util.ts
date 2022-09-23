@@ -1,37 +1,126 @@
 import store from "../store";
 import { backendClient } from "../api";
-import { UploadNrfResearchersArgs, getAccessToken, deleteAccessToken, AdminLoginArgs, AIFilterAddArgs } from "../core";
+import { 
+    UploadNrfResearchersArgs,
+    getAccessToken, 
+    Author, 
+    AuthorProfile, 
+    InstitutionStat,
+    SubfieldStat,
+    CommunityStat,
+    deleteAccessToken, 
+    AdminLoginArgs, 
+    AIFilterAddArgs,
+    AIFilter
+} from "../core";
 
 export const refreshData = async () => {
     if (!store.authors.value.length) {
-        const authors = await backendClient().getAuthors();
-        store.setAuthors(authors);
+        await getAndSetAuthors();
+        // const authors = await getAuthorsFromBackend();
+        // setAuthorsInState(authors);
     }
 
     if (store.currentlySelectedAuthorId.value) {
-        const profile = await backendClient().getAuthorProfile(store.currentlySelectedAuthorId.value);
-        store.setCurrentlySelectedAuthorProfile(profile);
+        await getAndSetAuthorProfile(store.currentlySelectedAuthorId.value);
+        // const profile = await getAuthorProfileFromBackend(store.currentlySelectedAuthorId.value);
+        // setCurrentlySelectedAuthorProfileInState(profile);
     }
 
     if (!store.institutionStats.value.length) {
-        const stats = await backendClient().getInstitutionStats();
-        store.setInstitutionStats(stats);
+        await getAndSetInstitutionStats();
+        // const stats = await getInstitutionStatsFromBackend();
+        // setInstitutionStatsInState(stats);
     }
 
     if (!store.subfieldStats.value.length) {
-        const stats = await backendClient().getSubfieldStats();
-        store.setSubfieldStats(stats);
+        await getAndSetSubfieldStats();
+        const stats = await getSubfieldStatsFromBackend();
+        setSubfieldStatsInState(stats);
     }
 
     if (!store.communityStats.value.length) {
-        const stats = await backendClient().getCommunityStats();
-        store.setCommunityStats(stats);
+        const stats = await getCommunityStatsFromBackend();
+        setCommunityStatsInState(stats);
     }
 
     if (!store.aiFilters.value.length) {
-        const filters = await backendClient().getAIFilters();
-        store.setAIFilters(filters);
+        const stats = await getAIFiltersFromBackend();
+        setAIFiltersInState(stats);
     }
+}
+
+const getAndSetAuthors = async () => {
+    const authors = await getAuthorsFromBackend();
+    setAuthorsInState(authors);
+}
+
+const getAuthorsFromBackend = async () => {
+    return await backendClient().getAuthors();
+}
+
+const setAuthorsInState = (authors: Author[]) => {
+    store.setAuthors(authors);
+}
+
+const getAndSetAuthorProfile = async (authorId: string) => {
+    const profile = await getAuthorProfileFromBackend(authorId);
+    setCurrentlySelectedAuthorProfileInState(profile);
+}
+
+const getAuthorProfileFromBackend = async (authorId: string) => {
+    return await backendClient().getAuthorProfile(authorId);
+}
+
+const setCurrentlySelectedAuthorProfileInState = async (profile: AuthorProfile) => {
+    store.setCurrentlySelectedAuthorProfile(profile);
+}
+
+const getAndSetInstitutionStats = async () => {
+    const stats = await getInstitutionStatsFromBackend();
+    setInstitutionStatsInState(stats);
+}
+
+const getInstitutionStatsFromBackend = async () => {
+    return await backendClient().getInstitutionStats();
+}
+
+const setInstitutionStatsInState = (stats: InstitutionStat[]) => {
+    store.setInstitutionStats(stats);
+}
+
+const getAndSetSubfieldStats = async () => {
+    const stats = await getSubfieldStatsFromBackend();
+    setSubfieldStatsInState(stats);
+}
+
+const getSubfieldStatsFromBackend = async () => {
+    return await backendClient().getSubfieldStats();
+}
+
+const setSubfieldStatsInState = (stats: SubfieldStat[]) => {
+    store.setSubfieldStats(stats);
+}
+
+const getAndSetCommunityStats = async () => {
+    const stats = await getCommunityStatsFromBackend();
+    setCommunityStatsInState(stats);
+}
+
+const getCommunityStatsFromBackend = async () => {
+    return await backendClient().getCommunityStats();
+}
+
+const setCommunityStatsInState = (stats: CommunityStat[]) => {
+    store.setCommunityStats(stats);
+}
+
+const getAIFiltersFromBackend = async () => {
+    return await backendClient().getAIFilters();
+}
+
+const setAIFiltersInState = (filters: AIFilter[]) => {
+    store.setAIFilters(filters);
 }
 
 export const uploadNrfResearchers = async (data: UploadNrfResearchersArgs) => {
@@ -83,7 +172,12 @@ export const logAdminOut = () => {
     deleteAccessToken();
 }
 
+const getAndSetAIFilters = async () => {
+    const aiFilters = await getAIFiltersFromBackend();
+    setAIFiltersInState(aiFilters);
+}
+
 export const addFilter = async (args: AIFilterAddArgs) => {
-    const res = await backendClient().addFilter(args);
-    store.setAdmin(res.filter);
+    await backendClient().addFilter(args);
+    await getAndSetAIFilters();
 }

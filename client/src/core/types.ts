@@ -95,7 +95,7 @@ export interface AppMessage {
 }
 
 export interface AdminLoginArgs {
-    username: string;
+    email: string;
     password: string;
 }
 

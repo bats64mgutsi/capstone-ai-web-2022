@@ -8,8 +8,8 @@ import {
     InstitutionStat, 
     CommunityStat, 
     SubfieldStat,
-    FilterAddArgs,
-    Filter
+    AIFilterAddArgs,
+    AIFilter
 } from "../types";
 
 export interface IHttpClient {
@@ -50,9 +50,9 @@ export interface IBackendClient {
     getInstitutionStats(): Promise<InstitutionStat[]>;
     getSubfieldStats(): Promise<SubfieldStat[]>;
     getCommunityStats(): Promise<CommunityStat[]>;
-    getAIFilters(): Promise<Filter[]>;
+    getAIFilters(): Promise<AIFilter[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
     uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]>;
     login(args: AdminLoginArgs): Promise<LoginResult>;
-    addFilter(args: FilterAddArgs): Promise<Filter>;
+    addFilter(args: AIFilterAddArgs): Promise<AIFilter>;
 }
