@@ -18,18 +18,26 @@ import java.sql.SQLException;
 
 public abstract class LocatorSetup {
     public static void setupLocator() throws SQLException {
-        final String dbUsername = System.getenv("AI_WEB_DB_USERNAME");
-        final String dbPassword = System.getenv("AI_WEB_DB_PASSWORD");
+        String dbUsername = System.getenv("AI_WEB_DB_USERNAME");
+        String dbPassword = System.getenv("AI_WEB_DB_PASSWORD");
+        if (dbUsername == null || dbPassword == null) {
+            // Assume we in dev environment where bot credentials are 'root'.
+            dbUsername = "root";
+            dbPassword = "root";
+        }
+
         final Connection sqlCon = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", dbUsername, dbPassword);
 
         Locator.instance.registerSingleton(sqlCon);
         Locator.instance.registerSingleton(new AdminsTable());
         Locator.instance.registerSingleton(new AuthorsTable());
+        Locator.instance.registerSingleton(new AllAuthorsTable());
         Locator.instance.registerSingleton(new AuthorToSubfieldTable());
         Locator.instance.registerSingleton(new ContributionsTable());
         Locator.instance.registerSingleton(new PublicationsTable());
         Locator.instance.registerSingleton(new SubfieldsTable());
         Locator.instance.registerSingleton(new InstitutionsTable());
+        Locator.instance.registerSingleton(new AiKeywordsTable());
 
         Locator.instance.registerSingleton(new HttpClient());
 
