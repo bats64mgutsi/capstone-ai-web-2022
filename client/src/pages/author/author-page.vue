@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <button class="flex flex-row items-center bg-blue-600 hover:bg-blue-400 text-white rounded text-sm p-2 h-10" type="button" data-modal-toggle="large-modal">
+            <button v-if="isLoggedIn()" class="flex flex-row items-center bg-blue-600 hover:bg-blue-400 text-white rounded text-sm p-2 h-10" type="button" data-modal-toggle="large-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                 </svg>
@@ -150,7 +150,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import store from "../../store";
-import { refreshData, uploadNrfResearchers } from "../util";
+import { refreshData, uploadNrfResearchers, isLoggedIn } from "../util";
 import { useRouter, useRoute } from "vue-router";
 import readXlsxFile from 'read-excel-file';
 import truncate from 'truncate';

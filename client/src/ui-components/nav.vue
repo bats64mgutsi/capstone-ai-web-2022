@@ -45,6 +45,7 @@
 import store from "../store";
 import { isLoggedIn, logAdminOut, handleError } from "../pages/util";
 import { useRoute } from "vue-router";
+import { router } from "../router";
 
 const route = useRoute();
 
@@ -56,6 +57,7 @@ const logout = () => {
     try {
         logAdminOut();
         console.log('Logging admin out...');
+        router.push({ name: 'login' });
     } catch (e) {
         handleError(e);
     }

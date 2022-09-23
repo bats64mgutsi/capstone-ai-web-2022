@@ -130,8 +130,7 @@ export const uploadNrfResearchers = async (data: UploadNrfResearchersArgs) => {
 }
 
 export const isLoggedIn = () => {
-    return true;
-    // return getAccessToken() !== null;
+    return getAccessToken() !== null;
 }
 
 export const handleError = (e: any) => {
