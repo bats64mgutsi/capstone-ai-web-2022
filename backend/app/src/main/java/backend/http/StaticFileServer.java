@@ -35,7 +35,14 @@ public class StaticFileServer extends BaseHttpHandler {
 
     @Override
     protected Object getResponse(String[] pathValues, Headers requestHeaders, String body, StringBuilder mimeType) throws Exception {
-        final Path resourcesDir = Path.of("", "../client/dist/");
+        String resourcesDirString = "../client/dist/";
+        if(System.getProperty("user.dir").endsWith("/app")) {
+            // When run from the command line, the working directory is backend/app
+            // But when run from IntelliJ IDE, the working directory is backend/
+            resourcesDirString = "../"+ resourcesDirString;
+        }
+
+        final Path resourcesDir = Path.of("", resourcesDirString);
         final List<String> filteredPathValues = Arrays.stream(pathValues).filter(el -> !el.equals("static") && !el.isEmpty()).toList();
 
         String fileSubPath = String.join("/", filteredPathValues);

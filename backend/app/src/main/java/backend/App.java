@@ -35,8 +35,8 @@ public class App {
         server.createContext("/vite.svg", staticFileServer);
 
         server.setExecutor(threadPoolExecutor);
-        System.out.println("Server started at http://localhost:8001");
+        System.out.println("API started at http://localhost:8001");
+        System.out.println("Serving web application at http://localhost:8001/static");
         server.start();
     }
-
 }
