@@ -9,11 +9,10 @@ public class AiKeywordsTable extends SqlTable {
     public boolean insertKeyword(String keyword) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT INTO keywords (keyword) VALUES (?)");
+                "INSERT INTO aiKeywords (keyword) VALUES (?)");
         stmt.setString(1, keyword);
         inserted = stmt.executeUpdate() > 0;
         return inserted;
-
     }
 
     public List<String> listAll() throws SQLException {

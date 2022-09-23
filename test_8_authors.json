@@ -1,0 +1,203 @@
+[
+    {
+        "surname": "Abafe",
+        "initials": "OA",
+        "title": "Dr",
+        "institution": "Agricultural Research Council",
+        "rating": "Y",
+        "Column6": "2021-01-01",
+        "Column7": "2026-12-31",
+        "primaryResearchFields": [
+            "Agricultural sciences",
+            "Physical sciences"
+        ],
+        "secondaryResearchFields": [
+            "Analytical chemistry",
+            "Environmental health",
+            "Chemical engineering",
+            "Chemistry"
+        ],
+        "specialisations": [
+            "Analytical chemistry",
+            "Chromatographic analysis",
+            "Analytical environmental chemistry",
+            "Environmental toxicology",
+            "Ecotoxicology",
+            "Physical chemistry",
+            "Biorefineries"
+        ]
+    },
+    {
+        "surname": "Abbai",
+        "initials": "NS",
+        "title": "Prof",
+        "institution": "University of KwaZulu-Natal",
+        "rating": "C",
+        "Column6": "2022-01-01",
+        "Column7": "2027-12-31",
+        "primaryResearchFields": [
+            "Medical sciences: Basic",
+            "Medical sciences: Clinical"
+        ],
+        "secondaryResearchFields": [
+            "Soil and water sciences"
+        ],
+        "specialisations": [
+            "Biotechnology proteomics and molecular biology",
+            "HIV (Viruses)",
+            "Sexually transmitted diseases"
+        ]
+    },
+    {
+        "surname": "Abbas",
+        "initials": "M",
+        "title": "Prof",
+        "institution": "University of Pretoria",
+        "rating": "C",
+        "Column6": "2021-01-01",
+        "Column7": "2026-12-31",
+        "primaryResearchFields": [
+            "Mathematical sciences"
+        ],
+        "secondaryResearchFields": [
+            "Applied mathematics"
+        ],
+        "specialisations": [
+            "Optimization theory",
+            "Fuzzy logic",
+            "Best approximation",
+            "Fixed-point theory",
+            "Soft set theory",
+            "Nonlinear operator theory"
+        ]
+    },
+    {
+        "surname": "Abdool Karim",
+        "initials": "Q",
+        "title": "Prof",
+        "institution": "Centre for AIDS Programme of Research in South Africa",
+        "rating": "A",
+        "Column6": "2020-01-01",
+        "Column7": "2025-12-31",
+        "primaryResearchFields": [
+            "Health Sciences"
+        ],
+        "secondaryResearchFields": [
+            "Medical technologies",
+            "Infectious diseases",
+            "Epidemiology, incl. burden of disease",
+            "Health promotion and disease prevention"
+        ],
+        "specialisations": [
+            "HIV prevention",
+            "Bioethics",
+            "Public health interventions",
+            "Women - Diseases (HIV\/AIDS)",
+            "Adolescent health",
+            "HIV transmission",
+            "HIV and AIDS - Research",
+            "HIV and AIDS - Education",
+            "HIV and AIDS - Gender",
+            "Community-based health interventions"
+        ]
+    },
+    {
+        "surname": "Abel",
+        "initials": "S",
+        "title": "Dr",
+        "institution": "Cape Peninsula University of Technology",
+        "rating": "C",
+        "Column6": "2017-01-01",
+        "Column7": "2022-12-31",
+        "primaryResearchFields": [
+            "Health Sciences",
+            "Biological sciences"
+        ],
+        "secondaryResearchFields": [
+            "Nutrition",
+            "Health promotion and disease prevention",
+            "Biochemistry",
+            "Biotechnology"
+        ],
+        "specialisations": [
+            "Omega 3 fatty acids",
+            "Polyunsaturated fatty acids",
+            "Chemoprevention",
+            "Cancer prevention",
+            "Oxidative stress",
+            "Nutrition and Essential fatty acids",
+            "Cell membrane research",
+            "Herbal teas - South Africa"
+        ]
+    },
+    {
+        "surname": "Abelman",
+        "initials": "S",
+        "title": "Prof",
+        "institution": "University of the Witwatersrand",
+        "rating": "C",
+        "Column6": "2022-01-01",
+        "Column7": "2027-12-31",
+        "primaryResearchFields": [
+            "Mathematical sciences",
+            "Engineering sciences"
+        ],
+        "secondaryResearchFields": [
+            "Applied mathematics",
+            "Biophysics",
+            "Mathematics"
+        ],
+        "specialisations": [
+            "Numerical computation",
+            "Mathematical modelling",
+            "Numerical methods",
+            "Numerical modelling",
+            "Numerical mathematics",
+            "Mathematical biology"
+        ]
+    },
+    {
+        "surname": "Abiodun",
+        "initials": "BJ",
+        "title": "Prof",
+        "institution": "University of Cape Town",
+        "rating": "C",
+        "Column6": "2017-01-01",
+        "Column7": "2022-12-31",
+        "primaryResearchFields": [
+            "Physical sciences",
+            "Earth and marine sciences"
+        ],
+        "secondaryResearchFields": [
+            "Atmospheric science and meteorology"
+        ],
+        "specialisations": [
+            "Atmospheric modelling",
+            "Atmospheric chemistry",
+            "Climate change and meteorology",
+            "Dynamic meteorology",
+            "Numerical meteorology models",
+            "Air dispersion modelling",
+            "Climate change mitigation"
+        ]
+    },
+    {
+        "surname": "Abiye",
+        "initials": "TA",
+        "title": "Prof",
+        "institution": "University of the Witwatersrand",
+        "rating": "C",
+        "Column6": "2017-01-01",
+        "Column7": "2022-12-31",
+        "primaryResearchFields": [
+            "Earth and marine sciences"
+        ],
+        "secondaryResearchFields": [
+            "Geology",
+            "Hydrology"
+        ],
+        "specialisations": [
+            "Hydrogeology"
+        ]
+    }
+]

@@ -10,33 +10,49 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class BaseHttpHandler implements HttpHandler {
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String outString = "";
+        Object response = "";
+        StringBuilder mimeType = new StringBuilder("application/json");
         int statusCode = 200;
-        try {
-            String requestBody = IOUtils.toString(exchange.getRequestBody());
-            outString = getResponseAsString(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody);
-        } catch (Exception e) {
-            outString = e.toString();
-            statusCode = 500;
+        if(!exchange.getRequestMethod().equals("OPTIONS")) {
+            try {
+                String requestBody = IOUtils.toString(exchange.getRequestBody());
+                response = getResponse(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody, mimeType);
+            } catch (Exception e) {
+                response = e.toString();
+                System.err.println(e);
+                e.printStackTrace();
+                statusCode = 500;
+            }
         }
 
         System.out.printf("On new request to %s %s\n", (CharSequence) exchange.getRequestMethod(), (CharSequence) exchange.getRequestURI().getPath());
 
-        exchange.getResponseHeaders().add("Content-type", "application/json");
+        exchange.getResponseHeaders().add("Content-type", mimeType.toString());
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         exchange.getResponseHeaders().add("Access-Control-Max-Age", "86400");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
-        exchange.sendResponseHeaders(statusCode, outString.getBytes().length);
+
+        byte[] responseBytes = {};
+        if(response instanceof byte[]) {
+            responseBytes = (byte[]) response;
+        } else if(response instanceof String) {
+            responseBytes = ((String) response).getBytes();
+        }
+        exchange.sendResponseHeaders(statusCode, responseBytes.length);
 
         OutputStream out = exchange.getResponseBody();
-        out.write(outString.getBytes());
+        out.write(responseBytes);
         out.flush();
         out.close();
     }
 
-    protected abstract String getResponseAsString(String[] pathValues, Headers requestHeaders, String body) throws Exception;
+    protected Object getResponse(String[] pathValues, Headers requestHeaders, String body) throws Exception{
+        throw new UnsupportedOperationException();
+    }
+    protected Object getResponse(String[] pathValues, Headers requestHeaders, String body, StringBuilder outMimeType) throws Exception {
+        return getResponse(pathValues, requestHeaders, body);
+    }
 }

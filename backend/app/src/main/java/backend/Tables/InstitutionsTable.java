@@ -23,4 +23,19 @@ public class InstitutionsTable extends SqlTable {
 
         return out;
     }
+
+    public Institution getInstitution(String institutionId) throws SQLException {
+        PreparedStatement stmt = db
+                .prepareStatement("SELECT id, name, latitude, longitude FROM institutions WHERE id = ?");
+        stmt.setString(1, institutionId);
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        String id = rs.getString(1);
+        String name = rs.getString(2);
+        double latitude = rs.getDouble(3);
+        double longitude = rs.getDouble(4);
+        Institution institution = new Institution(id, name, latitude, longitude);
+        return institution;
+    }
+
 }
