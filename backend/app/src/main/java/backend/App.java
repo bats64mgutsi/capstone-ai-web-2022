@@ -6,6 +6,7 @@ package backend;
 import backend.http.AuthorizationHttpHandler;
 import backend.http.AuthorsHttpHandler;
 import backend.http.NrfListHttpHandler;
+import backend.http.StaticFileServer;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -27,9 +28,15 @@ public class App {
         server.createContext("/author", new AuthorsHttpHandler());
         server.createContext("/nrfList", new NrfListHttpHandler());
         server.createContext("/validate", new AuthorizationHttpHandler());
+
+        final StaticFileServer staticFileServer = new StaticFileServer();
+        server.createContext("/static", staticFileServer);
+        server.createContext("/assets", staticFileServer);
+        server.createContext("/vite.svg", staticFileServer);
+
         server.setExecutor(threadPoolExecutor);
-        System.out.println("Server started at http://localhost:8001");
+        System.out.println("API started at http://localhost:8001");
+        System.out.println("Serving web application at http://localhost:8001/static");
         server.start();
     }
-
 }

@@ -12,7 +12,7 @@ public class AuthorizationHttpHandler extends BaseHttpHandler {
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance.get(AuthorizationController.class);
 
     @Override
-    protected String getResponseAsString(String[] pathValues, Headers requestHeaders, String body) throws Exception {
+    protected String getResponse(String[] pathValues, Headers requestHeaders, String body) throws Exception {
         if(pathValues[1].equals("validate")) {
             final LoginCredentials loginCredentials = new Gson().fromJson(body, LoginCredentials.class);
             final boolean isValid = authorizationController.isAdmin(loginCredentials.username, loginCredentials.password);

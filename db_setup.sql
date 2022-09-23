@@ -1,11 +1,23 @@
+SELECT 'Setting up database aiweb...';
+
 CREATE DATABASE IF NOT EXISTS aiweb;
 USE aiweb;
+
+-- Clear database
+DROP TABLE IF EXISTS admins;
+DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS authorToSubfieldsMap;
+DROP TABLE IF EXISTS contributions;
+DROP TABLE IF EXISTS institutions;
+DROP TABLE IF EXISTS publications;
+DROP TABLE IF EXISTS subFields;
+DROP TABLE IF EXISTS aiKeywords;
 
 CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username varChar(255), hashedPassword varChar(255), PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authorToSubfieldsMap (authorId varChar(255), subfieldId varChar(255));
 CREATE TABLE IF NOT EXISTS contributions (publicationId varChar(255), contributorId varChar(255), type Enum("MainAuthor", "CoAuthor"));
-CREATE TABLE IF NOT EXISTS institutions (id varChar(255), name varChar(255), latitude Decimal(8, 8), longitude Decimal(8, 8));
+CREATE TABLE IF NOT EXISTS institutions (id varChar(255), name varChar(255), latitude numeric(10, 6), longitude numeric(10, 6));
 CREATE TABLE IF NOT EXISTS publications (id varChar(255), title varChar(255), citationCount int, externalLink varChar(500), year varChar(255));
 CREATE TABLE IF NOT EXISTS subFields (id varChar(255), name varChar(255));
 CREATE TABLE IF NOT EXISTS aiKeywords (keyword varChar(255));
@@ -53,4 +65,4 @@ INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sefako_makgath
 INSERT INTO institutions (id, name, latitude, longitude) VALUES ("university_of_mpumalanga", "University of Mpumalanga",25.4371 ,30.9818 );
 INSERT INTO institutions (id, name, latitude, longitude) VALUES ("sol_plaatje_university", "Sol Plaatje University",28.7450 ,24.7662 );
 
-INSERT INTO admins (username, hashedPassword) VALUES ("admin", "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2");
+SELECT 'Database setup complete!';

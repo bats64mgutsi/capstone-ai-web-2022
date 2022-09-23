@@ -20,7 +20,7 @@ public class AiKeywordsHttpHandler extends BaseHttpHandler {
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance.get(AuthorizationController.class);
 
     @Override
-    public String getResponseAsString(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
+    public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
         if(pathValues[1].equals("listAiKeywords")) {
             final List<String> aiKeywords = new LinkedList<>(aiKeywordsController.listAiKeywords());
             return new Gson().toJson(aiKeywords);
