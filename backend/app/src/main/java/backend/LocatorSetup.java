@@ -18,7 +18,10 @@ import java.sql.SQLException;
 
 public abstract class LocatorSetup {
     public static void setupLocator() throws SQLException {
-        final Connection sqlCon = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", "root", "root");
+        final String dbUsername = System.getenv("AI_WEB_DB_USERNAME");
+        final String dbPassword = System.getenv("AI_WEB_DB_PASSWORD");
+        final Connection sqlCon = DriverManager.getConnection("jdbc:mysql://localhost/aiweb", dbUsername, dbPassword);
+
         Locator.instance.registerSingleton(sqlCon);
         Locator.instance.registerSingleton(new AdminsTable());
         Locator.instance.registerSingleton(new AuthorsTable());
