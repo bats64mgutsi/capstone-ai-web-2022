@@ -36,6 +36,17 @@ public class ContributionsTable extends SqlTable {
        
         return contributions;
     }
+    public int getNoPublications(String authorId) throws SQLException{
+        PreparedStatement stmt = db.prepareStatement("SELECT * FROM contributions WHERE contributorId = ?");
+        stmt.setString(1, authorId);
+        int NoPublications = 0;
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()){
+            NoPublications++;
+        }
+       
+        return NoPublications;
+    }
     
     public boolean clearAll()throws SQLException{
         boolean cleared = false;
