@@ -2,6 +2,7 @@ package backend.Tables;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,13 +24,20 @@ public class AuthorsTable extends SqlTable {
     public boolean insertAuthor(Author author) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                String.format("INSERT INTO %s (id, surname, initials, title, institution, rating) VALUES (?, ?, ?, ?, ?, ?)", tableName));
+                String.format("INSERT INTO %s (id, surname, initials, title, institution, rating, yearAdded) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=?, institution=?, rating=?, yearAdded=?", tableName));
         stmt.setString(1, author.id);
         stmt.setString(2, author.surname);
         stmt.setString(3, author.initials);
         stmt.setString(4, author.title);
         stmt.setString(5, author.institution);
         stmt.setString(6, author.rating);
+        stmt.setString(7, author.yearAdded);
+
+        stmt.setString(8, author.title);
+        stmt.setString(9, author.institution);
+        stmt.setString(10, author.rating);
+        stmt.setString(11, author.yearAdded);
+
         inserted = stmt.executeUpdate() > 0;
         return inserted;
 
@@ -59,22 +67,7 @@ public class AuthorsTable extends SqlTable {
     }
 
     public List<Author> listAll() throws SQLException {
-        LinkedList<Author> out = new LinkedList<>();
-
-        Statement stmt = db.createStatement();
-        ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM %s", tableName));
-        while (rs.next()) {
-            String id = rs.getString(1);
-            String surname = rs.getString(2);
-            String initials = rs.getString(3);
-            String title = rs.getString(4);
-            String institution = rs.getString(5);
-            String rating = rs.getString(6);
-            Author author = new Author(id, surname, initials, title, institution, rating);
-            out.add(author);
-        }
-
-        return out;
+        return listAllCurrentYear();
     }
 
     public boolean clearAll() throws SQLException {
@@ -96,11 +89,9 @@ public class AuthorsTable extends SqlTable {
         String title = rs.getString(4);
         String institution = rs.getString(5);
         String rating = rs.getString(6);
+        String yearAdded = rs.getString(6);
 
-        Author author = new Author(id, surname, initials, title, institution, rating);
-
-        return author;
-
+        return new Author(id, surname, initials, title, institution, rating, yearAdded);
     }
     public List<Author> getAuthors (String institutionID) throws SQLException{
         List<Author> authors = new ArrayList<>();
@@ -115,11 +106,43 @@ public class AuthorsTable extends SqlTable {
             String title = rs.getString(4);
             String institution = rs.getString(5);
             String rating = rs.getString(6);
-            Author author = new Author(id, surname, initials, title, institution, rating);
+            String yearAdded = rs.getString(7);
+            Author author = new Author(id, surname, initials, title, institution, rating, yearAdded);
             authors.add(author);
         }
+
         return authors;
     }
 
-    
+    public List<Author> listAllPrevYear() throws SQLException {
+        int prevYear = Calendar.getInstance().get(Calendar.YEAR)-1;
+        return listAll(Integer.toString(prevYear));
+    };
+
+    private List<Author> listAllCurrentYear() throws SQLException {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        return listAll(Integer.toString(currentYear));
+    };
+
+    private List<Author> listAll(String year) throws SQLException {
+        LinkedList<Author> out = new LinkedList<>();
+
+        PreparedStatement stmt = db.prepareStatement(String.format("SELECT * FROM %s WHERE yearAdded=?", tableName));
+        stmt.setString(1, year);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String id = rs.getString(1);
+            String surname = rs.getString(2);
+            String initials = rs.getString(3);
+            String title = rs.getString(4);
+            String institution = rs.getString(5);
+            String rating = rs.getString(6);
+            String yearAdded = rs.getString(7);
+            Author author = new Author(id, surname, initials, title, institution, rating, yearAdded);
+            out.add(author);
+        }
+
+        return out;
+    }
 }

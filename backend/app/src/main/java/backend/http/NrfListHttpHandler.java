@@ -43,7 +43,8 @@ public class NrfListHttpHandler extends BaseHttpHandler {
 
             asyncSetAuthors = new Thread(() -> {
                 try {
-                    nrfListController.setAuthors(nrfAuthors);
+                    String year = requestHeaders.getFirst("Year");
+                    nrfListController.setAuthors(nrfAuthors, year);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

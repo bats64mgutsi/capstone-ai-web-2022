@@ -176,7 +176,7 @@ public class GoogleScholarService {
             try {
                 authorProfileDoc = getAuthorProfileDocTolerant(author, pageStart);
             } catch (NoGoogleScholarProfileException e) {
-                throw new RuntimeException(e);
+                logger.log(Level.INFO, String.format("Author %s, does not have a Google Scholar Profile", author.surname));
             }
 
             out.addAll(extractPublicationsFromProfileDoc(authorProfileDoc));
