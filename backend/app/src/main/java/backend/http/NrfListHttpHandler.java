@@ -62,13 +62,13 @@ public class NrfListHttpHandler extends BaseHttpHandler {
         }
     }
 
-    private Status check() {
+    private Status check() {//checks to see if the list is still updating
         boolean flag = getUpdateStatus();
         Status status = new Status(flag);
         return status;
     }
 
-    private boolean getUpdateStatus() {
+    private boolean getUpdateStatus() {   
         return asyncSetAuthors != null && asyncSetAuthors.isAlive();
     }
 }

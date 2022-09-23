@@ -92,7 +92,7 @@ public class AuthorsTable extends SqlTable {
         return author;
 
     }
-    public List<Author> getAuthors (String institutionID) throws SQLException{
+    public List<Author> getAuthors (String institutionID) throws SQLException{ //gets all the authors from a specific institution.
         List<Author> authors = new ArrayList<>();
         PreparedStatement stmt = db
                 .prepareStatement("SELECT * FROM authors WHERE institution = ?");
