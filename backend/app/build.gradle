@@ -10,9 +10,6 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-
-    // Apply this plugin to allow generating proto code
-    id 'com.google.protobuf' version '0.8.18'
 }
 
 repositories {
