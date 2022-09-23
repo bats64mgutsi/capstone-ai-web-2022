@@ -8,7 +8,7 @@ export interface Author {
 }
 
 export interface User {
-    email: string;
+    username: string;
 }
 
 export interface Publication {
@@ -88,7 +88,7 @@ export interface AppMessage {
 }
 
 export interface AdminLoginArgs {
-    email: string;
+    username: string;
     password: string;
 }
 

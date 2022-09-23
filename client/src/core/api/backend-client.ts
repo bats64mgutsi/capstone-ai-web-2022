@@ -25,11 +25,11 @@ export class BackendClient implements IBackendClient {
   }
 
   async getInstitutionStats(): Promise<InstitutionStat[]> {
-    return await this.client.get<InstitutionStat[]>(`/institutions/stats`);
+    return await this.client.get<InstitutionStat[]>(`/institutions`);
   }
   
   async getSubfieldStats(): Promise<SubfieldStat[]> {
-    return await this.client.get<SubfieldStat[]>(`/subfields/stats`);
+    return await this.client.get<SubfieldStat[]>(`/subfields`);
   }
   
   
@@ -61,5 +61,5 @@ export class BackendClient implements IBackendClient {
 
   async addFilter(args: AIFilterAddArgs): Promise<AIFilter> {
     return await this.client.post<AIFilterAddArgs, AIFilter>("/filters/add", args);
-  } 
+  }
 }

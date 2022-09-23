@@ -12,10 +12,12 @@
     "@grpc/grpc-js": "^1.6.9",
     "apexcharts": "^3.35.5",
     "buffer": "^6.0.3",
+    "echarts": "^5.3.3",
     "moment": "^2.29.4",
     "read-excel-file": "^5.4.7",
     "truncate": "^3.0.0",
     "vue": "^3.2.25",
+    "vue-echarts": "^6.2.3",
     "vue-router": "^4.0.16",
     "vue3-apexcharts": "^1.4.1"
   },

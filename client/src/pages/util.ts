@@ -139,9 +139,9 @@ export const handleError = (e: any) => {
 
 export const logAdminIn = async (args: AdminLoginArgs) => {
     await backendClient().login(args);
-    const token = Buffer.from(`${args.email}:${args.password}`).toString('base64');
+    const token = Buffer.from(`${args.username}:${args.password}`).toString('base64');
     setAccessToken(token);
-    store.setAdmin({ email: args.email });
+    store.setAdmin({ username: args.username });
 }
 
 export const goToPage = (page: string) => {
