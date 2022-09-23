@@ -37,7 +37,7 @@ public class ContributionsTable extends SqlTable {
         return contributions;
     }
     public int getNoPublications(String authorId) throws SQLException{
-        PreparedStatement stmt = db.prepareStatement("SELECT publicationId, contributorId, type FROM contributions WHERE contributorId = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT * FROM contributions WHERE contributorId = ?");
         stmt.setString(1, authorId);
         int NoPublications = 0;
         ResultSet rs = stmt.executeQuery();
