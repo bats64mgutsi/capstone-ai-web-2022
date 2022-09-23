@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <button class="flex flex-row items-center bg-blue-600 hover:bg-blue-400 text-white rounded text-sm p-2 h-10" type="button" data-modal-toggle="large-modal">
+            <button v-if="isLoggedIn()" class="flex flex-row items-center bg-blue-600 hover:bg-blue-400 text-white rounded text-sm p-2 h-10" type="button" data-modal-toggle="large-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                 </svg>
@@ -75,9 +75,8 @@
                                 
                                 <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
                                     <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                        Showing 
-                                        <span v-if="searchedContent.length >= 10" class="font-semibold text-gray-900 dark:text-white">1-10</span> 
-                                        <span v-else class="font-semibold text-gray-900 dark:text-white">1-{{searchedContent.length}}</span>
+                                        Showing
+                                        <span class="font-semibold text-gray-900 dark:text-white">{{getFirstRecordNumberForGivenPage(page)}}-{{getLastRecordNumberForGivenPage(page)}}</span>
                                         of <span class="font-semibold text-gray-900 dark:text-white">{{searchedContent.length}}</span>
                                     </span>
                                     <ul class="inline-flex items-center -space-x-px">
@@ -151,7 +150,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import store from "../../store";
-import { refreshData, uploadNrfResearchers } from "../util";
+import { refreshData, uploadNrfResearchers, isLoggedIn } from "../util";
 import { useRouter, useRoute } from "vue-router";
 import readXlsxFile from 'read-excel-file';
 import truncate from 'truncate';
@@ -306,19 +305,36 @@ const getContentWithFiltersApplied = (formattedContent: Array<Array<{columnName:
 };
 
 const setPageContent = () => {
-    pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), ((page.value - 1) * 10) + 10);
+    pageContent.value = searchedContent.value.slice(((page.value - 1) * 10), getValidEndIndex(searchedContent.value, ((page.value - 1) * 10) + 10));
+}
+
+const getValidEndIndex = (content: Array<Array<{ columnName: string; columnValue: any}>>, endIndex: number) => {
+    return (endIndex >= content.length) ? (content.length + 1) : endIndex;
 }
 
 const handlePreviousBtnClickEvent = () => {
-    console.log('Inside handlePreviousBtnClickEvent');
-    page.value = (page.value - 10) < 0 ? 1 : (page.value - 10);
+    page.value = ((page.value - 1) <= 0) ? page.value : (isValidPageNumber(page.value - 1) ? (page.value - 1) : page.value);
     setPageContent();
 }
 
 const handleNextBtnClickEvent = () => {
     console.log('Inside handleNextBtnClickEvent');
-    page.value = (page.value + 10) >= searchedContent.value.length ? page.value : (page.value + 10);
+    console.log('searchedContent.value: ', searchedContent.value);
+    console.log('searchedContent.value.length: ', searchedContent.value.length);
+    page.value = isValidPageNumber(page.value + 1) ? (page.value + 1) : page.value;
     setPageContent();
+}
+
+const isValidPageNumber = (pageNumber: number) => {
+    return getFirstRecordNumberForGivenPage(pageNumber) < searchedContent.value.length;
+}
+
+const getFirstRecordNumberForGivenPage = (page: number) => {
+    return ((page * 10) - 10) + 1;
+}
+
+const getLastRecordNumberForGivenPage = (page: number) => {
+    return (page * 10) > searchedContent.value.length ? searchedContent.value.length : (page * 10);
 }
 
 

@@ -8,14 +8,7 @@ export interface Author {
 }
 
 export interface User {
-    _id: string;
-    name: string;
     email: string;
-    title: string;
-    birthdate: Date;
-    isAdmin: boolean;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
 export interface Publication {
@@ -95,7 +88,7 @@ export interface AppMessage {
 }
 
 export interface AdminLoginArgs {
-    username: string;
+    email: string;
     password: string;
 }
 
@@ -106,5 +99,9 @@ export interface LoginResult {
 
 export interface AIFilter {
     id: string;
+    name: string;
+}
+
+export interface AIFilterAddArgs {
     name: string;
 }

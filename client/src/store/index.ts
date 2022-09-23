@@ -80,7 +80,7 @@ import {
  * to do with the managing of subfield stats in the system
  */
  function initSubfieldStats() {
-    const subfieldStats = ref<SubfieldStat[]>([]);
+    const subfieldStats = ref<Array<SubfieldStat>>([]);
     const currentlySelectedSubfieldStatId = ref<string>("");
   
     function setSubfieldStats(list: SubfieldStat[]) {

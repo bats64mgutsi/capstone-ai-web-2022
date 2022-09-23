@@ -20,11 +20,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "authors",
         component: AuthorPage
     },
-    // {
-    //     path: "/authors/:id",
-    //     name: "profile",
-    //     component: ProfilePage
-    // },
+    {
+        path: "/authors/:id",
+        name: "profile",
+        component: ProfilePage
+    },
     // {
     //     path: "/authors/search/field/:field/value/:value",
     //     name: "authors",
@@ -51,20 +51,15 @@ const routes: Array<RouteRecordRaw> = [
         component: FilterPage
     },
     {
-        path: "/impact",
-        name: "impact",
-        component: ImpactPage
-    },
-    {
-        path: "/admin/auth/login",
+        path: "/auth/login",
         name: "login",
         component: LoginPage
     },
-    {
-        path: "/admin/authors",
-        name: "authors",
-        component: AuthorPage
-    }
+    // {
+    //     path: "/admin/authors",
+    //     name: "authors",
+    //     component: AuthorPage
+    // }
 
 ];
 

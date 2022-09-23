@@ -3,10 +3,7 @@
  */
 package backend;
 
-import backend.http.AuthorizationHttpHandler;
-import backend.http.AuthorsHttpHandler;
-import backend.http.NrfListHttpHandler;
-import backend.http.StaticFileServer;
+import backend.http.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -22,21 +19,57 @@ public class App {
     public static void main(String[] args) throws IOException, InterruptedException, SQLException {
         LocatorSetup.setupLocator();
 
-        final HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
-        final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        final ApiServer apiServer = new ApiServer();
+        final WebServer webServer = new WebServer();
 
-        server.createContext("/author", new AuthorsHttpHandler());
-        server.createContext("/nrfList", new NrfListHttpHandler());
-        server.createContext("/validate", new AuthorizationHttpHandler());
+        apiServer.start();
+        webServer.start();
 
-        final StaticFileServer staticFileServer = new StaticFileServer();
-        server.createContext("/static", staticFileServer);
-        server.createContext("/assets", staticFileServer);
-        server.createContext("/vite.svg", staticFileServer);
+        apiServer.join();
+        webServer.join();
+    }
 
-        server.setExecutor(threadPoolExecutor);
-        System.out.println("API started at http://localhost:8001");
-        System.out.println("Serving web application at http://localhost:8001/static");
-        server.start();
+    static class ApiServer extends Thread {
+        @Override
+        public void run() {
+            final HttpServer server;
+            try {
+                server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+
+            server.createContext("/author", new AuthorsHttpHandler());
+            server.createContext("/nrfList", new NrfListHttpHandler());
+            server.createContext("/validate", new AuthorizationHttpHandler());
+            server.createContext("/institutions", new InstitutionsHttpHandler());
+
+            server.setExecutor(threadPoolExecutor);
+            System.out.println("API started at http://localhost:8001");
+            server.start();
+        }
+    }
+
+    static class WebServer extends Thread {
+        @Override
+        public void run() {
+            final HttpServer server;
+            try {
+                server = HttpServer.create(new InetSocketAddress("localhost", 8002), 0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+
+            final StaticFileServer staticFileServer = new StaticFileServer();
+            server.createContext("/", staticFileServer);
+
+            server.setExecutor(threadPoolExecutor);
+            System.out.println("Web Application available at http://localhost:8002");
+            server.start();
+        }
     }
 }

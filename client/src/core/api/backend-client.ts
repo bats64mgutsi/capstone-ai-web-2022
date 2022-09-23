@@ -7,7 +7,9 @@ import {
   LoginResult,
   InstitutionStat,
   SubfieldStat,
-  CommunityStat
+  CommunityStat,
+  AIFilterAddArgs,
+  AIFilter
 } from "../types";
 import { IHttpClient, IBackendClient } from "./types";
 
@@ -35,6 +37,10 @@ export class BackendClient implements IBackendClient {
     return await this.client.get<CommunityStat[]>(`/community/stats`);
   }
 
+  async getAIFilters(): Promise<AIFilter[]> {
+    return await this.client.get<AIFilter[]>(`/filters`);
+  }
+
   async getAuthorProfile(authorId: string): Promise<AuthorProfile> {
     return await this.client.get<AuthorProfile>(`/author/${authorId}`);
   }
@@ -49,7 +55,11 @@ export class BackendClient implements IBackendClient {
     );
   }
 
-  async login(args: AdminLoginArgs): Promise<LoginResult> {
-    return await this.client.post<AdminLoginArgs, LoginResult>("/admin/login", args);
+  async login(args: AdminLoginArgs): Promise<void> {
+    await this.client.post<AdminLoginArgs, null>("/validate", args);
   }
+
+  async addFilter(args: AIFilterAddArgs): Promise<AIFilter> {
+    return await this.client.post<AIFilterAddArgs, AIFilter>("/filters/add", args);
+  } 
 }
