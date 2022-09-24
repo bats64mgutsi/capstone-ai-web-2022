@@ -57,4 +57,19 @@ public class SubfieldsTable extends SqlTable {
        
         return cleared;
     }
+
+    public List<Subfield> listAll()throws SQLException{
+        List<Subfield> out = new ArrayList<>();
+        PreparedStatement stmt = db.prepareStatement(String.format("SELECT * FROM subfields"));
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String id = rs.getString(1);
+            String name = rs.getString(2);
+ 
+            Subfield subfield = new Subfield(id, name);
+            out.add(subfield);
+        }
+
+        return out;
+    }
 }

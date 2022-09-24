@@ -32,7 +32,19 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
+    public List<AuthorToSubfield> getAuthorSubfieldsBySubfield(String subfieldId) throws SQLException {
+        PreparedStatement stmt = db.prepareStatement("SELECT authorId FROM authorToSubfieldsMap WHERE subfieldId = ?");
+        stmt.setString(1, subfieldId);
+        ResultSet rs = stmt.executeQuery();
+        List<AuthorToSubfield> authorToSubfields = new ArrayList<>();
 
+        while (rs.next()) {
+            String authorId = rs.getString(1);
+            AuthorToSubfield authorToSubfield = new AuthorToSubfield(authorId, subfieldId);
+            authorToSubfields.add(authorToSubfield);
+        }
+        return authorToSubfields;
+    }
     public boolean clearAll() throws SQLException {
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement(
