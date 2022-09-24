@@ -15,28 +15,28 @@ import {
 import { Buffer } from 'buffer';
 
 export const refreshData = async () => {
-    if (!store.authors.value.length) {
-        await getAndSetAuthors();
-    }
+    // if (!store.authors.value.length) {
+    //     await getAndSetAuthors();
+    // }
 
-    if (store.currentlySelectedAuthorId.value) {
-        await getAndSetAuthorProfile(store.currentlySelectedAuthorId.value);
-    }
+    // if (store.currentlySelectedAuthorId.value) {
+    //     await getAndSetAuthorProfile(store.currentlySelectedAuthorId.value);
+    // }
 
-    if (!store.institutionStats.value.length) {
-        await getAndSetInstitutionStats();
-    }
+    // if (!store.institutionStats.value.length) {
+    //     await getAndSetInstitutionStats();
+    // }
 
-    if (!store.subfieldStats.value.length) {
-        await getAndSetSubfieldStats();
-        const stats = await getSubfieldStatsFromBackend();
-        setSubfieldStatsInState(stats);
-    }
+    // if (!store.subfieldStats.value.length) {
+    //     await getAndSetSubfieldStats();
+    //     const stats = await getSubfieldStatsFromBackend();
+    //     setSubfieldStatsInState(stats);
+    // }
 
-    if (!store.communityStats.value.length) {
-        const stats = await getCommunityStatsFromBackend();
-        setCommunityStatsInState(stats);
-    }
+    // if (!store.communityStats.value.length) {
+    //     const stats = await getCommunityStatsFromBackend();
+    //     setCommunityStatsInState(stats);
+    // }
 
     if (!store.aiFilters.value.length) {
         // const stats = await getAIFiltersFromBackend();
@@ -134,6 +134,7 @@ export const isLoggedIn = () => {
 }
 
 export const handleError = (e: any) => {
+    console.log('e: ', e.message);
     store.setMessage({ type: "error", message: e.message });
 }
 
@@ -181,6 +182,14 @@ const getAndSetAIFilters = async () => {
 }
 
 export const modifyFilters = async (modifiedFilters: string[]) => {
-    await backendClient().modifyFilters(modifiedFilters);
-    await getAndSetAIFilters();
+    // await backendClient().modifyFilters(modifiedFilters);
+    store.setAIFilters(modifiedFilters);
+}
+
+const lowerAndRemoveWhitespace = (text: string) => {
+    return text.trim().replace(/ +/g, ' ').toLowerCase();
+}
+
+export const isFilter = (filter: string) => {
+    return store.aiFilters.value.some(f => lowerAndRemoveWhitespace(f) === lowerAndRemoveWhitespace(filter));
 }
