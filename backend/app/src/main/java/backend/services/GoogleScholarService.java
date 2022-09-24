@@ -176,7 +176,7 @@ public class GoogleScholarService {
             try {
                 authorProfileDoc = getAuthorProfileDocTolerant(author, pageStart);
             } catch (NoGoogleScholarProfileException e) {
-                throw new RuntimeException(e);
+                logger.log(Level.INFO, String.format("Author %s, does not have a Google Scholar Profile", author.surname));
             }
 
             out.addAll(extractPublicationsFromProfileDoc(authorProfileDoc));
@@ -202,7 +202,7 @@ public class GoogleScholarService {
                 final Element citationsElement = tr.child(1);
                 final Element yearElement = tr.children().last().children().first();
 
-                int numberOfCitations = -1;
+                int numberOfCitations = 0;
                 String citationsText = citationsElement.text().replace("*", "");
                 if(!citationsText.isEmpty()) {
                     numberOfCitations = Integer.parseInt(citationsText);

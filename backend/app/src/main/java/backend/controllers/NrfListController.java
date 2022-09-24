@@ -34,7 +34,7 @@ public class NrfListController {
     final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
 
-    public void setAuthors(List<NrfAuthor> authors) throws SQLException {
+    public void setAuthors(List<NrfAuthor> authors, String year) throws SQLException {
         clearTables();
         final Set<Subfield> allSubFields = new HashSet<>();
         final List<GoogleScholarAuthorProfile> authorProfiles = googleScholarService.fetchProfiles(authors);
@@ -43,8 +43,8 @@ public class NrfListController {
             final NrfAuthor nrfAuthor = authors.get(iii);
             final GoogleScholarAuthorProfile authorProfile = authorProfiles.get(iii);
 
-            final String authorId = makeAuthorId(nrfAuthor);
-            insertAuthor(nrfAuthor, authorId);
+            final String authorId = makeAuthorId(nrfAuthor, year);
+            insertAuthor(nrfAuthor, authorId, year);
             insertAuthorPublications(authorProfile.publications, authorId);
             insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields);
 
@@ -85,22 +85,21 @@ public class NrfListController {
         }
     }
 
-    private String makeAuthorId(NrfAuthor author) {
-        return hashingService.flatten(new ImmutableList.Builder<String>().add(author.initials).add(author.surname).build());
+    private String makeAuthorId(NrfAuthor author, String year) {
+        return hashingService.flatten(new ImmutableList.Builder<String>().add(author.initials).add(author.surname).add(year).build());
     }
 
 
     private void clearTables() throws SQLException {
         authorToSubfieldTable.clearAll();
-        allAuthorsTable.clearAll();
         publicationsTable.clearAll();
         contributionsTable.clearAll();
         subfieldsTable.clearAll();
     }
 
-    private void insertAuthor(NrfAuthor nrfAuthor, String authorId) throws SQLException {
+    private void insertAuthor(NrfAuthor nrfAuthor, String authorId, String year) throws SQLException {
         final String institutionId = hashingService.flatten(new ImmutableList.Builder<String>().add(nrfAuthor.institution).build());
-        final Author author = new Author(authorId, nrfAuthor.surname, nrfAuthor.initials, nrfAuthor.title, institutionId, nrfAuthor.rating);
+        final Author author = new Author(authorId, nrfAuthor.surname, nrfAuthor.initials, nrfAuthor.title, institutionId, nrfAuthor.rating, year);
 
         allAuthorsTable.insertAuthor(author);
     }

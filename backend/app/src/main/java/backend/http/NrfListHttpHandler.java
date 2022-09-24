@@ -43,7 +43,8 @@ public class NrfListHttpHandler extends BaseHttpHandler {
 
             asyncSetAuthors = new Thread(() -> {
                 try {
-                    nrfListController.setAuthors(nrfAuthors);
+                    String year = requestHeaders.getFirst("Year");
+                    nrfListController.setAuthors(nrfAuthors, year);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -62,13 +63,13 @@ public class NrfListHttpHandler extends BaseHttpHandler {
         }
     }
 
-    private Status check() {
+    private Status check() {//checks to see if the list is still updating
         boolean flag = getUpdateStatus();
         Status status = new Status(flag);
         return status;
     }
 
-    private boolean getUpdateStatus() {
+    private boolean getUpdateStatus() {   
         return asyncSetAuthors != null && asyncSetAuthors.isAlive();
     }
 }
