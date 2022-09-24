@@ -15,8 +15,8 @@ DROP TABLE IF EXISTS subFields;
 DROP TABLE IF EXISTS aiKeywords;
 
 CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username varChar(255), hashedPassword varChar(255), PRIMARY KEY(id));
-CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, PRIMARY KEY(id));
-CREATE TABLE IF NOT EXISTS allAuthors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, yearAdded varChar(255), PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS allAuthors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, yearAdded varChar(255), PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authorToSubfieldsMap (authorId varChar(255), subfieldId varChar(255));
 CREATE TABLE IF NOT EXISTS contributions (publicationId varChar(255), contributorId varChar(255), type Enum("MainAuthor", "CoAuthor"));
 CREATE TABLE IF NOT EXISTS institutions (id varChar(255), name varChar(255), latitude numeric(10, 6), longitude numeric(10, 6));
