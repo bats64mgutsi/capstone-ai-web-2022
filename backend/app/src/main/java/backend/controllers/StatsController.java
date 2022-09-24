@@ -12,14 +12,16 @@ import java.util.*;
 public class StatsController {
     final AuthorsTable authorsTable = (AuthorsTable) Locator.instance.get(AuthorsTable.class);
     final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
+    final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
 
     public Stats computeStats() throws SQLException {
         final List<Author> currentYearAuthors = authorsTable.listAll();
         final List<Author> prevYearAuthors = authorsTable.listAllPrevYear();
 
-        final List<Publication> allPublications = publicationsTable.listAll();
-        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        final List<Publication> allPublications = listPublicationsForAuthors(currentYearAuthors);
+        allPublications.addAll(listPublicationsForAuthors(prevYearAuthors));
 
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         return new Stats(
             currentYearAuthors.size(),
             prevYearAuthors.size(),
@@ -30,20 +32,31 @@ public class StatsController {
             tallyCitationsUpTo(allPublications, currentYear-1),
 
             countAuthorsWithRating(currentYearAuthors, "A"),
-            countAuthorsWithRating(prevYearAuthors, "A"),
-
             countAuthorsWithRating(currentYearAuthors, "B"),
-            countAuthorsWithRating(prevYearAuthors, "B"),
-
             countAuthorsWithRating(currentYearAuthors, "C"),
-            countAuthorsWithRating(prevYearAuthors, "C"),
-
             countAuthorsWithRating(currentYearAuthors, "P"),
-            countAuthorsWithRating(prevYearAuthors, "P"),
-
             countAuthorsWithRating(currentYearAuthors, "Y"),
+
+            countAuthorsWithRating(prevYearAuthors, "A"),
+            countAuthorsWithRating(prevYearAuthors, "B"),
+            countAuthorsWithRating(prevYearAuthors, "C"),
+            countAuthorsWithRating(prevYearAuthors, "P"),
             countAuthorsWithRating(prevYearAuthors, "Y")
         );
+    }
+
+    private List<Publication> listPublicationsForAuthors(List<Author> authors) throws SQLException {
+        final List<Contribution> contributions = new LinkedList<>();
+        for(final Author author: authors) {
+            contributions.addAll(contributionsTable.listForAuthor(author.id));
+        }
+
+        final List<Publication> publications = new LinkedList<>();
+        for(final Contribution contribution: contributions) {
+            publications.add(publicationsTable.getItemWithId(contribution.publicationId));
+        }
+
+        return publications;
     }
 
     private int countAuthorsWithRating(List<Author> authors, String withRating) {

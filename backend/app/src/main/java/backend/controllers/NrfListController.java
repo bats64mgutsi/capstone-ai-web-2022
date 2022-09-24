@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class NrfListController {
     final Logger logger = Logger.getLogger(NrfListController.class.getName());
@@ -35,7 +36,7 @@ public class NrfListController {
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
 
     public void setAuthors(List<NrfAuthor> authors, String year) throws SQLException {
-        clearTables();
+        clearTables(year);
         final Set<Subfield> allSubFields = new HashSet<>();
         final List<GoogleScholarAuthorProfile> authorProfiles = googleScholarService.fetchProfiles(authors);
 
@@ -46,7 +47,7 @@ public class NrfListController {
             final String authorId = makeAuthorId(nrfAuthor, year);
             insertAuthor(nrfAuthor, authorId, year);
             insertAuthorPublications(authorProfile.publications, authorId);
-            insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields);
+            insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields, year);
 
             logger.log(Level.INFO, String.format("Flushed author %s %s", nrfAuthor.initials, nrfAuthor.surname));
         }
@@ -58,11 +59,11 @@ public class NrfListController {
     }
 
     /***
-     * Moves authors from AllAuthorsTable table to the Authors table.
+     * Moves authors from AllAuthorsTable table to the Authors table for given year.
      */
     public void filterAndMoveAuthors() throws SQLException {
         authorsTable.clearAll();
-        final List<Author> allAuthors = allAuthorsTable.listAll();
+        final List<Author> allAuthors = Stream.concat(allAuthorsTable.listAll().stream(), allAuthorsTable.listAllPrevYear().stream()).toList();
         final List<String> allInstitutionIds = institutionsTable.listAll().stream().map(el-> el.id).toList();
         final List<String> aiKeywords = aiKeywordsTable.listAll();
 
@@ -89,12 +90,15 @@ public class NrfListController {
         return hashingService.flatten(new ImmutableList.Builder<String>().add(author.initials).add(author.surname).add(year).build());
     }
 
+    private String makeSubfieldId(String subFieldStr, String year) {
+        return hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).add(year).build());
+    }
 
-    private void clearTables() throws SQLException {
-        authorToSubfieldTable.clearAll();
+
+    private void clearTables(String year) throws SQLException {
+        authorToSubfieldTable.clearAllForYear(year);
         publicationsTable.clearAll();
         contributionsTable.clearAll();
-        subfieldsTable.clearAll();
     }
 
     private void insertAuthor(NrfAuthor nrfAuthor, String authorId, String year) throws SQLException {
@@ -120,7 +124,7 @@ public class NrfListController {
         contributionsTable.setContribution(contribution);
     }
 
-    private void insertAuthorSubfields(NrfAuthor author, GoogleScholarAuthorProfile profile, String authorId, Set<Subfield> allSubfields) throws SQLException {
+    private void insertAuthorSubfields(NrfAuthor author, GoogleScholarAuthorProfile profile, String authorId, Set<Subfield> allSubfields, String year) throws SQLException {
         final List<String> authorSubfields = new LinkedList<>();
         authorSubfields.addAll(author.primaryResearchFields);
         authorSubfields.addAll(author.secondaryResearchFields);
@@ -128,7 +132,7 @@ public class NrfListController {
         authorSubfields.addAll(profile.subFields);
 
         for (String subFieldStr : authorSubfields) {
-            final String subFieldId = hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).build());
+            final String subFieldId = makeSubfieldId(subFieldStr, year);
             final Subfield subField = new Subfield(subFieldId, subFieldStr);
             allSubfields.add(subField);
 

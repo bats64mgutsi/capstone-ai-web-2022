@@ -2,6 +2,7 @@ package backend.Tables;
 
 import java.sql.*;
 import java.util.*;
+
 import backend.DatabaseModels.Subfield;
 
 import backend.DatabaseModels.AuthorToSubfield;
@@ -10,8 +11,7 @@ public class AuthorToSubfieldTable extends SqlTable {
 
     public boolean insertAuthorToSubfield(AuthorToSubfield entry) throws SQLException {
         boolean inserted = false;
-        PreparedStatement stmt = db.prepareStatement(
-                "INSERT into authorToSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
+        PreparedStatement stmt = db.prepareStatement("INSERT into authorToSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
         stmt.setString(1, entry.authorId);
         stmt.setString(2, entry.subfieldId);
         inserted = stmt.executeUpdate() > 0;
@@ -33,11 +33,10 @@ public class AuthorToSubfieldTable extends SqlTable {
         return authorToSubfields;
     }
 
-    public boolean clearAll() throws SQLException {
+    public boolean clearAllForYear(String year) throws SQLException {
         boolean cleared = false;
-        PreparedStatement stmt = db.prepareStatement(
-                "DELETE FROM authorToSubfieldsMap");
-
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM authorToSubfieldsMap WHERE subfieldId LIKE ?");
+        stmt.setString(1, "%" + year);
         cleared = stmt.executeUpdate() > 0;
 
         return cleared;

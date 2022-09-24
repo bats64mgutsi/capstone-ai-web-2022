@@ -66,6 +66,11 @@ public class AuthorsTable extends SqlTable {
         return deleted;
     }
 
+    /**
+     * Returns all authors for the current year.
+     * @return
+     * @throws SQLException
+     */
     public List<Author> listAll() throws SQLException {
         return listAllCurrentYear();
     }

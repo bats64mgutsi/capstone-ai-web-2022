@@ -1,9 +1,7 @@
 package backend;
 
 import backend.Tables.*;
-import backend.controllers.AuthorizationController;
-import backend.controllers.AuthorsController;
-import backend.controllers.NrfListController;
+import backend.controllers.*;
 import backend.http.AuthorizationHttpHandler;
 import backend.http.AuthorsHttpHandler;
 import backend.http.NrfListHttpHandler;
@@ -48,5 +46,8 @@ public abstract class LocatorSetup {
         Locator.instance.registerSingleton(new AuthorizationController());
         Locator.instance.registerSingleton(new AuthorsController());
         Locator.instance.registerSingleton(new NrfListController());
+        Locator.instance.registerSingleton(new InstitutionsController());
+        Locator.instance.registerSingleton(new StatsController());
+        Locator.instance.registerSingleton(new AiKeywordsController());
     }
 }

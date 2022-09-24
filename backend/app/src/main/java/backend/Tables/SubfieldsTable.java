@@ -11,9 +11,10 @@ public class SubfieldsTable extends SqlTable {
     public boolean insertSubfield(Subfield subfield) throws SQLException{
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
-                "INSERT into subFields (id, name) VALUES (?, ?)");
+                "INSERT into subFields (id, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name=?");
         stmt.setString(1, subfield.id);
         stmt.setString(2, subfield.name);
+        stmt.setString(3, subfield.name);
 
         inserted = stmt.executeUpdate() > 0;
        
