@@ -43,6 +43,7 @@ public class App {
 
             server.createContext("/author", new AuthorsHttpHandler());
             server.createContext("/nrfList", new NrfListHttpHandler());
+            server.createContext("/status", new NrfListHttpHandler());
             server.createContext("/validate", new AuthorizationHttpHandler());
             server.createContext("/institutions", new InstitutionsHttpHandler());
             server.createContext("/setFilters", new AiKeywordsHttpHandler());

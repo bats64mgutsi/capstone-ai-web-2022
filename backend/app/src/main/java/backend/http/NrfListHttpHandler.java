@@ -55,7 +55,6 @@ public class NrfListHttpHandler extends BaseHttpHandler {
             return new Gson().toJson(nrfAuthors);
         } else if (pathValues[1].equals("status")) {
             return new Gson().toJson(check());
-
         }
 
         else {
