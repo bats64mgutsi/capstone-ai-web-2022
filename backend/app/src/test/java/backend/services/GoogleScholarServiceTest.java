@@ -67,7 +67,7 @@ public class GoogleScholarServiceTest {
         final List<GoogleScholarPublication> expectedPublicationsListContains = new ImmutableList.Builder<GoogleScholarPublication>()
                 .add(new GoogleScholarPublication(new Publication("", 240, "Computer-based, personalized cognitive training versus classical computer games: a randomized double-blind prospective trial of cognitive stimulation", "2011", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&pagesize=100&citation_for_view=MlXzlYQAAAAJ:MXK_kJrjxJIC"), new ImmutableList.Builder<String>().build()))
                 .add(new GoogleScholarPublication(new Publication("", 9, "Emotion Elicitation in a Computerized Gambling Game", "", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&pagesize=100&citation_for_view=MlXzlYQAAAAJ:4JMBOYKVnBMC"), new ImmutableList.Builder<String>().build()))
-                .add(new GoogleScholarPublication(new Publication("", -1, "2012 IEEE 27 th Convention of Electrical and Electronics Engineers in Israel", "", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&cstart=100&pagesize=100&citation_for_view=MlXzlYQAAAAJ:hqOjcs7Dif8C"), new ImmutableList.Builder<String>().build())).build();
+                .add(new GoogleScholarPublication(new Publication("", 0, "2012 IEEE 27 th Convention of Electrical and Electronics Engineers in Israel", "", "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=MlXzlYQAAAAJ&cstart=100&pagesize=100&citation_for_view=MlXzlYQAAAAJ:hqOjcs7Dif8C"), new ImmutableList.Builder<String>().build())).build();
 
         final List<GoogleScholarAuthorProfile> profiles = new GoogleScholarService().fetchProfiles(authors);
 

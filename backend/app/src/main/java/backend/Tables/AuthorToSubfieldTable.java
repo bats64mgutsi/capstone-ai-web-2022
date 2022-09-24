@@ -21,7 +21,6 @@ public class AuthorToSubfieldTable extends SqlTable {
 
     public List<AuthorToSubfield> getAuthorSubfields(String authorId) throws SQLException {
         PreparedStatement stmt = db.prepareStatement("SELECT subFieldId FROM authorToSubfieldsMap WHERE authorId = ?");
-        List<Subfield> subfields = new ArrayList<>();
         stmt.setString(1, authorId);
         ResultSet rs = stmt.executeQuery();
         List<AuthorToSubfield> authorToSubfields = new ArrayList<>();
