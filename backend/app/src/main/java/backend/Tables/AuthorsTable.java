@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import backend.DatabaseModels.Author;
-import backend.DatabaseModels.Publication;
-import backend.DatabaseModels.Subfield;
 
 public class AuthorsTable extends SqlTable {
     final String tableName;
