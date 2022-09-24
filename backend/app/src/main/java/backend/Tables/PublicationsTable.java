@@ -33,7 +33,7 @@ public class PublicationsTable extends SqlTable {
                     int citationCount = rs.getInt(3);
                     String externalLink = rs.getString(4);
                     String year = rs.getString(5);
-                    Publication publication = new Publication(id, citationCount, title, year, externalLink)
+                    Publication publication = new Publication(id, citationCount, title, year, externalLink);
                     publications.add(publication);
                 }
                 return publications;
