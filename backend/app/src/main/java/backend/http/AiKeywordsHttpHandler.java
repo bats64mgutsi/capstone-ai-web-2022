@@ -21,10 +21,10 @@ public class AiKeywordsHttpHandler extends BaseHttpHandler {
 
     @Override
     public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody) throws Exception {
-        if(pathValues[1].equals("listAiKeywords")) {
+        if(pathValues[1].equals("filters")) {
             final List<String> aiKeywords = new LinkedList<>(aiKeywordsController.listAiKeywords());
             return new Gson().toJson(aiKeywords);
-        } else if(pathValues[1].equals("setAiKeywords")) {
+        } else if(pathValues[1].equals("setFilters")) {
             final String basicAuthString = requestHeaders.getFirst("Authorization");
             final String[] credentials = BasicAuth.getUsernameAndPassword(basicAuthString);
             final boolean isAdmin = authorizationController.isAdmin(credentials[0], credentials[1]);
