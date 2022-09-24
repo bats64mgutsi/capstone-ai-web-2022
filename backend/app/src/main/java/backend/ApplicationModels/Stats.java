@@ -17,14 +17,14 @@ public class Stats {
     int ratedCPreviousYear;
     int ratedPPreviousYear;
     int ratedYPreviousYear;
-    boolean trend; //false = less than last year
+    //boolean// trend; //false = less than last year
 
     public Stats(int noAuthorsCurrentYear, int noAuthorsPreviousYear, int noPublicationsCurrentYear,
             int noPublicationsPreviousYear, int noCitationsCurrentYear, int noCitationsPreviousYear,
             int ratedACurrentYear,
             int ratedBCurrentYear, int ratedCCurrentYear, int ratedPCurrentYear, int ratedYCurrentYear,
             int ratedAPreviousYear, int ratedBPreviousYear, int ratedCPreviousYear, int ratedPPreviousYear,
-            int ratedYPreviousYear, boolean trend) {
+            int ratedYPreviousYear) {
         this.noAuthorsCurrentYear = noAuthorsCurrentYear;
         this.noAuthorsPreviousYear = noAuthorsPreviousYear;
         this.noPublicationsCurrentYear = noPublicationsCurrentYear;
@@ -46,6 +46,6 @@ public class Stats {
         this.ratedPPreviousYear = ratedPPreviousYear;
         this.ratedYPreviousYear = ratedYPreviousYear;
         this.ratedYCurrentYear = ratedYCurrentYear;
-        this.trend=trend;
+       // this.trend=trend;
     }
 }
