@@ -2,9 +2,6 @@ package backend;
 
 import backend.Tables.*;
 import backend.controllers.*;
-import backend.http.AuthorizationHttpHandler;
-import backend.http.AuthorsHttpHandler;
-import backend.http.NrfListHttpHandler;
 import backend.httpClient.HttpClient;
 import backend.services.GoogleScholarService;
 import backend.services.HashingService;
@@ -36,6 +33,7 @@ public abstract class LocatorSetup {
         Locator.instance.registerSingleton(new SubfieldsTable());
         Locator.instance.registerSingleton(new InstitutionsTable());
         Locator.instance.registerSingleton(new AiKeywordsTable());
+        Locator.instance.registerSingleton(new KeyValuesTable());
 
         Locator.instance.registerSingleton(new HttpClient());
 
@@ -45,10 +43,10 @@ public abstract class LocatorSetup {
 
         Locator.instance.registerSingleton(new AuthorizationController());
         Locator.instance.registerSingleton(new AuthorsController());
-        Locator.instance.registerSingleton(new NrfListController());
         Locator.instance.registerSingleton(new InstitutionsController());
         Locator.instance.registerSingleton(new AiKeywordsController());
         Locator.instance.registerSingleton(new PopulatedSubfieldsController());
+        Locator.instance.registerSingleton(new NrfListController());
         Locator.instance.registerSingleton(new StatsController());
     }
 }

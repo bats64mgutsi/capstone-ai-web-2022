@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -29,6 +30,9 @@ public class HttpClient {
                     throw new RuntimeException(ex);
                 }
             }
+        } catch(SocketTimeoutException e) {
+            // Retry
+            return fetchWebPage(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

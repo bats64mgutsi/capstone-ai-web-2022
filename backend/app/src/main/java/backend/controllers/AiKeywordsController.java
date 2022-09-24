@@ -20,6 +20,6 @@ public class AiKeywordsController {
             aiKeywordsTable.insertKeyword(keyword);
         }
 
-        nrfListController.filterAndMoveAuthors();
+        nrfListController.filterAndMoveAuthors(Calendar.getInstance().get(Calendar.YEAR));
     }
 }
