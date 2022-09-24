@@ -11,9 +11,12 @@ public class AuthorToSubfieldTable extends SqlTable {
 
     public boolean insertAuthorToSubfield(AuthorToSubfield entry) throws SQLException {
         boolean inserted = false;
-        PreparedStatement stmt = db.prepareStatement("INSERT into authorToSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
+        PreparedStatement stmt = db.prepareStatement("INSERT into authorToSubfieldsMap (authorID, subFieldID) SELECT ?, ? WHERE NOT EXISTS (SELECT * FROM authorToSubfieldsMap WHERE authorID=? AND subFieldID=?)");
         stmt.setString(1, entry.authorId);
         stmt.setString(2, entry.subfieldId);
+
+        stmt.setString(3, entry.authorId);
+        stmt.setString(4, entry.subfieldId);
         inserted = stmt.executeUpdate() > 0;
 
         return inserted;
@@ -55,4 +58,5 @@ public class AuthorToSubfieldTable extends SqlTable {
 
         return cleared;
     }
+
 }

@@ -23,22 +23,21 @@ public class PopulatedSubfieldsController {
     public List<PopulatedSubfield> listSubfields() throws SQLException {
         List<String> aiKeywords = aiKeywordsTable.listAll();
         List<PopulatedSubfield> populatedSubfields = new ArrayList<>();
-        for (String k : aiKeywords) {
+        for (String name: aiKeywords) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             int previousYear = currentYear-1;
             List<String> idUnits = new ArrayList<>();
-            idUnits.add(k);
+            idUnits.add(name);
             idUnits.add(Integer.toString(currentYear));
 
             String id = hashingService.flatten(idUnits);
             List<String> idUnits2 = new ArrayList<>();
-            idUnits2.add(k);
+            idUnits2.add(name);
             idUnits2.add(Integer.toString(previousYear));
 
             String id2 = hashingService.flatten(idUnits2);
-            String name = k;
-            
-            Subfield subfield = new Subfield(hashingService.flatten(k), name);
+
+            Subfield subfield = new Subfield(hashingService.flatten(name), name);
             List<AuthorToSubfield> authors = authorToSubfieldTable.getAuthorSubfieldsBySubfield(id);
             List<AuthorToSubfield> authors2 = authorToSubfieldTable.getAuthorSubfieldsBySubfield(id2);
 
