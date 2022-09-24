@@ -11,7 +11,6 @@ import java.util.*;
 public class InstitutionsController {
     final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
     final AuthorsTable authorsTable = (AuthorsTable) Locator.instance.get(AuthorsTable.class);
-    final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
     final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
 
     public List<PopulatedInstitution> listInstitutions() throws SQLException {
@@ -24,7 +23,7 @@ public class InstitutionsController {
             institutionIds.add(institutionId);
         }
         for (int j = 0; j < institutionIds.size(); j++) { // loops through all the institutions and gets a list of
-                                                          // authors for every intistution.
+                                                          // authors for every institution.
             int noAuthors = 0;
             int noPublications = 0;
             authors = authorsTable.getAuthors(institutionIds.get(j));

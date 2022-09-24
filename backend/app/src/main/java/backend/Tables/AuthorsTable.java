@@ -96,11 +96,20 @@ public class AuthorsTable extends SqlTable {
 
         return new Author(id, surname, initials, title, institution, rating, yearAdded);
     }
+
+    /**
+     * Returns current year authors from the institution with the given id.
+     * @param institutionID
+     * @return
+     * @throws SQLException
+     */
     public List<Author> getAuthors (String institutionID) throws SQLException{ //gets all the authors from a specific institution.
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         List<Author> authors = new ArrayList<>();
         PreparedStatement stmt = db
-                .prepareStatement("SELECT * FROM authors WHERE institution = ?");
+                .prepareStatement("SELECT * FROM authors WHERE institution = ? AND id LIKE ?");
         stmt.setString(1, institutionID);
+        stmt.setString(2, "%"+currentYear);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             String id = rs.getString(1);
