@@ -24,12 +24,26 @@ public class PopulatedSubfieldsController {
         List<String> aiKeywords = aiKeywordsTable.listAll();
         List<PopulatedSubfield> populatedSubfields = new ArrayList<>();
         for (String k : aiKeywords) {
-            String id = hashingService.flatten(k);
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            int previousYear = currentYear-1;
+            List<String> idUnits = new ArrayList<>();
+            idUnits.add(k);
+            idUnits.add(Integer.toString(currentYear));
+
+            String id = hashingService.flatten(idUnits);
+            List<String> idUnits2 = new ArrayList<>();
+            idUnits2.add(k);
+            idUnits2.add(Integer.toString(previousYear));
+
+            String id2 = hashingService.flatten(idUnits2);
             String name = k;
-            Subfield subfield = new Subfield(id, name);
-            List<AuthorToSubfield> authors = authorToSubfieldTable.getAuthorSubfieldsBySubfield(subfield.id);
+            
+            Subfield subfield = new Subfield(hashingService.flatten(k), name);
+            List<AuthorToSubfield> authors = authorToSubfieldTable.getAuthorSubfieldsBySubfield(id);
+            List<AuthorToSubfield> authors2 = authorToSubfieldTable.getAuthorSubfieldsBySubfield(id2);
+
             int numberOfAuthorsCurrentYear = authors.size();
-            int numberOfAuthorsPrevYear = authors.size();
+            int numberOfAuthorsPrevYear = authors2.size();
             PopulatedSubfield populatedSubfield = new PopulatedSubfield(subfield, numberOfAuthorsCurrentYear,
                     numberOfAuthorsPrevYear);
             populatedSubfields.add(populatedSubfield);
