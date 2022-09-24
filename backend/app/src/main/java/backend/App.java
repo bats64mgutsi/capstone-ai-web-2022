@@ -45,6 +45,9 @@ public class App {
             server.createContext("/nrfList", new NrfListHttpHandler());
             server.createContext("/validate", new AuthorizationHttpHandler());
             server.createContext("/institutions", new InstitutionsHttpHandler());
+            server.createContext("/setFilters", new AiKeywordsHttpHandler());
+            server.createContext("/filters", new AiKeywordsHttpHandler());
+            server.createContext("/stats", new StatsHttpHandler());
 
             server.setExecutor(threadPoolExecutor);
             System.out.println("API started at http://localhost:8001");

@@ -28,27 +28,14 @@ public class PublicationsTable extends SqlTable {
         Statement stmt = db.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM publications");
         while (rs.next()) {
-                    String id = rs.getString(1);
-                    String title = rs.getString(2);
-                    int citationCount = rs.getInt(3);
-                    String externalLink = rs.getString(4);
-                    String year = rs.getString(5);
-                    Publication publication = new Publication(id, citationCount, title, year, externalLink);
-                    publications.add(publication);
-                }
-                return publications;
+            String id = rs.getString(1);
+            String title = rs.getString(2);
+            int citationCount = rs.getInt(3);
+            String externalLink = rs.getString(4);
+            String year = rs.getString(5);
+            Publication publication = new Publication(id, citationCount, title, year, externalLink);
+            publications.add(publication);
         }
-        
-
-
-    public int noOfPublications() throws SQLException {
-        int publications = 0;
-        Statement stmt = db.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM publications");
-        while (rs.next()) {
-            publications++;
-        }
-
         return publications;
     }
 
