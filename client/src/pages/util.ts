@@ -9,9 +9,7 @@ import {
     SubfieldStat,
     CommunityStat,
     deleteAccessToken, 
-    AdminLoginArgs, 
-    AIFilterAddArgs,
-    AIFilter,
+    AdminLoginArgs,
     setAccessToken
 } from "../core";
 import { Buffer } from 'buffer';
@@ -19,20 +17,14 @@ import { Buffer } from 'buffer';
 export const refreshData = async () => {
     if (!store.authors.value.length) {
         await getAndSetAuthors();
-        // const authors = await getAuthorsFromBackend();
-        // setAuthorsInState(authors);
     }
 
     if (store.currentlySelectedAuthorId.value) {
         await getAndSetAuthorProfile(store.currentlySelectedAuthorId.value);
-        // const profile = await getAuthorProfileFromBackend(store.currentlySelectedAuthorId.value);
-        // setCurrentlySelectedAuthorProfileInState(profile);
     }
 
     if (!store.institutionStats.value.length) {
         await getAndSetInstitutionStats();
-        // const stats = await getInstitutionStatsFromBackend();
-        // setInstitutionStatsInState(stats);
     }
 
     if (!store.subfieldStats.value.length) {
@@ -47,7 +39,15 @@ export const refreshData = async () => {
     }
 
     if (!store.aiFilters.value.length) {
-        const stats = await getAIFiltersFromBackend();
+        // const stats = await getAIFiltersFromBackend();
+        const stats = [
+            'AI Filter 1',
+            'AI Filter 2',
+            'AI Filter 3',
+            'AI Filter 4',
+            'AI Filter 5',
+            'AI Filter 6',
+        ]
         setAIFiltersInState(stats);
     }
 }
@@ -121,7 +121,7 @@ const getAIFiltersFromBackend = async () => {
     return await backendClient().getAIFilters();
 }
 
-const setAIFiltersInState = (filters: AIFilter[]) => {
+const setAIFiltersInState = (filters: string[]) => {
     store.setAIFilters(filters);
 }
 
@@ -139,9 +139,9 @@ export const handleError = (e: any) => {
 
 export const logAdminIn = async (args: AdminLoginArgs) => {
     await backendClient().login(args);
-    const token = Buffer.from(`${args.email}:${args.password}`).toString('base64');
+    const token = Buffer.from(`${args.username}:${args.password}`).toString('base64');
     setAccessToken(token);
-    store.setAdmin({ email: args.email });
+    store.setAdmin({ username: args.username });
 }
 
 export const goToPage = (page: string) => {
@@ -180,7 +180,7 @@ const getAndSetAIFilters = async () => {
     setAIFiltersInState(aiFilters);
 }
 
-export const addFilter = async (args: AIFilterAddArgs) => {
-    await backendClient().addFilter(args);
+export const modifyFilters = async (modifiedFilters: string[]) => {
+    await backendClient().modifyFilters(modifiedFilters);
     await getAndSetAIFilters();
 }

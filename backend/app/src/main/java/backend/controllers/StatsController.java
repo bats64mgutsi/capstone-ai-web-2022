@@ -1,5 +1,6 @@
 package backend.controllers;
 
+import backend.ApplicationModels.Stats;
 import backend.DatabaseModels.*;
 import backend.Locator;
 import backend.ApplicationModels.PopulatedAuthor;
@@ -10,84 +11,63 @@ import java.util.*;
 
 public class StatsController {
     final AuthorsTable authorsTable = (AuthorsTable) Locator.instance.get(AuthorsTable.class);
-    final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
-    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance.get(AuthorToSubfieldTable.class);
-    final SubfieldsTable subfieldsTable = (SubfieldsTable) Locator.instance.get(SubfieldsTable.class);
     final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
-    final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
-   
-    public int noOfAuthors() throws SQLException { //return all the authors in the database.
-        
-        int noAuthors =authorsTable.listAll().size();
-        return noAuthors;
+
+    public Stats computeStats() throws SQLException {
+        final List<Author> currentYearAuthors = authorsTable.listAll();
+        final List<Author> prevYearAuthors = authorsTable.listAllPrevYear();
+
+        final List<Publication> allPublications = publicationsTable.listAll();
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        return new Stats(
+            currentYearAuthors.size(),
+            prevYearAuthors.size(),
+            countPublicationsUpTo(allPublications, currentYear),
+            countPublicationsUpTo(allPublications, currentYear-1),
+
+            tallyCitationsUpTo(allPublications, currentYear),
+            tallyCitationsUpTo(allPublications, currentYear-1),
+
+            countAuthorsWithRating(currentYearAuthors, "A"),
+            countAuthorsWithRating(prevYearAuthors, "A"),
+
+            countAuthorsWithRating(currentYearAuthors, "B"),
+            countAuthorsWithRating(prevYearAuthors, "B"),
+
+            countAuthorsWithRating(currentYearAuthors, "C"),
+            countAuthorsWithRating(prevYearAuthors, "C"),
+
+            countAuthorsWithRating(currentYearAuthors, "P"),
+            countAuthorsWithRating(prevYearAuthors, "P"),
+
+            countAuthorsWithRating(currentYearAuthors, "Y"),
+            countAuthorsWithRating(prevYearAuthors, "Y")
+        );
     }
 
-    public int noOfPublications() throws SQLException {
-        int noPublications = publicationsTable.noOfPublications();
-        return noPublications;
+    private int countAuthorsWithRating(List<Author> authors, String withRating) {
+        return authors.stream().filter(el -> el.rating.equals(withRating)).toList().size();
     }
 
-    public int noOfCitations() throws SQLException {
-        List<Publication> publications = publicationsTable.listAll();
-        int noCitations=0;
-        for(Publication p : publications){
-            noCitations = noCitations+p.citationCount;
-        }
-        return noCitations;
-    }
-
-    public int noOfRatedA() throws SQLException {
-        List<Author> authors = authorsTable.listAll();
-        int noRatedA=0;
-        for (Author a : authors){
-            if (a.rating.equals("A")){
-                noRatedA++;
+    private int countPublicationsUpTo(List<Publication> publications, int upToYear) {
+        return publications.stream().map(el -> {
+            try{
+                return Integer.parseInt(el.year);
+            } catch(NumberFormatException e) {
+                return 0;
             }
-        }
-        return noRatedA;
+        }).filter(yearEl -> yearEl <= upToYear).toList().size();
     }
 
-    public int noOfRatedB() throws SQLException {
-        List<Author> authors = authorsTable.listAll();
-        int noRatedB=0;
-        for (Author a : authors){
-            if (a.rating.equals("B")){
-                noRatedB++;
+    private int tallyCitationsUpTo(List<Publication> publications, int upToYear) {
+        return publications.stream().filter(el -> {
+            try {
+                int year = Integer.parseInt(el.year);
+                return year <= upToYear;
+            } catch (NumberFormatException e) {
+                return true;
             }
-        }
-        return noRatedB;
-    }
-
-    public int noOfRatedC() throws SQLException {
-        List<Author> authors = authorsTable.listAll();
-        int noRatedC=0;
-        for (Author a : authors){
-            if (a.rating.equals("C")){
-                noRatedC++;
-            }
-        }
-        return noRatedC;
-    }
-
-    public int noOfRatedP() throws SQLException {
-        List<Author> authors = authorsTable.listAll();
-        int noRatedP=0;
-        for (Author a : authors){
-            if (a.rating.equals("P")){
-                noRatedP++;
-            }
-        }
-        return noRatedP;
-    }
-
-    public int noOfRatedY() throws SQLException {
-        List<Author> authors = authorsTable.listAll();
-        int noRatedY=0;
-        for (Author a : authors){
-            if (a.rating.equals("Y")){
-                noRatedY++;
-            }
-        }
-        return noRatedY;
+        }).map(el -> el.citationCount).reduce(0, Integer::sum);
     }
 }

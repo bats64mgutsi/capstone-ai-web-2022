@@ -148,7 +148,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import store from "../../store";
 import { refreshData, uploadNrfResearchers, isLoggedIn } from "../util";
 import { useRouter, useRoute } from "vue-router";

@@ -202,7 +202,7 @@ public class GoogleScholarService {
                 final Element citationsElement = tr.child(1);
                 final Element yearElement = tr.children().last().children().first();
 
-                int numberOfCitations = -1;
+                int numberOfCitations = 0;
                 String citationsText = citationsElement.text().replace("*", "");
                 if(!citationsText.isEmpty()) {
                     numberOfCitations = Integer.parseInt(citationsText);

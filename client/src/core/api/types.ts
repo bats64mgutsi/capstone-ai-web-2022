@@ -3,13 +3,10 @@ import {
     AuthorProfile, 
     NrfResearcher, 
     UploadNrfResearchersArgs, 
-    AdminLoginArgs, 
-    LoginResult, 
+    AdminLoginArgs,
     InstitutionStat, 
     CommunityStat, 
     SubfieldStat,
-    AIFilterAddArgs,
-    AIFilter
 } from "../types";
 
 export interface IHttpClient {
@@ -50,9 +47,9 @@ export interface IBackendClient {
     getInstitutionStats(): Promise<InstitutionStat[]>;
     getSubfieldStats(): Promise<SubfieldStat[]>;
     getCommunityStats(): Promise<CommunityStat[]>;
-    getAIFilters(): Promise<AIFilter[]>;
+    getAIFilters(): Promise<string[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
     uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]>;
     login(args: AdminLoginArgs): Promise<void>;
-    addFilter(args: AIFilterAddArgs): Promise<AIFilter>;
+    modifyFilters(filters: string[]): Promise<string[]>;
 }

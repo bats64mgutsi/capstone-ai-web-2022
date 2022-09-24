@@ -6,7 +6,7 @@ public class Stats {
     int noPublicationsCurrentYear;
     int noPublicationsPreviousYear;
     int noCitationsCurrentYear;
-    int noCitationsPreviousYear; // in country
+    int noCitationsPreviousYear;
     int ratedACurrentYear;
     int ratedBCurrentYear;
     int ratedCCurrentYear;
@@ -17,7 +17,6 @@ public class Stats {
     int ratedCPreviousYear;
     int ratedPPreviousYear;
     int ratedYPreviousYear;
-    //boolean// trend; //false = less than last year
 
     public Stats(int noAuthorsCurrentYear, int noAuthorsPreviousYear, int noPublicationsCurrentYear,
             int noPublicationsPreviousYear, int noCitationsCurrentYear, int noCitationsPreviousYear,
@@ -40,12 +39,12 @@ public class Stats {
         this.ratedBCurrentYear = ratedBCurrentYear;
 
         this.ratedCCurrentYear = ratedCCurrentYear;
-        this.ratedCCurrentYear = ratedCCurrentYear;
+        this.ratedCPreviousYear = ratedCPreviousYear;
 
         this.ratedPCurrentYear = ratedPCurrentYear;
         this.ratedPPreviousYear = ratedPPreviousYear;
-        this.ratedYPreviousYear = ratedYPreviousYear;
+
         this.ratedYCurrentYear = ratedYCurrentYear;
-       // this.trend=trend;
+        this.ratedYPreviousYear = ratedYPreviousYear;
     }
 }

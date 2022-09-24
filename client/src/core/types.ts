@@ -8,7 +8,7 @@ export interface Author {
 }
 
 export interface User {
-    email: string;
+    username: string;
 }
 
 export interface Publication {
@@ -88,20 +88,11 @@ export interface AppMessage {
 }
 
 export interface AdminLoginArgs {
-    email: string;
+    username: string;
     password: string;
 }
 
 export interface LoginResult {
     user: User;
     token: string;
-}
-
-export interface AIFilter {
-    id: string;
-    name: string;
-}
-
-export interface AIFilterAddArgs {
-    name: string;
 }

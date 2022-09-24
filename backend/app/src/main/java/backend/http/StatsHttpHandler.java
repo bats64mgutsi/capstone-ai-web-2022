@@ -22,27 +22,7 @@ public class StatsHttpHandler extends BaseHttpHandler {
     public String getResponse(String[] pathValues, Headers requestHeaders, String requestBody)
             throws Exception {
         if (pathValues[1].equals("stats")) {
-            
-            int noAuthorsCurrentYear =statsController.noOfAuthors();
-            int noAuthorsPreviousYear =statsController.noOfAuthors();
-            int noPublicationsCurrentYear =statsController.noOfPublications();
-            int noPublicationsPreviousYear =statsController.noOfPublications();
-            int noCitationsCurrentYear =statsController.noOfCitations();
-            int noCitationsPreviousYear =statsController.noOfCitations();
-            int ratedACurrentYear =statsController.noOfRatedA();
-            int ratedBCurrentYear =statsController.noOfRatedB();
-            int ratedCCurrentYear =statsController.noOfRatedC();
-            int ratedPCurrentYear =statsController.noOfRatedP();
-            int ratedYCurrentYear =statsController.noOfRatedY();
-            int ratedAPreviousYear =statsController.noOfRatedA();
-            int ratedBPreviousYear =statsController.noOfRatedB();
-            int ratedCPreviousYear =statsController.noOfRatedC();
-            int ratedPPreviousYear =statsController.noOfRatedP();
-            int ratedYPreviousYear =statsController.noOfRatedY();
-            Stats stats = new Stats(noAuthorsCurrentYear, noAuthorsPreviousYear, noPublicationsCurrentYear, noPublicationsPreviousYear, noCitationsCurrentYear, noCitationsPreviousYear, ratedACurrentYear, ratedBCurrentYear, ratedCCurrentYear, ratedPCurrentYear, ratedYCurrentYear, ratedAPreviousYear, ratedBPreviousYear, ratedCPreviousYear, ratedPPreviousYear, ratedYPreviousYear);
-           // boolean trend =statsController.noOfAuthors();
-
-            return new Gson().toJson(stats);
+            return new Gson().toJson(statsController.computeStats());
         } else {
             throw new InvalidPathException(pathValues[1], "No such path in StatsHttpHandler", -1);
         }
