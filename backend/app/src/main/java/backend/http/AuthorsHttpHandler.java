@@ -1,7 +1,6 @@
 package backend.http;
 
-import backend.DatabaseModels.Author;
-import backend.DatabaseModels.AuthorProfile;
+import backend.ApplicationModels.AuthorProfile;
 import backend.Locator;
 import backend.ApplicationModels.PopulatedAuthor;
 import backend.controllers.AuthorsController;

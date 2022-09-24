@@ -1,5 +1,6 @@
 package backend.controllers;
 
+import backend.ApplicationModels.AuthorProfile;
 import backend.DatabaseModels.*;
 import backend.Locator;
 import backend.ApplicationModels.PopulatedAuthor;
@@ -53,6 +54,7 @@ public class AuthorsController {
             subfields.add(subfield.name);
         }
 
-        return new AuthorProfile(author, subfields, publications);
+        final int citationCount = publications.stream().map(el -> el.citationCount).reduce(0, Integer::sum);
+        return new AuthorProfile(author, subfields, publications, citationCount);
     }
 }
