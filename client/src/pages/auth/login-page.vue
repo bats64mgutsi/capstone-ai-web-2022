@@ -18,8 +18,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, onMounted } from "vue";
-import { backendClient } from "../../api";
-import { isLoggedIn, handleError, logAdminIn, goToPage } from "../util";
+import { isLoggedIn, handleError, logAdminIn } from "../util";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

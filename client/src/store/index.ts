@@ -7,7 +7,6 @@ import {
     CommunityStat, 
     AppMessage, 
     User,
-    AIFilter
  } from "../core/types";
 
 /**
@@ -110,10 +109,10 @@ import {
  * to do with the managing of AI filters in the system
  */
  function initAIFilters() {
-    const aiFilters = ref<AIFilter[]>([]);
+    const aiFilters = ref<string[]>([]);
     const currentlySelectedAIFilterId = ref<string>("");
   
-    function setAIFilters(list: AIFilter[]) {
+    function setAIFilters(list: string[]) {
         aiFilters.value = list;
     }
 
@@ -122,7 +121,7 @@ import {
     }
   
     const currentlySelectedAIFilter = computed(() =>
-        aiFilters.value.find((i) => `${i.id}` === currentlySelectedAIFilterId.value)
+        aiFilters.value.find((i) => i === currentlySelectedAIFilterId.value)
     );
   
     return {

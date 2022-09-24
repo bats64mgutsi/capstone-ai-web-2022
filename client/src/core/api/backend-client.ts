@@ -3,13 +3,10 @@ import {
   AuthorProfile, 
   UploadNrfResearchersArgs, 
   NrfResearcher, 
-  AdminLoginArgs, 
-  LoginResult,
+  AdminLoginArgs,
   InstitutionStat,
   SubfieldStat,
   CommunityStat,
-  AIFilterAddArgs,
-  AIFilter
 } from "../types";
 import { IHttpClient, IBackendClient } from "./types";
 
@@ -37,8 +34,8 @@ export class BackendClient implements IBackendClient {
     return await this.client.get<CommunityStat[]>(`/community/stats`);
   }
 
-  async getAIFilters(): Promise<AIFilter[]> {
-    return await this.client.get<AIFilter[]>(`/filters`);
+  async getAIFilters(): Promise<string[]> {
+    return await this.client.get<string[]>(`/filters`);
   }
 
   async getAuthorProfile(authorId: string): Promise<AuthorProfile> {
@@ -59,7 +56,7 @@ export class BackendClient implements IBackendClient {
     await this.client.post<AdminLoginArgs, null>("/validate", args);
   }
 
-  async addFilter(args: AIFilterAddArgs): Promise<AIFilter> {
-    return await this.client.post<AIFilterAddArgs, AIFilter>("/filters/add", args);
+  async modifyFilters(filters: string[]): Promise<string[]> {
+    return await this.client.post<string[], string[]>("/setFilters", filters);
   }
 }
