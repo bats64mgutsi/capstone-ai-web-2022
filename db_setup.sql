@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS aiKeywords (keyword varChar(255));
 -- Populate keywords table
 INSERT INTO aiKeywords (keyword) VALUES ("artificial intelligence");
 INSERT INTO aiKeywords (keyword) VALUES ("machine learning");
+INSERT INTO aiKeywords (keyword) VALUES ("machine vision");
 INSERT INTO aiKeywords (keyword) VALUES ("neural networks");
 INSERT INTO aiKeywords (keyword) VALUES ("cognitive computing");
 INSERT INTO aiKeywords (keyword) VALUES ("natural language processing");
