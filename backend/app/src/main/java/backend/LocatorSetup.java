@@ -47,7 +47,8 @@ public abstract class LocatorSetup {
         Locator.instance.registerSingleton(new AuthorsController());
         Locator.instance.registerSingleton(new NrfListController());
         Locator.instance.registerSingleton(new InstitutionsController());
-        Locator.instance.registerSingleton(new StatsController());
         Locator.instance.registerSingleton(new AiKeywordsController());
+        Locator.instance.registerSingleton(new PopulatedSubfieldsController());
+        Locator.instance.registerSingleton(new StatsController());
     }
 }

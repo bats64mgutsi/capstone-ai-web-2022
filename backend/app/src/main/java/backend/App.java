@@ -48,6 +48,7 @@ public class App {
             server.createContext("/setFilters", new AiKeywordsHttpHandler());
             server.createContext("/filters", new AiKeywordsHttpHandler());
             server.createContext("/stats", new StatsHttpHandler());
+            server.createContext("/subfields", new PopulatedSubfieldsHttpHandler());
 
             server.setExecutor(threadPoolExecutor);
             System.out.println("API started at http://localhost:8001");

@@ -14,6 +14,8 @@ public class StatsController {
     final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
     final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
 
+    final PopulatedSubfieldsController populatedSubfieldsController = (PopulatedSubfieldsController) Locator.instance.get(PopulatedSubfieldsController.class);
+
     public Stats computeStats() throws SQLException {
         final List<Author> currentYearAuthors = authorsTable.listAll();
         final List<Author> prevYearAuthors = authorsTable.listAllPrevYear();
@@ -41,7 +43,8 @@ public class StatsController {
             countAuthorsWithRating(prevYearAuthors, "B"),
             countAuthorsWithRating(prevYearAuthors, "C"),
             countAuthorsWithRating(prevYearAuthors, "P"),
-            countAuthorsWithRating(prevYearAuthors, "Y")
+            countAuthorsWithRating(prevYearAuthors, "Y"),
+            populatedSubfieldsController.listSubfields()
         );
     }
 

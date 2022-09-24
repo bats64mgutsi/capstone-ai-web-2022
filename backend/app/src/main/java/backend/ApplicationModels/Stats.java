@@ -1,5 +1,7 @@
 package backend.ApplicationModels;
 
+import java.util.List;
+
 public class Stats {
     int noAuthorsCurrentYear;
     int noAuthorsPreviousYear;
@@ -18,12 +20,14 @@ public class Stats {
     int ratedPPreviousYear;
     int ratedYPreviousYear;
 
+    List<PopulatedSubfield> subfields;
+
     public Stats(int noAuthorsCurrentYear, int noAuthorsPreviousYear, int noPublicationsCurrentYear,
             int noPublicationsPreviousYear, int noCitationsCurrentYear, int noCitationsPreviousYear,
             int ratedACurrentYear,
             int ratedBCurrentYear, int ratedCCurrentYear, int ratedPCurrentYear, int ratedYCurrentYear,
             int ratedAPreviousYear, int ratedBPreviousYear, int ratedCPreviousYear, int ratedPPreviousYear,
-            int ratedYPreviousYear) {
+            int ratedYPreviousYear, List<PopulatedSubfield> subfields) {
         this.noAuthorsCurrentYear = noAuthorsCurrentYear;
         this.noAuthorsPreviousYear = noAuthorsPreviousYear;
         this.noPublicationsCurrentYear = noPublicationsCurrentYear;
@@ -46,5 +50,7 @@ public class Stats {
 
         this.ratedYCurrentYear = ratedYCurrentYear;
         this.ratedYPreviousYear = ratedYPreviousYear;
+
+        this.subfields = subfields;
     }
 }
