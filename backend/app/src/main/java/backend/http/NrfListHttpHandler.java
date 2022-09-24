@@ -5,11 +5,13 @@ import backend.ApplicationModels.Status;
 import backend.Locator;
 import backend.controllers.AuthorizationController;
 import backend.controllers.NrfListController;
+import backend.services.EmailService;
 import backend.utils.BasicAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.Headers;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
 import java.sql.SQLException;
@@ -19,6 +21,8 @@ public class NrfListHttpHandler extends BaseHttpHandler {
     final NrfListController nrfListController = (NrfListController) Locator.instance.get(NrfListController.class);
     final AuthorizationController authorizationController = (AuthorizationController) Locator.instance
             .get(AuthorizationController.class);
+
+    final EmailService emailService = (EmailService) Locator.instance.get(EmailService.class);
 
     Thread asyncSetAuthors = null;
 
@@ -45,8 +49,13 @@ public class NrfListHttpHandler extends BaseHttpHandler {
                 try {
                     String year = requestHeaders.getFirst("Year");
                     nrfListController.setAuthors(nrfAuthors, year);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    emailService.emailSystemDataUpdated();
+                } catch (Exception e) {
+                    try {
+                        emailService.emailSystemDataUpdateError(e);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             });
 

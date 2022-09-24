@@ -3,6 +3,7 @@ package backend;
 import backend.Tables.*;
 import backend.controllers.*;
 import backend.httpClient.HttpClient;
+import backend.services.EmailService;
 import backend.services.GoogleScholarService;
 import backend.services.HashingService;
 import backend.services.UniqueIdService;
@@ -37,6 +38,7 @@ public abstract class LocatorSetup {
 
         Locator.instance.registerSingleton(new HttpClient());
 
+        Locator.instance.registerSingleton(new EmailService("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")); // TODO: Pass API key through environment variables
         Locator.instance.registerSingleton(new GoogleScholarService());
         Locator.instance.registerSingleton(new HashingService());
         Locator.instance.registerSingleton(new UniqueIdService());

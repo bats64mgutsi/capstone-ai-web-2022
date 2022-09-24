@@ -1,6 +1,8 @@
 package backend.Tables;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import backend.DatabaseModels.Admin;
 
@@ -15,5 +17,21 @@ public class AdminsTable extends SqlTable {
         int id = rs.getInt(1);
         Admin admin = new Admin(id, username, hashedPassword);
         return admin;
+    }
+
+    public List<Admin> listAll() throws SQLException {
+        PreparedStatement stmt = db.prepareStatement("SELECT * FROM admins");
+        ResultSet rs = stmt.executeQuery();
+
+        final List<Admin> out = new LinkedList<>();
+        while(rs.next()) {
+            final int id = rs.getInt(1);
+            final String username = rs.getString(2);
+            final String hashedPassword = rs.getString(3);
+
+            out.add(new Admin(id, username, hashedPassword));
+        }
+
+        return out;
     }
 }
