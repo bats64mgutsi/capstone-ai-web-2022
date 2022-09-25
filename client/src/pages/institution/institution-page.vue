@@ -75,10 +75,10 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref } from "vue";
 import store from "../../store";
 import { refreshData } from "../util";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { InstitutionStat } from "../../core";
 
 onMounted(async () => {
@@ -91,7 +91,6 @@ onMounted(async () => {
 
 const stats = store.institutionStats;
 const router = useRouter();
-const route = useRoute();
 const isProcessing = ref<boolean>(false);
 const searchInput = ref<string>('');
 const searchedContent = ref<Array<InstitutionStat>>([]);
