@@ -34,10 +34,19 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from "vue";
 import store from "../../store";
-import { refreshData } from "../util";
+import { refreshData, handleError, getOverallStats } from "../util";
 import { useRouter } from "vue-router";
 
-onMounted(async () => {});
+const stats = getOverallStats();
+
+onMounted(async () => {
+  try {
+    await refreshData();
+    console.log("stats.value: ", stats.value);
+  } catch (e: any) {
+    handleError(e);
+  }
+});
 
 const options = {
   chart: {

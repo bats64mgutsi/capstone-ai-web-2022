@@ -7,6 +7,7 @@ import {
   InstitutionStat,
   SubfieldStat,
   CommunityStat,
+  OverallStat
 } from "../types";
 import { IHttpClient, IBackendClient } from "./types";
 
@@ -40,6 +41,10 @@ export class BackendClient implements IBackendClient {
 
   async getAuthorProfile(authorId: string): Promise<AuthorProfile> {
     return await this.client.get<AuthorProfile>(`/author/${authorId}`);
+  }
+
+  async getOverallStats(): Promise<OverallStat> {
+    return await this.client.get<OverallStat>('/stats');
   }
 
   async uploadNrfResearchers(args: UploadNrfResearchersArgs): Promise<NrfResearcher[]> {

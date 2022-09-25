@@ -58,6 +58,26 @@ export enum Rating {
     P = 'P'
 }
 
+export interface OverallStat {
+    noAuthorsCurrentYear: number;
+    noAuthorsPreviousYear: number;
+    noPublicationsCurrentYear: number;
+    noPublicationsPreviousYear: number;
+    noCitationsCurrentYear: number;
+    noCitationsPreviousYear: number;
+    ratedACurrentYear: number;
+    ratedBCurrentYear: number;
+    ratedCCurrentYear: number;
+    ratedPCurrentYear: number;
+    ratedYCurrentYear: number;
+    ratedAPreviousYear: number;
+    ratedBPreviousYear: number;
+    ratedCPreviousYear: number;
+    ratedPPreviousYear: number;
+    ratedYPreviousYear: number;
+    subfields: SubfieldStat[];
+}
+
 export interface CommunityStat {
     id: string;
     rating: Rating;

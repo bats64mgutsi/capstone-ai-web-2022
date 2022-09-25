@@ -23,11 +23,6 @@ const routes: Array<RouteRecordRaw> = [
         name: "profile",
         component: ProfilePage
     },
-    // {
-    //     path: "/authors/search/field/:field/value/:value",
-    //     name: "authors",
-    //     component: AuthorPage
-    // },
     {
         path: "/institutions",
         name: "institutions",

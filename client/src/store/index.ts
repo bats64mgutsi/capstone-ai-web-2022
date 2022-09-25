@@ -7,6 +7,7 @@ import {
     CommunityStat, 
     AppMessage, 
     User,
+    OverallStat,
  } from "../core/types";
 
 /**
@@ -164,6 +165,23 @@ import {
 
 /**
  * Bundle and expose variables/functionalities 
+ * to do with the managing of overall stats in the system
+ */
+ function initOverallStats() {
+    const overallStats = ref<OverallStat>();
+  
+    function setOverallStats(stats: OverallStat) {
+        overallStats.value = stats;
+    }
+  
+    return {
+        setOverallStats,
+        overallStats,
+    };
+}
+
+/**
+ * Bundle and expose variables/functionalities 
  * to do with the managing of the currently logged-in admin
  */
  function initAdmin() {
@@ -209,6 +227,7 @@ const store = {
     ...initCommunityStats(),
     ...initAppMessage(),
     ...initAdmin(),
+    ...initOverallStats(),
 };
   
 export default store;

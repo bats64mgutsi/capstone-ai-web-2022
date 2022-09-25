@@ -7,6 +7,7 @@ import {
     InstitutionStat, 
     CommunityStat, 
     SubfieldStat,
+    OverallStat,
 } from "../types";
 
 export interface IHttpClient {
@@ -46,6 +47,7 @@ export interface IBackendClient {
     getAuthors(): Promise<Author[]>;
     getInstitutionStats(): Promise<InstitutionStat[]>;
     getSubfieldStats(): Promise<SubfieldStat[]>;
+    getOverallStats(): Promise<OverallStat>;
     getCommunityStats(): Promise<CommunityStat[]>;
     getAIFilters(): Promise<string[]>;
     getAuthorProfile(authorId: string): Promise<AuthorProfile>;
