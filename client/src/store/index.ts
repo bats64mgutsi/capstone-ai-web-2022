@@ -62,7 +62,7 @@ import {
     }
   
     const currentlySelectedInstitutionStat = computed(() =>
-    institutionStats.value.find((i) => `${i.id}` === currentlySelectedInstitutionStatId.value)
+        institutionStats.value.find((i) => `${i.institution.id}` === currentlySelectedInstitutionStatId.value)
     );
   
     return {

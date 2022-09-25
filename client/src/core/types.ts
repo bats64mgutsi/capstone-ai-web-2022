@@ -24,10 +24,17 @@ export interface AuthorProfile {
     publications: Publication[];
 }
 
-export interface InstitutionStat {
+export interface Institution {
     id: string;
-    institution: string;
-    numberOfResearchers: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+}
+
+export interface InstitutionStat {
+    institution: Institution;
+    noAuthors: number;
+    noResearchers: number;
 }
 
 export interface Subfield {
