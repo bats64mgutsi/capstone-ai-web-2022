@@ -3,7 +3,7 @@ export interface Author {
     surname: string;
     initials: string;
     title: string;
-    institution: Institution;
+    institution: string;
     rating: string;
 }
 
@@ -12,16 +12,18 @@ export interface User {
 }
 
 export interface Publication {
+    id: string;
     title: string;
-    numberOfCitations: number;
+    citationCount: number;
     year: string;
     externalLink: string;
 }
 
 export interface AuthorProfile {
     author: Author;
-    subFields: Subfield[];
+    subfields: string[];
     publications: Publication[];
+    citationCount: number;
 }
 
 export interface Institution {
@@ -43,10 +45,9 @@ export interface Subfield {
 }
 
 export interface SubfieldStat {
-    id: string;
     subfield: Subfield;
-    numberOfResearchers: number;
-    numberOfPublications: number;
+    numberOfAuthorsCurrentYear: number;
+    numberOfAuthorsPrevYear: number;
 }
 
 export enum Rating {

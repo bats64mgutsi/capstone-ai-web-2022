@@ -91,7 +91,7 @@ import {
     }
   
     const currentlySelectedSubfieldStat = computed(() =>
-        subfieldStats.value.find((i) => `${i.id}` === currentlySelectedSubfieldStatId.value)
+        subfieldStats.value.find((i) => `${i.subfield.id}` === currentlySelectedSubfieldStatId.value)
     );
   
     return {

@@ -1,5 +1,5 @@
 <template>  
-    <div class="w-11/12 mt-2 mx-auto overflow-x-auto relative mb-6">
+    <div class="w-11/12 mt-2 mx-auto overflow-x-auto relative shadow-md sm:rounded-lg mb-6">
         <div class="flex flex-row justify-between items-center mb-3">
             <div class="bg-white dark:bg-gray-900 flex flex-row items-center">
                 <label for="table-search" class="sr-only">Search</label>
@@ -51,7 +51,7 @@
                 </tr>
             </tbody>
         </table>
-        <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
+        <nav class="flex justify-between items-center p-4" aria-label="Table navigation">
             <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
                 Showing
                 <span class="font-semibold text-gray-900 dark:text-white">{{getFirstRecordNumberForGivenPage(page)}}-{{getLastRecordNumberForGivenPage(page)}}</span>
@@ -77,17 +77,9 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import store from "../../store";
-import { refreshData } from "../util";
+import { refreshData, handleError } from "../util";
 import { useRouter } from "vue-router";
 import { InstitutionStat } from "../../core";
-
-onMounted(async () => {
-    try {
-        refreshData();
-    } catch (e) {
-        console.log("Error: ", e);
-    }
-});
 
 const stats = store.institutionStats;
 const router = useRouter();
@@ -100,11 +92,11 @@ const page = ref<number>(1);
 onMounted(async () => {
     try {
         isProcessing.value = true;
-        refreshData();
+        await refreshData();
         initLocalVars();
         isProcessing.value = false;
     } catch (e) {
-        console.log("Error: ", e);
+        handleError(e);
     }
 });
 

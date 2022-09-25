@@ -125,7 +125,6 @@ const newFilter = ref<string>('');
 const originalFilter = ref<string>('');
 const editedFilter = ref<string>('');
 const filterToDelete = ref<string>('');
-const renderKey = ref<number>(0);
 
 const handleCloseEvent = () => {
     resetData();

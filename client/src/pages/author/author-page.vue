@@ -48,12 +48,12 @@
                         {{author.rating}}
                     </td>
                     <td class="py-4 px-6">
-                        {{author.institution.name}}
+                        {{author.institution}}
                     </td>
                 </tr>
             </tbody>
         </table>
-        <nav class="flex justify-between items-center pt-4" aria-label="Table navigation">
+        <nav class="flex justify-between items-center p-4" aria-label="Table navigation">
             <span v-if="!isProcessing" class="text-sm font-normal text-gray-500 dark:text-gray-400">
                 Showing
                 <span class="font-semibold text-gray-900 dark:text-white">{{getFirstRecordNumberForGivenPage(page)}}-{{getLastRecordNumberForGivenPage(page)}}</span>
@@ -79,21 +79,14 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import store from "../../store";
-import { refreshData } from "../util";
-import { useRouter } from "vue-router";
+import { handleError, refreshData } from "../util";
+import { useRouter, useRoute } from "vue-router";
 import { Author } from "../../core";
 import { UploadNrfListDialog } from "../../components";
 
-onMounted(async () => {
-    try {
-        refreshData();
-    } catch (e) {
-        console.log("Error: ", e);
-    }
-});
-
 const authors = store.authors;
 const router = useRouter();
+const route = useRoute();
 const isProcessing = ref<boolean>(false);
 const searchInput = ref<string>('');
 const searchedContent = ref<Array<Author>>([]);
@@ -102,12 +95,21 @@ const page = ref<number>(1);
 
 onMounted(async () => {
     try {
-        isProcessing.value = true;
-        refreshData();
-        initLocalVars();
-        isProcessing.value = false;
+        if (route.params.field && route.params.value) {
+            console.log('route.params: ', route.params);
+            searchInput.value = route.params.value as string;
+            handleSearchInput();
+        }
+
+        else {
+            isProcessing.value = true;
+            await refreshData();
+            initLocalVars();
+            isProcessing.value = false;
+        }
+        
     } catch (e) {
-        console.log("Error: ", e);
+        handleError(e);
     }
 });
 
