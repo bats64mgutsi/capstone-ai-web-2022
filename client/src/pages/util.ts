@@ -10,22 +10,23 @@ import {
     CommunityStat,
     deleteAccessToken, 
     AdminLoginArgs,
-    setAccessToken
+    setAccessToken,
+    Institution
 } from "../core";
 import { Buffer } from 'buffer';
 
 export const refreshData = async () => {
-    // if (!store.authors.value.length) {
-    //     await getAndSetAuthors();
-    // }
+    if (!store.authors.value.length) {
+        await getAndSetAuthors();
+    }
 
     // if (store.currentlySelectedAuthorId.value) {
     //     await getAndSetAuthorProfile(store.currentlySelectedAuthorId.value);
     // }
 
-    // if (!store.institutionStats.value.length) {
-    //     await getAndSetInstitutionStats();
-    // }
+    if (!store.institutionStats.value.length) {
+        await getAndSetInstitutionStats();
+    }
 
     // if (!store.subfieldStats.value.length) {
     //     await getAndSetSubfieldStats();
@@ -53,7 +54,29 @@ export const refreshData = async () => {
 }
 
 const getAndSetAuthors = async () => {
-    const authors = await getAuthorsFromBackend();
+    // const authors = await getAuthorsFromBackend();
+    const authors = [
+        { id: '1', surname: 'surname 1', initials: 'initials 1', title: 'Prof', institution: { id: '1', name: 'institution 1', latitude: 23, longitude: 56 }, rating: 'A' },
+        { id: '2', surname: 'surname 2', initials: 'initials 2', title: 'Prof', institution: { id: '1', name: 'institution 1', latitude: 23, longitude: 56 }, rating: 'Y' },
+        { id: '3', surname: 'surname 3', initials: 'initials 3', title: 'Prof', institution: { id: '1', name: 'institution 1', latitude: 23, longitude: 56 }, rating: 'P' },
+        { id: '4', surname: 'surname 4', initials: 'initials 4', title: 'Prof', institution: { id: '1', name: 'institution 1', latitude: 23, longitude: 56 }, rating: 'B' },
+        { id: '5', surname: 'surname 5', initials: 'initials 5', title: 'Prof', institution: { id: '2', name: 'institution 2', latitude: 23, longitude: 56 }, rating: 'C' },
+        { id: '6', surname: 'surname 6', initials: 'initials 6', title: 'Prof', institution: { id: '2', name: 'institution 2', latitude: 23, longitude: 56 }, rating: 'A' },
+        { id: '7', surname: 'surname 7', initials: 'initials 7', title: 'Prof', institution: { id: '2', name: 'institution 2', latitude: 23, longitude: 56 }, rating: 'P' },
+        { id: '8', surname: 'surname 8', initials: 'initials 8', title: 'Prof', institution: { id: '2', name: 'institution 2', latitude: 23, longitude: 56 }, rating: 'P' },
+        { id: '9', surname: 'surname 8', initials: 'initials 9', title: 'Prof', institution: { id: '3', name: 'institution 3', latitude: 23, longitude: 56 }, rating: 'B' },
+        { id: '10', surname: 'surname 10', initials: 'initials 10', title: 'Prof', institution: { id: '3', name: 'institution 3', latitude: 23, longitude: 56 }, rating: 'C' },
+        { id: '11', surname: 'surname 11', initials: 'initials 11', title: 'Prof', institution: { id: '3', name: 'institution 3', latitude: 23, longitude: 56 }, rating: 'Y' },
+        { id: '12', surname: 'surname 12', initials: 'initials 12', title: 'Prof', institution: { id: '3', name: 'institution 3', latitude: 23, longitude: 56 }, rating: 'B' },
+        { id: '13', surname: 'surname 13', initials: 'initials 13', title: 'Prof', institution: { id: '4', name: 'institution 4', latitude: 23, longitude: 56 }, rating: 'P' },
+        { id: '14', surname: 'surname 14', initials: 'initials 14', title: 'Prof', institution: { id: '4', name: 'institution 4', latitude: 23, longitude: 56 }, rating: 'A' },
+        { id: '15', surname: 'surname 15', initials: 'initials 15', title: 'Prof', institution: { id: '4', name: 'institution 4', latitude: 23, longitude: 56 }, rating: 'C' },
+        { id: '16', surname: 'surname 16', initials: 'initials 16', title: 'Prof', institution: { id: '4', name: 'institution 4', latitude: 23, longitude: 56 }, rating: 'C' },
+        { id: '17', surname: 'surname 17', initials: 'initials 17', title: 'Prof', institution: { id: '5', name: 'institution 5', latitude: 23, longitude: 56 }, rating: 'B' },
+        { id: '18', surname: 'surname 18', initials: 'initials 18', title: 'Prof', institution: { id: '5', name: 'institution 5', latitude: 23, longitude: 56 }, rating: 'C' },
+        { id: '19', surname: 'surname 19', initials: 'initials 19', title: 'Prof', institution: { id: '5', name: 'institution 5', latitude: 23, longitude: 56 }, rating: 'A' },
+        { id: '20', surname: 'surname 20', initials: 'initials 20', title: 'Prof', institution: { id: '5', name: 'institution 5', latitude: 23, longitude: 56 }, rating: 'Y' },
+    ];
     setAuthorsInState(authors);
 }
 
@@ -79,7 +102,21 @@ const setCurrentlySelectedAuthorProfileInState = async (profile: AuthorProfile) 
 }
 
 const getAndSetInstitutionStats = async () => {
-    const stats = await getInstitutionStatsFromBackend();
+    // const stats = await getInstitutionStatsFromBackend();
+    const stats = [
+        { institution: { id: '1', name: 'institution 1', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '2', name: 'institution 2', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '3', name: 'institution 3', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '4', name: 'institution 4', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '5', name: 'institution 5', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '6', name: 'institution 6', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '7', name: 'institution 7', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '8', name: 'institution 8', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '9', name: 'institution 9', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '10', name: 'institution 10', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '11', name: 'institution 11', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+        { institution: { id: '12', name: 'institution 12', latitude: 23, longitude: 56 }, noAuthors: 23, noPublications: 2300 },
+    ]
     setInstitutionStatsInState(stats);
 }
 

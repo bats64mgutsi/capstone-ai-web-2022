@@ -1,9 +1,9 @@
 export interface Author {
-    id: number;
+    id: string;
     surname: string;
     initials: string;
     title: string;
-    institution: string;
+    institution: Institution;
     rating: string;
 }
 
@@ -34,7 +34,7 @@ export interface Institution {
 export interface InstitutionStat {
     institution: Institution;
     noAuthors: number;
-    noResearchers: number;
+    noPublications: number;
 }
 
 export interface Subfield {
