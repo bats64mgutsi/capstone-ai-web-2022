@@ -3,8 +3,6 @@ import MainPage from "../pages/main/main-page.vue";
 import AuthorPage from "../pages/author/author-page.vue";
 import InstitutionPage from "../pages/institution/institution-page.vue";
 import SubfieldPage from "../pages/subfield/subfield-page.vue";
-import CommunityPage from "../pages/community/community-page.vue";
-import ImpactPage from "../pages/impact/impact-page.vue";
 import ProfilePage from "../pages/profile/profile-page.vue";
 import LoginPage from "../pages/auth/login-page.vue";
 import FilterPage from "../pages/ai-filter/ai-filter-page.vue";
@@ -41,11 +39,6 @@ const routes: Array<RouteRecordRaw> = [
         component: SubfieldPage
     },
     {
-        path: "/community",
-        name: "community",
-        component: CommunityPage
-    },
-    {
         path: "/filters",
         name: "filters",
         component: FilterPage
@@ -55,11 +48,6 @@ const routes: Array<RouteRecordRaw> = [
         name: "login",
         component: LoginPage
     },
-    // {
-    //     path: "/admin/authors",
-    //     name: "authors",
-    //     component: AuthorPage
-    // }
 
 ];
 
