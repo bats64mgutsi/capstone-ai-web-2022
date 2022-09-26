@@ -6,26 +6,21 @@ import backend.ApplicationModels.PopulatedInstitution;
 import backend.ApplicationModels.PopulatedSubfield;
 import backend.Tables.*;
 import backend.services.*;
+
 import java.sql.SQLException;
 import java.util.*;
 
 public class PopulatedSubfieldsController {
-    final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
-    final AuthorsTable authorsTable = (AuthorsTable) Locator.instance.get(AuthorsTable.class);
-    final PublicationsTable publicationsTable = (PublicationsTable) Locator.instance.get(PublicationsTable.class);
-    final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
-    final SubfieldsTable subfieldsTable = (SubfieldsTable) Locator.instance.get(SubfieldsTable.class);
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
     final HashingService hashingService = (HashingService) Locator.instance.get(HashingService.class);
-    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance
-            .get(AuthorToSubfieldTable.class);
+    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance.get(AuthorToSubfieldTable.class);
 
     public List<PopulatedSubfield> listSubfields() throws SQLException {
         List<String> aiKeywords = aiKeywordsTable.listAll();
         List<PopulatedSubfield> populatedSubfields = new ArrayList<>();
-        for (String name: aiKeywords) {
+        for (String name : aiKeywords) {
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            int previousYear = currentYear-1;
+            int previousYear = currentYear - 1;
             List<String> idUnits = new ArrayList<>();
             idUnits.add(name);
             idUnits.add(Integer.toString(currentYear));
@@ -43,11 +38,12 @@ public class PopulatedSubfieldsController {
 
             int numberOfAuthorsCurrentYear = authors.size();
             int numberOfAuthorsPrevYear = authors2.size();
-            PopulatedSubfield populatedSubfield = new PopulatedSubfield(subfield, numberOfAuthorsCurrentYear,
-                    numberOfAuthorsPrevYear);
+            PopulatedSubfield populatedSubfield = new PopulatedSubfield(subfield, numberOfAuthorsCurrentYear, numberOfAuthorsPrevYear);
             populatedSubfields.add(populatedSubfield);
         }
 
+        // Return in descending order of numberOfAuthorsCurrentYear
+        populatedSubfields.sort(Comparator.comparingInt(el -> -el.numberOfAuthorsCurrentYear));
         return populatedSubfields;
     }
 }

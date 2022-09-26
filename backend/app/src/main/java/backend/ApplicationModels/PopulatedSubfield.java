@@ -5,9 +5,9 @@ import backend.DatabaseModels.Subfield;
 import java.util.Objects;
 
 public class PopulatedSubfield {
-    final Subfield subfield;
-    final int numberOfAuthorsCurrentYear;
-    final int numberOfAuthorsPrevYear;
+    public final Subfield subfield;
+    public final int numberOfAuthorsCurrentYear;
+    public final int numberOfAuthorsPrevYear;
 
     public PopulatedSubfield(Subfield subfield, int numberOfAuthorsCurrentYear, int numberOfAuthorsPrevYear) {
         this.subfield = subfield;
