@@ -5,6 +5,7 @@ export interface Author {
     title: string;
     institution: Institution;
     rating: string;
+    subFields: string[];
 }
 
 export interface User {

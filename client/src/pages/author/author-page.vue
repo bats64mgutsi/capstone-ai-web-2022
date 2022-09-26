@@ -185,9 +185,14 @@ const containsFilters = (row: Author, filters: Array<string>) => {
 }
 
 const containsSomeFilters = (value: any, filters: Array<string>): boolean => {
-    if (typeof value === 'object') {
+    if (Array.isArray(value)) {
+        return value.some((v) => containsSomeFilters(v, filters));
+    }
+
+    else if (typeof value === 'object') {
         return Object.values(value).some((v) => containsSomeFilters(v, filters));
     }
+
     return filters.some((filter: string) => (value && value.toString().toLowerCase().includes(filter.toLowerCase( ))));
 }
 
