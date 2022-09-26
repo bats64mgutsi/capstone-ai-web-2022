@@ -33,8 +33,11 @@
                     <td class="py-4 px-6">
                         {{stat.numberOfAuthorsCurrentYear}}
                     </td>
-                    <td class="py-4 px-6">
-                        {{`${computeChage(stat.numberOfAuthorsPrevYear, stat.numberOfAuthorsCurrentYear)}%`}}
+                    <td v-if="isNegative(computeChange(stat.numberOfAuthorsPrevYear, stat.numberOfAuthorsCurrentYear))" class="py-4 px-6 text-red-600">
+                        {{`${computeChange(stat.numberOfAuthorsPrevYear, stat.numberOfAuthorsCurrentYear)}%`}}
+                    </td>
+                    <td v-else class="py-4 px-6 text-green-600">
+                        {{`${computeChange(stat.numberOfAuthorsPrevYear, stat.numberOfAuthorsCurrentYear)}%`}}
                     </td>
                 </tr>
             </tbody>
@@ -166,12 +169,16 @@ const containsSomeFilters = (value: any, filters: Array<string>): boolean => {
     return filters.some((filter: string) => (value && value.toString().toLowerCase().includes(filter.toLowerCase( ))));
 }
 
-const computeChage = (prevYear: number, currentYear: number) => {
+const computeChange = (prevYear: number, currentYear: number) => {
     const denom = prevYear + currentYear;
     if(denom == 0) return 0;
 
     const change = currentYear - prevYear;
     return change/denom;
+}
+
+const isNegative = (value: number) => {
+    return value < 0;
 }
 
 </script>
