@@ -31,8 +31,13 @@ public class AuthorsController {
             String initials = author.initials;
             String title = author.title;
             String rating = author.rating;
-            
-            return new PopulatedAuthor(id, surname, initials, title, institution, rating);
+
+             try {
+                 final List<String> subfields = getAuthorSubfields(author.id).stream().map(el -> el.name).toList();
+                 return new PopulatedAuthor(id, surname, initials, title, institution, rating, subfields);
+             } catch (SQLException e) {
+                 throw new RuntimeException(e);
+             }
          }).toList();
     
         }
@@ -47,14 +52,19 @@ public class AuthorsController {
             publications.add(publication);
         }
 
-        final List<AuthorToSubfield> authorToSubfields = authorToSubfieldTable.getAuthorSubfields(authorId);
-        final List<String> subfields = new LinkedList<>();
-        for (final AuthorToSubfield authorToSubfield : authorToSubfields) {
-            final Subfield subfield = subfieldsTable.getSubfield(authorToSubfield.subfieldId);
-            subfields.add(subfield.name);
-        }
-
+        final List<String> subfields = getAuthorSubfields(authorId).stream().map(el -> el.name).toList();
         final int citationCount = publications.stream().map(el -> el.citationCount).reduce(0, Integer::sum);
         return new AuthorProfile(author, subfields, publications, citationCount);
+    }
+
+    private List<Subfield> getAuthorSubfields(String authorId) throws SQLException {
+        final List<AuthorToSubfield> authorToSubfields = authorToSubfieldTable.getAuthorSubfields(authorId);
+        final List<Subfield> subfields = new LinkedList<>();
+        for (final AuthorToSubfield authorToSubfield : authorToSubfields) {
+            final Subfield subfield = subfieldsTable.getSubfield(authorToSubfield.subfieldId);
+            subfields.add(subfield);
+        }
+
+        return subfields;
     }
 }
