@@ -73,11 +73,11 @@
                     <th scope="col" class="py-3 px-6">
                         Filter
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <!-- <th scope="col" class="py-3 px-6">
                         Action 1
-                    </th>
+                    </th> -->
                     <th scope="col" class="py-3 px-6">
-                        Action 2
+                        Action
                     </th>
                 </tr>
             </thead>
@@ -86,9 +86,9 @@
                     <td class="cursor-pointer py-4 px-6">
                         {{filter}}
                     </td>
-                    <td @click="handleEditClick(filter)" class="py-4 px-6" data-modal-toggle="edit-filter-modal">
+                    <!-- <td @click="handleEditClick(filter)" class="py-4 px-6" data-modal-toggle="edit-filter-modal">
                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    </td>
+                    </td> -->
                     <td @click="handleDeleteClick(filter)" class="py-4 px-6" data-modal-toggle="delete-filter-modal">
                         <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
                     </td>
@@ -143,6 +143,7 @@ const handleEditClick = (filter: string) => {
 const handleDeleteClick = (filter: string) => {
     console.log("Handling delete click for filter: ", filter);
     filterToDelete.value = filter;
+    deleteFilter();
 }
 
 const addNewFilter = async () => {
