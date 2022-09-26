@@ -10,7 +10,7 @@
                 <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Surname: <span class="text-blue-700">{{profile.author.surname}}</span></span>
                 <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Initials: <span class="text-blue-700">{{profile.author.initials}}</span></span>
                 <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Title: <span class="text-blue-700">{{profile.author.title}}</span></span>
-                <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Institution: <span class="text-blue-700">{{profile.author.institution}}</span></span>
+                <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Institution: <span class="text-blue-700">{{profile.author.institution.name}}</span></span>
                 <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 mb-2">Subfields: <span class="text-blue-700">{{getArrayStringRepresentation(profile.subFields)}}</span></span>
             </div>
         </div>
