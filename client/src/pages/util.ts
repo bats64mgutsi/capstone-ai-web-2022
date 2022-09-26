@@ -38,11 +38,6 @@ export const refreshData = async () => {
         await getAndSetOverallStats();
     }
 
-    if (!store.communityStats.value.length) {
-        const stats = await getCommunityStatsFromBackend();
-        setCommunityStatsInState(stats);
-    }
-
     if (!store.aiFilters.value.length) {
         const stats = await getAIFiltersFromBackend();
         // const stats = [
