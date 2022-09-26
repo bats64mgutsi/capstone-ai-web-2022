@@ -21,7 +21,7 @@
                         Current number of researchers
                     </th>
                     <th scope="col" class="py-3 px-6">
-                        Last year's number of researchers
+                        Change compared to previous year
                     </th>
                 </tr>
             </thead>
@@ -34,7 +34,7 @@
                         {{stat.numberOfAuthorsCurrentYear}}
                     </td>
                     <td class="py-4 px-6">
-                        {{stat.numberOfAuthorsCurrentYear}}
+                        {{`${computeChage(stat.numberOfAuthorsPrevYear, stat.numberOfAuthorsCurrentYear)}%`}}
                     </td>
                 </tr>
             </tbody>
@@ -165,4 +165,13 @@ const containsSomeFilters = (value: any, filters: Array<string>): boolean => {
     }
     return filters.some((filter: string) => (value && value.toString().toLowerCase().includes(filter.toLowerCase( ))));
 }
+
+const computeChage = (prevYear: number, currentYear: number) => {
+    const denom = prevYear + currentYear;
+    if(denom == 0) return 0;
+
+    const change = currentYear - prevYear;
+    return change/denom;
+}
+
 </script>
