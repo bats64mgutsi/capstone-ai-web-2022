@@ -25,6 +25,7 @@ export interface AuthorProfile {
     subFields: string[];
     publications: Publication[];
     citationCount: number;
+    institution: Institution,
 }
 
 export interface Institution {

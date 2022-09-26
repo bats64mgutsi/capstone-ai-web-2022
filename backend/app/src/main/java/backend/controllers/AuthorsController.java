@@ -58,7 +58,8 @@ public class AuthorsController {
 
         final List<String> subfields = getAuthorSubfields(authorId).stream().map(el -> el.name).toList();
         final int citationCount = publications.stream().map(el -> el.citationCount).reduce(0, Integer::sum);
-        return new AuthorProfile(author, subfields, publications, citationCount);
+        final Institution  institution= institutionsTable.getInstitution(author.institution);
+        return new AuthorProfile(author, subfields, publications, citationCount, institution);
     }
 
     private List<Subfield> getAuthorSubfields(String authorId) throws SQLException {
