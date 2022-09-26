@@ -105,15 +105,18 @@ import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 
-onMounted(() => {
-  if (!isLoggedIn()) {
-    // TODO: Redirect admin to authors page
-    router.push({ name: "authors" });
-  }
+onMounted(async () => {
+    try {
+        if (!isLoggedIn()) {
+            router.push({ name: "authors" });
+        }
 
-  else {
-    refreshData();
-  }
+        else {
+            await refreshData();
+        }
+    } catch (e) {
+        handleError(e);
+    }
 });
 
 const filters = store.aiFilters;

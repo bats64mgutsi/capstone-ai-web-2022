@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { 
-    Author, 
+    Author,
     AuthorProfile, 
     InstitutionStat, 
     SubfieldStat, 

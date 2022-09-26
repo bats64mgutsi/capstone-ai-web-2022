@@ -68,7 +68,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import store from "../../store";
-import { refreshData } from "../util";
+import { refreshData, handleError } from "../util";
 import { useRouter } from "vue-router";
 import { SubfieldStat } from "../../core";
 
@@ -87,7 +87,7 @@ onMounted(async () => {
         initLocalVars();
         isProcessing.value = false;
     } catch (e) {
-        console.log("Error: ", e);
+        handleError(e);
     }
 });
 
