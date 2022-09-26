@@ -21,7 +21,7 @@ export interface Publication {
 
 export interface AuthorProfile {
     author: Author;
-    subfields: string[];
+    subFields: string[];
     publications: Publication[];
     citationCount: number;
 }
