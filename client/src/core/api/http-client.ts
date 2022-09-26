@@ -72,6 +72,9 @@ export class HttpClient implements IHttpClient {
 
     const url = `${this.baseUrl}${path}`;
     const resp = await fetch(url, config);
+    const contentType = resp.headers.get("Content-Type");
+    if(contentType !== "application/json") throw new Error(await resp.text());
+
     const json = resp.status !== 204 ? await resp.json() : undefined;
 
     if (this.onAfterRequest) {
