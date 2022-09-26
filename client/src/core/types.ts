@@ -124,3 +124,17 @@ export interface LoginResult {
     user: User;
     token: string;
 }
+
+export interface SeriesAndChartOptions {
+    series: number[],
+    chartOptions: any
+}
+
+export interface PieData {
+    rating_currentYear: SeriesAndChartOptions,
+    rating_prevYear: SeriesAndChartOptions,
+}
+
+export interface ChartData {
+    pieData: PieData,
+}

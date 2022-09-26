@@ -12,7 +12,8 @@ import {
     AdminLoginArgs,
     setAccessToken,
     Institution,
-    OverallStat
+    OverallStat,
+    ChartData
 } from "../core";
 import { Buffer } from 'buffer';
 
@@ -37,10 +38,10 @@ export const refreshData = async () => {
         await getAndSetOverallStats();
     }
 
-    // if (!store.communityStats.value.length) {
-    //     const stats = await getCommunityStatsFromBackend();
-    //     setCommunityStatsInState(stats);
-    // }
+    if (!store.communityStats.value.length) {
+        const stats = await getCommunityStatsFromBackend();
+        setCommunityStatsInState(stats);
+    }
 
     if (!store.aiFilters.value.length) {
         const stats = await getAIFiltersFromBackend();
@@ -152,6 +153,41 @@ const setInstitutionStatsInState = (stats: InstitutionStat[]) => {
 
 const getAndSetOverallStats = async () => {
     const stats = await backendClient().getOverallStats();
+    // const stats = {
+    //     noAuthorsCurrentYear: 123,
+    //     noAuthorsPreviousYear: 256,
+    //     noPublicationsCurrentYear: 3729,
+    //     noPublicationsPreviousYear: 2345,
+    //     noCitationsCurrentYear: 10372,
+    //     noCitationsPreviousYear: 20452,
+    //     ratedACurrentYear: 34,
+    //     ratedBCurrentYear: 65,
+    //     ratedCCurrentYear: 23,
+    //     ratedPCurrentYear: 10,
+    //     ratedYCurrentYear: 7,
+    //     ratedAPreviousYear: 21,
+    //     ratedBPreviousYear: 45,
+    //     ratedCPreviousYear: 29,
+    //     ratedPPreviousYear: 40,
+    //     ratedYPreviousYear: 12,
+    //     subfields: [
+    //         { subfield: { id: '1', name: 'subfield 1' }, numberOfAuthorsCurrentYear: 23, numberOfAuthorsPrevYear: 90 },
+    //         { subfield: { id: '2', name: 'subfield 2' }, numberOfAuthorsCurrentYear: 34, numberOfAuthorsPrevYear: 80 },
+    //         { subfield: { id: '3', name: 'subfield 3' }, numberOfAuthorsCurrentYear: 45, numberOfAuthorsPrevYear: 74 },
+    //         { subfield: { id: '4', name: 'subfield 4' }, numberOfAuthorsCurrentYear: 56, numberOfAuthorsPrevYear: 23 },
+    //         { subfield: { id: '5', name: 'subfield 5' }, numberOfAuthorsCurrentYear: 65, numberOfAuthorsPrevYear: 35 },
+    //         { subfield: { id: '6', name: 'subfield 6' }, numberOfAuthorsCurrentYear: 7, numberOfAuthorsPrevYear: 28 },
+    //         { subfield: { id: '7', name: 'subfield 7' }, numberOfAuthorsCurrentYear: 10, numberOfAuthorsPrevYear: 74 },
+    //         { subfield: { id: '8', name: 'subfield 8' }, numberOfAuthorsCurrentYear: 20, numberOfAuthorsPrevYear: 39 },
+    //         { subfield: { id: '9', name: 'subfield 9' }, numberOfAuthorsCurrentYear: 25, numberOfAuthorsPrevYear: 10 },
+    //         { subfield: { id: '10', name: 'subfield 10' }, numberOfAuthorsCurrentYear: 63, numberOfAuthorsPrevYear: 28 },
+    //         { subfield: { id: '11', name: 'subfield 11' }, numberOfAuthorsCurrentYear: 32, numberOfAuthorsPrevYear: 31 },
+    //         { subfield: { id: '12', name: 'subfield 12' }, numberOfAuthorsCurrentYear: 28, numberOfAuthorsPrevYear: 52 },
+    //         { subfield: { id: '13', name: 'subfield 13' }, numberOfAuthorsCurrentYear: 54, numberOfAuthorsPrevYear: 64 },
+    //         { subfield: { id: '14', name: 'subfield 14' }, numberOfAuthorsCurrentYear: 42, numberOfAuthorsPrevYear: 72 },
+    //         { subfield: { id: '15', name: 'subfield 15' }, numberOfAuthorsCurrentYear: 19, numberOfAuthorsPrevYear: 4 },
+    //     ]
+    // }
     setOverallStatsInState(stats);
 }
 
@@ -277,6 +313,72 @@ export const isFilter = (filter: string) => {
     return store.aiFilters.value.some(f => lowerAndRemoveWhitespace(f) === lowerAndRemoveWhitespace(filter));
 }
 
-export const getOverallStats = () => {
-    return store.overallStats;
+export const getOverallStats = async () => {
+    if (!store.overallStats) {
+        await getAndSetOverallStats();
+    }
+    return store.overallStats.value;
+}
+
+export const getChartData = () => {
+    if (store.overallStats.value) {
+        return {
+            pieData: {
+                rating_currentYear: {
+                    series: [
+                        store.overallStats.value.ratedACurrentYear,
+                        store.overallStats.value.ratedBCurrentYear,
+                        store.overallStats.value.ratedCCurrentYear,
+                        store.overallStats.value.ratedPCurrentYear,
+                        store.overallStats.value.ratedYCurrentYear,
+                    ],
+                    chartOptions: {
+                        chart: {
+                            width: 380,
+                            type: 'pie',
+                        },
+                        labels: ['A', 'B', 'C', 'Y', 'P'],
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    },
+                },
+                rating_prevYear: {
+                    series: [
+                        store.overallStats.value.ratedAPreviousYear,
+                        store.overallStats.value.ratedBPreviousYear,
+                        store.overallStats.value.ratedCPreviousYear,
+                        store.overallStats.value.ratedPPreviousYear,
+                        store.overallStats.value.ratedYPreviousYear,
+                    ],
+                    chartOptions: {
+                        chart: {
+                            width: 380,
+                            type: 'pie',
+                        },
+                        labels: ['A', 'B', 'C', 'P', 'Y'],
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    },
+                }
+            }
+        };
+    }
 }
