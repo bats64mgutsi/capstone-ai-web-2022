@@ -17,12 +17,12 @@
                     <th scope="col" class="py-3 px-6">
                         Institution
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <!-- <th scope="col" class="py-3 px-6">
                         Latitude
                     </th>
                     <th scope="col" class="py-3 px-6">
                         Longitude
-                    </th>
+                    </th> -->
                     <th scope="col" class="py-3 px-6">
                         Number of Authors
                     </th>
@@ -36,12 +36,12 @@
                     <td class="cursor-pointer py-4 px-6">
                         {{stat.institution.name}}
                     </td>
-                    <td class="py-4 px-6">
+                    <!-- <td class="py-4 px-6">
                         {{stat.institution.latitude}}
                     </td>
                     <td class="py-4 px-6">
                         {{stat.institution.longitude}}
-                    </td>
+                    </td> -->
                     <td class="py-4 px-6">
                         {{stat.noAuthors}}
                     </td>

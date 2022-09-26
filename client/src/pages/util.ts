@@ -249,6 +249,7 @@ export const isLoggedIn = () => {
 
 export const handleError = (e: any) => {
     console.log('e: ', e.message);
+    console.log(e.stack);
     store.setMessage({ type: "error", message: e.message });
 }
 
