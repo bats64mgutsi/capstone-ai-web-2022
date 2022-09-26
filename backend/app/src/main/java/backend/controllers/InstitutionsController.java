@@ -14,7 +14,7 @@ public class InstitutionsController {
     final ContributionsTable contributionsTable = (ContributionsTable) Locator.instance.get(ContributionsTable.class);
 
     public List<PopulatedInstitution> listInstitutions() throws SQLException {
-        List<PopulatedInstitution> populatedInstitutions = new ArrayList<>();
+        List<PopulatedInstitution> populatedInstitutions = new LinkedList<>();
         List<Institution> institutions = institutionsTable.listAll();
         List<String> institutionIds = new ArrayList<>();
         List<Author> authors = new ArrayList<>();
@@ -23,20 +23,21 @@ public class InstitutionsController {
             institutionIds.add(institutionId);
         }
         for (int j = 0; j < institutionIds.size(); j++) { // loops through all the institutions and gets a list of
-                                                          // authors for every institution.
+            // authors for every institution.
             int noAuthors = 0;
             int noPublications = 0;
             authors = authorsTable.getAuthors(institutionIds.get(j));
             noAuthors = authors.size();
             for (int k = 0; k < noAuthors; k++) { // loops through all the authors per institution and gets the running
-                                                  // total of all their combined publications.
+                // total of all their combined publications.
                 noPublications = noPublications + contributionsTable.getNoPublications(authors.get(k).id);
             }
-            PopulatedInstitution populatedInstitution = new PopulatedInstitution(
-                    institutionsTable.getInstitution(institutionIds.get(j)), noAuthors, noPublications);
+            PopulatedInstitution populatedInstitution = new PopulatedInstitution(institutionsTable.getInstitution(institutionIds.get(j)), noAuthors, noPublications);
             populatedInstitutions.add(populatedInstitution);
         }
+
+        populatedInstitutions.sort(Comparator.comparingInt(el -> -el.noAuthors));
         return populatedInstitutions; // returns an object that has the number of authors and the number of combined
-                                      // publications attached to an institution.
+        // publications attached to an institution.
     }
 }
