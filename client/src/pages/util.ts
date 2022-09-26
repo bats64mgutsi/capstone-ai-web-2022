@@ -317,6 +317,37 @@ export const getOverallStats = async () => {
     return store.overallStats.value;
 }
 
+export const getInstitutionChartData = () => {
+    if(store.institutionStats.value) {
+        return {
+            chartOptions: {
+                plotOptions: {
+                    bar: {
+                      horizontal: true
+                    },
+                },
+
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                
+                dataLabels: {
+                    enabled: false
+                },
+
+                xaxis: {
+                    categories: store.institutionStats.value.map(el => el.institution.name),
+                }
+            },
+
+            series: [{
+                data: store.institutionStats.value.map(el => el.noAuthors)
+              }],
+          };
+    }
+}
+
 export const getChartData = () => {
     if (store.overallStats.value) {
         return {
