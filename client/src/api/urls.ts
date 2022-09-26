@@ -3,6 +3,7 @@ const getWebsocketUrl = (apiUrl: string) => {
     const wsProtocol = urlObj.protocol.replace("http", "ws");
     return `${wsProtocol}//${urlObj.host}`;
 };
-  
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8001";
+
+const origin = window.location.origin.replaceAll("8002", "8001").replaceAll("3000", "8001");
+export const API_URL = import.meta.env.VITE_API_URL || origin;
 export const WEBSOCKET_URL = getWebsocketUrl(API_URL);

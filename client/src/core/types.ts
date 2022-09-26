@@ -3,7 +3,7 @@ export interface Author {
     surname: string;
     initials: string;
     title: string;
-    institution: string;
+    institution: Institution;
     rating: string;
 }
 
@@ -21,7 +21,7 @@ export interface Publication {
 
 export interface AuthorProfile {
     author: Author;
-    subfields: string[];
+    subFields: string[];
     publications: Publication[];
     citationCount: number;
 }

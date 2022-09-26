@@ -53,6 +53,8 @@ public class AiKeywordsHttpHandler extends BaseHttpHandler {
 
             });
 
+            asyncSetKeywords.start();
+
             return new Gson().toJson(aiKeywords);
         }
          else {

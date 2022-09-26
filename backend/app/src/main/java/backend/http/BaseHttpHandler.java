@@ -21,6 +21,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
                 response = getResponse(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody, mimeType);
             } catch (Exception e) {
                 response = e.toString();
+                mimeType.replace(0, mimeType.length(), "text/text");
                 System.err.println(e);
                 e.printStackTrace();
                 statusCode = 500;
@@ -29,7 +30,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
         System.out.printf("On new request to %s %s\n", (CharSequence) exchange.getRequestMethod(), (CharSequence) exchange.getRequestURI().getPath());
 
-        exchange.getResponseHeaders().add("Content-type", mimeType.toString());
+        exchange.getResponseHeaders().add("Content-Type", mimeType.toString());
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         exchange.getResponseHeaders().add("Access-Control-Max-Age", "86400");

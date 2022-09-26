@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="author in pageContent" @click="goToProfile(`${author.surname}`)" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr v-for="author in pageContent" @click="goToProfile(`${author.id}`)" class="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="py-4 px-6">
                         {{author.surname}}
                     </td>
@@ -48,7 +48,7 @@
                         {{author.rating}}
                     </td>
                     <td class="py-4 px-6">
-                        {{author.institution}}
+                        {{author.institution.name}}
                     </td>
                 </tr>
             </tbody>

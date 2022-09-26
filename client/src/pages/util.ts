@@ -249,6 +249,7 @@ export const isLoggedIn = () => {
 
 export const handleError = (e: any) => {
     console.log('e: ', e.message);
+    console.log(e.stack);
     store.setMessage({ type: "error", message: e.message });
 }
 
@@ -296,8 +297,9 @@ const getAndSetAIFilters = async () => {
 }
 
 export const modifyFilters = async (modifiedFilters: string[]) => {
-    // await backendClient().modifyFilters(modifiedFilters);
+    await backendClient().modifyFilters(modifiedFilters);
     store.setAIFilters(modifiedFilters);
+    store.setMessage({type: 'success', message: 'Successfully updated filters'});
 }
 
 const lowerAndRemoveWhitespace = (text: string) => {
