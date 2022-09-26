@@ -53,29 +53,29 @@ export const refreshData = async () => {
 }
 
 const getAndSetAuthors = async () => {
-    // const authors = await getAuthorsFromBackend();
-    const authors = [
-        { id: '1', surname: 'surname 1', initials: 'initials 1', title: 'Prof', institution: 'institution 1', rating: 'A' },
-        { id: '2', surname: 'surname 2', initials: 'initials 2', title: 'Prof', institution: 'institution 1', rating: 'Y' },
-        { id: '3', surname: 'surname 3', initials: 'initials 3', title: 'Prof', institution: 'institution 1', rating: 'P' },
-        { id: '4', surname: 'surname 4', initials: 'initials 4', title: 'Prof', institution: 'institution 1', rating: 'B' },
-        { id: '5', surname: 'surname 5', initials: 'initials 5', title: 'Prof', institution: 'institution 2', rating: 'C' },
-        { id: '6', surname: 'surname 6', initials: 'initials 6', title: 'Prof', institution: 'institution 2', rating: 'A' },
-        { id: '7', surname: 'surname 7', initials: 'initials 7', title: 'Prof', institution: 'institution 2', rating: 'P' },
-        { id: '8', surname: 'surname 8', initials: 'initials 8', title: 'Prof', institution: 'institution 2', rating: 'P' },
-        { id: '9', surname: 'surname 8', initials: 'initials 9', title: 'Prof', institution: 'institution 3', rating: 'B' },
-        { id: '10', surname: 'surname 10', initials: 'initials 10', title: 'Prof', institution: 'institution 3', rating: 'C' },
-        { id: '11', surname: 'surname 11', initials: 'initials 11', title: 'Prof', institution: 'institution 3', rating: 'Y' },
-        { id: '12', surname: 'surname 12', initials: 'initials 12', title: 'Prof', institution: 'institution 3', rating: 'B' },
-        { id: '13', surname: 'surname 13', initials: 'initials 13', title: 'Prof', institution: 'institution 4', rating: 'P' },
-        { id: '14', surname: 'surname 14', initials: 'initials 14', title: 'Prof', institution: 'institution 4', rating: 'A' },
-        { id: '15', surname: 'surname 15', initials: 'initials 15', title: 'Prof', institution: 'institution 4', rating: 'C' },
-        { id: '16', surname: 'surname 16', initials: 'initials 16', title: 'Prof', institution: 'institution 4', rating: 'C' },
-        { id: '17', surname: 'surname 17', initials: 'initials 17', title: 'Prof', institution: 'institution 5', rating: 'B' },
-        { id: '18', surname: 'surname 18', initials: 'initials 18', title: 'Prof', institution: 'institution 5', rating: 'C' },
-        { id: '19', surname: 'surname 19', initials: 'initials 19', title: 'Prof', institution: 'institution 5', rating: 'A' },
-        { id: '20', surname: 'surname 20', initials: 'initials 20', title: 'Prof', institution: 'institution 5', rating: 'Y' },
-    ];
+    const authors = await getAuthorsFromBackend();
+    // const authors = [
+    //     { id: '1', surname: 'surname 1', initials: 'initials 1', title: 'Prof', institution: 'institution 1', rating: 'A' },
+    //     { id: '2', surname: 'surname 2', initials: 'initials 2', title: 'Prof', institution: 'institution 1', rating: 'Y' },
+    //     { id: '3', surname: 'surname 3', initials: 'initials 3', title: 'Prof', institution: 'institution 1', rating: 'P' },
+    //     { id: '4', surname: 'surname 4', initials: 'initials 4', title: 'Prof', institution: 'institution 1', rating: 'B' },
+    //     { id: '5', surname: 'surname 5', initials: 'initials 5', title: 'Prof', institution: 'institution 2', rating: 'C' },
+    //     { id: '6', surname: 'surname 6', initials: 'initials 6', title: 'Prof', institution: 'institution 2', rating: 'A' },
+    //     { id: '7', surname: 'surname 7', initials: 'initials 7', title: 'Prof', institution: 'institution 2', rating: 'P' },
+    //     { id: '8', surname: 'surname 8', initials: 'initials 8', title: 'Prof', institution: 'institution 2', rating: 'P' },
+    //     { id: '9', surname: 'surname 8', initials: 'initials 9', title: 'Prof', institution: 'institution 3', rating: 'B' },
+    //     { id: '10', surname: 'surname 10', initials: 'initials 10', title: 'Prof', institution: 'institution 3', rating: 'C' },
+    //     { id: '11', surname: 'surname 11', initials: 'initials 11', title: 'Prof', institution: 'institution 3', rating: 'Y' },
+    //     { id: '12', surname: 'surname 12', initials: 'initials 12', title: 'Prof', institution: 'institution 3', rating: 'B' },
+    //     { id: '13', surname: 'surname 13', initials: 'initials 13', title: 'Prof', institution: 'institution 4', rating: 'P' },
+    //     { id: '14', surname: 'surname 14', initials: 'initials 14', title: 'Prof', institution: 'institution 4', rating: 'A' },
+    //     { id: '15', surname: 'surname 15', initials: 'initials 15', title: 'Prof', institution: 'institution 4', rating: 'C' },
+    //     { id: '16', surname: 'surname 16', initials: 'initials 16', title: 'Prof', institution: 'institution 4', rating: 'C' },
+    //     { id: '17', surname: 'surname 17', initials: 'initials 17', title: 'Prof', institution: 'institution 5', rating: 'B' },
+    //     { id: '18', surname: 'surname 18', initials: 'initials 18', title: 'Prof', institution: 'institution 5', rating: 'C' },
+    //     { id: '19', surname: 'surname 19', initials: 'initials 19', title: 'Prof', institution: 'institution 5', rating: 'A' },
+    //     { id: '20', surname: 'surname 20', initials: 'initials 20', title: 'Prof', institution: 'institution 5', rating: 'Y' },
+    // ];
     setAuthorsInState(authors);
 }
 
@@ -88,26 +88,26 @@ const setAuthorsInState = (authors: Author[]) => {
 }
 
 const getAndSetAuthorProfile = async (authorId: string) => {
-    // const profile = await getAuthorProfileFromBackend(authorId);
-    const profile = {
-        author: {id: '1', surname: 'Surname 1', initials: 'initals 1', title: 'Prof', institution: 'institution 1', rating: 'B' },
-        subfields: ['subfield 1', 'subfield 2', 'subfield 3', 'subfield 4', 'subfield 5'],
-        publications: [
-            { id: 'id 1', title: 'title 1', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 2', title: 'title 2', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 3', title: 'title 3', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 4', title: 'title 4', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 5', title: 'title 5', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 6', title: 'title 6', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 7', title: 'title 7', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 8', title: 'title 8', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 9', title: 'title 9', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 10', title: 'title 10', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 11', title: 'title 11', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-            { id: 'id 12', title: 'title 12', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
-        ],
-        citationCount: 234
-    }
+    const profile = await getAuthorProfileFromBackend(authorId);
+    // const profile = {
+    //     author: {id: '1', surname: 'Surname 1', initials: 'initals 1', title: 'Prof', institution: 'institution 1', rating: 'B' },
+    //     subfields: ['subfield 1', 'subfield 2', 'subfield 3', 'subfield 4', 'subfield 5'],
+    //     publications: [
+    //         { id: 'id 1', title: 'title 1', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 2', title: 'title 2', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 3', title: 'title 3', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 4', title: 'title 4', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 5', title: 'title 5', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 6', title: 'title 6', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 7', title: 'title 7', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 8', title: 'title 8', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 9', title: 'title 9', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 10', title: 'title 10', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 11', title: 'title 11', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //         { id: 'id 12', title: 'title 12', citationCount: 34, year: '2013', externalLink: 'https://reader.elsevier.com/reader/sd/pii/S2214509515300176?token=6AF344EE0FC0F07E342A867B9E30A21FA965A4579625F3F9FC44B8237F65512942868FC74238B6FE1B1AE4392C3F51E2&originRegion=eu-west-1&originCreation=20220925170626' },
+    //     ],
+    //     citationCount: 234
+    // }
     setCurrentlySelectedAuthorProfileInState(profile);
 }
 
