@@ -18,7 +18,7 @@ public class AuthorsController {
     final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
    
     public List<PopulatedAuthor> listAuthors() throws SQLException {
-         return authorsTable.listAll().stream().map(author -> {
+         final List<PopulatedAuthor> immutableAuthors = authorsTable.listAll().stream().map(author -> {
             String institutionId = author.institution;
             Institution institution=null;
             try {
@@ -39,8 +39,12 @@ public class AuthorsController {
                  throw new RuntimeException(e);
              }
          }).toList();
-    
-        }
+
+         final List<PopulatedAuthor> mutableAuthors = new LinkedList<>();
+         mutableAuthors.addAll(immutableAuthors);
+         mutableAuthors.sort(Comparator.comparing(el -> el.rating));
+         return mutableAuthors;
+    }
 
     public AuthorProfile getProfile(String authorId) throws SQLException {
         final Author author = authorsTable.get(authorId);
@@ -54,7 +58,8 @@ public class AuthorsController {
 
         final List<String> subfields = getAuthorSubfields(authorId).stream().map(el -> el.name).toList();
         final int citationCount = publications.stream().map(el -> el.citationCount).reduce(0, Integer::sum);
-        return new AuthorProfile(author, subfields, publications, citationCount);
+        final Institution  institution= institutionsTable.getInstitution(author.institution);
+        return new AuthorProfile(author, subfields, publications, citationCount, institution);
     }
 
     private List<Subfield> getAuthorSubfields(String authorId) throws SQLException {

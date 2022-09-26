@@ -119,7 +119,7 @@ const handleNextBtnClickEvent = () => {
 }
 
 const isValidPageNumber = (pageNumber: number) => {
-    return getFirstRecordNumberForGivenPage(pageNumber) < searchedContent.value.length;
+    return getFirstRecordNumberForGivenPage(pageNumber) <= searchedContent.value.length;
 }
 
 const getFirstRecordNumberForGivenPage = (page: number) => {
