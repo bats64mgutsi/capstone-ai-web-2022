@@ -40,14 +40,6 @@ export const refreshData = async () => {
 
     if (!store.aiFilters.value.length) {
         const stats = await getAIFiltersFromBackend();
-        // const stats = [
-        //     'AI Filter 1',
-        //     'AI Filter 2',
-        //     'AI Filter 3',
-        //     'AI Filter 4',
-        //     'AI Filter 5',
-        //     'AI Filter 6',
-        // ]
         setAIFiltersInState(stats);
     }
 }
@@ -317,6 +309,52 @@ export const getOverallStats = async () => {
     return store.overallStats.value;
 }
 
+const getArrayOfHexadecimalColors = (numberOfColors: number) => {
+    let array = [];
+    for (let index = 0; index < numberOfColors; index++) {
+        array.push(randColor());
+    }
+
+    return array;
+}
+
+const randColor = () =>  {
+    return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+}
+
+const getCustomBarChartDataSeriesForSubfieldCurrYear = () => {
+    const dataSeries: number[] = [];
+    if (store.overallStats.value) {
+        store.overallStats.value.subfields.forEach(subfield => {
+            dataSeries.push(subfield.numberOfAuthorsCurrentYear)
+        });
+    }
+
+    return dataSeries;
+}
+
+const getCustomBarChartDataSeriesForSubfieldPrevYear = () => {
+    const dataSeries: number[] = [];
+    if (store.overallStats.value) {
+        store.overallStats.value.subfields.forEach(subfield => {
+            dataSeries.push(subfield.numberOfAuthorsPrevYear)
+        });
+    }
+
+    return dataSeries;
+}
+
+const getCustomBarChartXAxisCategoriesForSubfields = () => {
+    const dataSeries: string[] = [];
+    if (store.overallStats.value) {
+        store.overallStats.value.subfields.forEach(subfield => {
+            dataSeries.push(subfield.subfield.name)
+        });
+    }
+
+    return dataSeries;
+}
+
 export const getChartData = () => {
     if (store.overallStats.value) {
         return {
@@ -374,6 +412,136 @@ export const getChartData = () => {
                             }
                         }]
                     },
+                }
+            },
+            customBarChartData: {
+                subfield_currYear: {
+                    series: [{ data: getCustomBarChartDataSeriesForSubfieldCurrYear() }],
+                    chartOptions: {
+                        chart: {
+                            type: 'bar',
+                            height: 380
+                        },
+                        plotOptions: {
+                            bar: {
+                            barHeight: '100%',
+                            distributed: true,
+                            horizontal: true,
+                            dataLabels: {
+                                position: 'bottom'
+                            },
+                            }
+                        },
+                        colors: getArrayOfHexadecimalColors(10),
+                        dataLabels: {
+                            enabled: true,
+                            textAnchor: 'start',
+                            style: {
+                            colors: ['#fff']
+                            },
+                            formatter: function (val: any, opt: any) {
+                            return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+                            },
+                            offsetX: 0,
+                            dropShadow: {
+                            enabled: true
+                            }
+                        },
+                        stroke: {
+                            width: 1,
+                            colors: ['#fff']
+                        },
+                        xaxis: {
+                            categories: getCustomBarChartXAxisCategoriesForSubfields()
+                        },
+                        yaxis: {
+                            labels: {
+                            show: false
+                            }
+                        },
+                        title: {
+                            text: 'AI Researchers by subfield (Current Year)',
+                            align: 'center',
+                            floating: true
+                        },
+                        tooltip: {
+                            theme: 'dark',
+                            x: {
+                                show: false
+                            },
+                            y: {
+                                title: {
+                                    formatter: function () {
+                                        return ''
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                subfield_previousYear: {
+                    series: [{ data: getCustomBarChartDataSeriesForSubfieldPrevYear() }],
+                    chartOptions: {
+                        chart: {
+                            type: 'bar',
+                            height: 380
+                        },
+                        plotOptions: {
+                            bar: {
+                            barHeight: '100%',
+                            distributed: true,
+                            horizontal: true,
+                            dataLabels: {
+                                position: 'bottom'
+                            },
+                            }
+                        },
+                        colors: getArrayOfHexadecimalColors(10),
+                        dataLabels: {
+                            enabled: true,
+                            textAnchor: 'start',
+                            style: {
+                            colors: ['#fff']
+                            },
+                            formatter: function (val: any, opt: any) {
+                            return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+                            },
+                            offsetX: 0,
+                            dropShadow: {
+                            enabled: true
+                            }
+                        },
+                        stroke: {
+                            width: 1,
+                            colors: ['#fff']
+                        },
+                        xaxis: {
+                            categories: getCustomBarChartXAxisCategoriesForSubfields()
+                        },
+                        yaxis: {
+                            labels: {
+                            show: false
+                            }
+                        },
+                        title: {
+                            text: 'AI Researchers by subfield (Previous Year)',
+                            align: 'center',
+                            floating: true
+                        },
+                        tooltip: {
+                            theme: 'dark',
+                            x: {
+                                show: false
+                            },
+                            y: {
+                                title: {
+                                    formatter: function () {
+                                        return ''
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         };
