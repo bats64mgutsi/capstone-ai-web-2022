@@ -185,7 +185,7 @@ const containsSomeFilters = (value: any, filters: Array<string>): boolean => {
 }
 
 const getArrayStringRepresentation = (array: string[]) => {
-    return array.toString();
+    return array.toString().replaceAll(",", ", ");
 }
 
 </script>
