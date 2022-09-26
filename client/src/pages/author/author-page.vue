@@ -48,7 +48,7 @@
                         {{author.rating}}
                     </td>
                     <td class="py-4 px-6">
-                        {{author.institution}}
+                        {{author.institution.name}}
                     </td>
                 </tr>
             </tbody>

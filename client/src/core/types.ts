@@ -3,7 +3,7 @@ export interface Author {
     surname: string;
     initials: string;
     title: string;
-    institution: string;
+    institution: Institution;
     rating: string;
 }
 
