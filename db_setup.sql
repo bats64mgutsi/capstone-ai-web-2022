@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS institutions;
 DROP TABLE IF EXISTS publications;
 DROP TABLE IF EXISTS subFields;
 DROP TABLE IF EXISTS aiKeywords;
+DROP TABLE IF EXISTS keyValues;
 
 CREATE TABLE IF NOT EXISTS admins(id int AUTO_INCREMENT, username varChar(255), hashedPassword varChar(255), PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS authors (id varChar(255), surname varChar(255), initials varChar(255), title varChar(255), institution varChar(255), rating Char, yearAdded varChar(255), PRIMARY KEY(id));
@@ -23,10 +24,12 @@ CREATE TABLE IF NOT EXISTS institutions (id varChar(255), name varChar(255), lat
 CREATE TABLE IF NOT EXISTS publications (id varChar(255), title varChar(255), citationCount int, externalLink varChar(500), year varChar(255));
 CREATE TABLE IF NOT EXISTS subFields (id varChar(255), name varChar(255));
 CREATE TABLE IF NOT EXISTS aiKeywords (keyword varChar(255));
+CREATE TABLE IF NOT EXISTS keyValues (sKey varChar(255), sValue varChar(5000), PRIMARY KEY(sKey));
 
 -- Populate keywords table
 INSERT INTO aiKeywords (keyword) VALUES ("artificial intelligence");
 INSERT INTO aiKeywords (keyword) VALUES ("machine learning");
+INSERT INTO aiKeywords (keyword) VALUES ("machine vision");
 INSERT INTO aiKeywords (keyword) VALUES ("neural networks");
 INSERT INTO aiKeywords (keyword) VALUES ("cognitive computing");
 INSERT INTO aiKeywords (keyword) VALUES ("natural language processing");

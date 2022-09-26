@@ -1,13 +1,9 @@
 package backend;
 
 import backend.Tables.*;
-import backend.controllers.AuthorizationController;
-import backend.controllers.AuthorsController;
-import backend.controllers.NrfListController;
-import backend.http.AuthorizationHttpHandler;
-import backend.http.AuthorsHttpHandler;
-import backend.http.NrfListHttpHandler;
+import backend.controllers.*;
 import backend.httpClient.HttpClient;
+import backend.services.EmailService;
 import backend.services.GoogleScholarService;
 import backend.services.HashingService;
 import backend.services.UniqueIdService;
@@ -38,15 +34,21 @@ public abstract class LocatorSetup {
         Locator.instance.registerSingleton(new SubfieldsTable());
         Locator.instance.registerSingleton(new InstitutionsTable());
         Locator.instance.registerSingleton(new AiKeywordsTable());
+        Locator.instance.registerSingleton(new KeyValuesTable());
 
         Locator.instance.registerSingleton(new HttpClient());
 
+        Locator.instance.registerSingleton(new EmailService("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")); // TODO: Pass API key through environment variables
         Locator.instance.registerSingleton(new GoogleScholarService());
         Locator.instance.registerSingleton(new HashingService());
         Locator.instance.registerSingleton(new UniqueIdService());
 
         Locator.instance.registerSingleton(new AuthorizationController());
         Locator.instance.registerSingleton(new AuthorsController());
+        Locator.instance.registerSingleton(new InstitutionsController());
+        Locator.instance.registerSingleton(new AiKeywordsController());
+        Locator.instance.registerSingleton(new PopulatedSubfieldsController());
         Locator.instance.registerSingleton(new NrfListController());
+        Locator.instance.registerSingleton(new StatsController());
     }
 }

@@ -31,6 +31,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.jsoup:jsoup:1.15.3'
+
+    // https://github.com/sendgrid/sendgrid-java
+    implementation 'com.sendgrid:sendgrid-java:4.9.3'
 }
 
 application {

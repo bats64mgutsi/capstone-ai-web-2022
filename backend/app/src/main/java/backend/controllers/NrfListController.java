@@ -3,6 +3,7 @@ package backend.controllers;
 import backend.ApplicationModels.GoogleScholarAuthorProfile;
 import backend.ApplicationModels.GoogleScholarPublication;
 import backend.ApplicationModels.NrfAuthor;
+import backend.ApplicationModels.Stats;
 import backend.DatabaseModels.*;
 import backend.Locator;
 import backend.Tables.*;
@@ -11,14 +12,13 @@ import backend.services.HashingService;
 import backend.services.UniqueIdService;
 import backend.utils.FilteringUtils;
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class NrfListController {
     final Logger logger = Logger.getLogger(NrfListController.class.getName());
@@ -33,9 +33,11 @@ public class NrfListController {
     final SubfieldsTable subfieldsTable = (SubfieldsTable) Locator.instance.get(SubfieldsTable.class);
     final InstitutionsTable institutionsTable = (InstitutionsTable) Locator.instance.get(InstitutionsTable.class);
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
+    final KeyValuesTable keyValuesTable = (KeyValuesTable) Locator.instance.get(KeyValuesTable.class);
+    final PopulatedSubfieldsController populatedSubfieldsController = (PopulatedSubfieldsController) Locator.instance.get(PopulatedSubfieldsController.class);
 
     public void setAuthors(List<NrfAuthor> authors, String year) throws SQLException {
-        clearTables();
+        clearTables(year);
         final Set<Subfield> allSubFields = new HashSet<>();
         final List<GoogleScholarAuthorProfile> authorProfiles = googleScholarService.fetchProfiles(authors);
 
@@ -46,23 +48,23 @@ public class NrfListController {
             final String authorId = makeAuthorId(nrfAuthor, year);
             insertAuthor(nrfAuthor, authorId, year);
             insertAuthorPublications(authorProfile.publications, authorId);
-            insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields);
+            insertAuthorSubfields(nrfAuthor, authorProfile, authorId, allSubFields, year);
 
             logger.log(Level.INFO, String.format("Flushed author %s %s", nrfAuthor.initials, nrfAuthor.surname));
         }
 
         logger.log(Level.INFO, "Filtering authors...");
         insertAllSubfields(allSubFields);
-        filterAndMoveAuthors();
+        filterAndMoveAuthors(Integer.parseInt(year));
         logger.log(Level.INFO, "System data successfully updated!");
     }
 
     /***
-     * Moves authors from AllAuthorsTable table to the Authors table.
+     * Moves authors from AllAuthorsTable table to the Authors table for given year.
      */
-    public void filterAndMoveAuthors() throws SQLException {
+    public void filterAndMoveAuthors(int year) throws SQLException {
         authorsTable.clearAll();
-        final List<Author> allAuthors = allAuthorsTable.listAll();
+        final List<Author> allAuthors = Stream.concat(allAuthorsTable.listAll().stream(), allAuthorsTable.listAllPrevYear().stream()).toList();
         final List<String> allInstitutionIds = institutionsTable.listAll().stream().map(el-> el.id).toList();
         final List<String> aiKeywords = aiKeywordsTable.listAll();
 
@@ -83,18 +85,32 @@ public class NrfListController {
 
             authorsTable.insertAuthor(author);
         }
+
+        // Compute and save stats
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        if(year == currentYear) {
+            // Compute stats only if we are uploading Nrf list for the current year.
+            // The assumption is that data for previous year already exists so that stats
+            // can be computed.
+            final Stats stats = computeStats();
+            final String statsJson = new Gson().toJson(stats);
+            keyValuesTable.store(Stats.class.getName(), statsJson);
+        }
     }
 
     private String makeAuthorId(NrfAuthor author, String year) {
         return hashingService.flatten(new ImmutableList.Builder<String>().add(author.initials).add(author.surname).add(year).build());
     }
 
+    private String makeSubfieldId(String subFieldStr, String year) {
+        return hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).add(year).build());
+    }
 
-    private void clearTables() throws SQLException {
-        authorToSubfieldTable.clearAll();
+
+    private void clearTables(String year) throws SQLException {
+        authorToSubfieldTable.clearAllForYear(year);
         publicationsTable.clearAll();
         contributionsTable.clearAll();
-        subfieldsTable.clearAll();
     }
 
     private void insertAuthor(NrfAuthor nrfAuthor, String authorId, String year) throws SQLException {
@@ -120,7 +136,7 @@ public class NrfListController {
         contributionsTable.setContribution(contribution);
     }
 
-    private void insertAuthorSubfields(NrfAuthor author, GoogleScholarAuthorProfile profile, String authorId, Set<Subfield> allSubfields) throws SQLException {
+    private void insertAuthorSubfields(NrfAuthor author, GoogleScholarAuthorProfile profile, String authorId, Set<Subfield> allSubfields, String year) throws SQLException {
         final List<String> authorSubfields = new LinkedList<>();
         authorSubfields.addAll(author.primaryResearchFields);
         authorSubfields.addAll(author.secondaryResearchFields);
@@ -128,7 +144,7 @@ public class NrfListController {
         authorSubfields.addAll(profile.subFields);
 
         for (String subFieldStr : authorSubfields) {
-            final String subFieldId = hashingService.flatten(new ImmutableList.Builder<String>().add(subFieldStr).build());
+            final String subFieldId = makeSubfieldId(subFieldStr, year);
             final Subfield subField = new Subfield(subFieldId, subFieldStr);
             allSubfields.add(subField);
 
@@ -142,5 +158,76 @@ public class NrfListController {
         for (Subfield subfield : allSubfields) {
             subfieldsTable.insertSubfield(subfield);
         }
+    }
+
+    public Stats computeStats() throws SQLException {
+        final List<Author> currentYearAuthors = authorsTable.listAll();
+        final List<Author> prevYearAuthors = authorsTable.listAllPrevYear();
+
+        final List<Publication> allPublications = listPublicationsForAuthors(currentYearAuthors);
+        allPublications.addAll(listPublicationsForAuthors(prevYearAuthors));
+
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        return new Stats(
+                currentYearAuthors.size(),
+                prevYearAuthors.size(),
+                countPublicationsUpTo(allPublications, currentYear),
+                countPublicationsUpTo(allPublications, currentYear-1),
+
+                tallyCitationsUpTo(allPublications, currentYear),
+                tallyCitationsUpTo(allPublications, currentYear-1),
+
+                countAuthorsWithRating(currentYearAuthors, "A"),
+                countAuthorsWithRating(currentYearAuthors, "B"),
+                countAuthorsWithRating(currentYearAuthors, "C"),
+                countAuthorsWithRating(currentYearAuthors, "P"),
+                countAuthorsWithRating(currentYearAuthors, "Y"),
+
+                countAuthorsWithRating(prevYearAuthors, "A"),
+                countAuthorsWithRating(prevYearAuthors, "B"),
+                countAuthorsWithRating(prevYearAuthors, "C"),
+                countAuthorsWithRating(prevYearAuthors, "P"),
+                countAuthorsWithRating(prevYearAuthors, "Y"),
+                populatedSubfieldsController.listSubfields()
+        );
+    }
+
+    private List<Publication> listPublicationsForAuthors(List<Author> authors) throws SQLException {
+        final List<Contribution> contributions = new LinkedList<>();
+        for(final Author author: authors) {
+            contributions.addAll(contributionsTable.listForAuthor(author.id));
+        }
+
+        final List<Publication> publications = new LinkedList<>();
+        for(final Contribution contribution: contributions) {
+            publications.add(publicationsTable.getItemWithId(contribution.publicationId));
+        }
+
+        return publications;
+    }
+
+    private int countAuthorsWithRating(List<Author> authors, String withRating) {
+        return authors.stream().filter(el -> el.rating.equals(withRating)).toList().size();
+    }
+
+    private int countPublicationsUpTo(List<Publication> publications, int upToYear) {
+        return publications.stream().map(el -> {
+            try{
+                return Integer.parseInt(el.year);
+            } catch(NumberFormatException e) {
+                return 0;
+            }
+        }).filter(yearEl -> yearEl <= upToYear).toList().size();
+    }
+
+    private int tallyCitationsUpTo(List<Publication> publications, int upToYear) {
+        return publications.stream().filter(el -> {
+            try {
+                int year = Integer.parseInt(el.year);
+                return year <= upToYear;
+            } catch (NumberFormatException e) {
+                return true;
+            }
+        }).map(el -> el.citationCount).reduce(0, Integer::sum);
     }
 }

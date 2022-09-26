@@ -2,6 +2,7 @@ package backend.Tables;
 
 import java.sql.*;
 import java.util.*;
+
 import backend.DatabaseModels.Subfield;
 
 import backend.DatabaseModels.AuthorToSubfield;
@@ -10,10 +11,12 @@ public class AuthorToSubfieldTable extends SqlTable {
 
     public boolean insertAuthorToSubfield(AuthorToSubfield entry) throws SQLException {
         boolean inserted = false;
-        PreparedStatement stmt = db.prepareStatement(
-                "INSERT into authorToSubfieldsMap (authorID, subFieldID) VALUES (?, ?)");
+        PreparedStatement stmt = db.prepareStatement("INSERT into authorToSubfieldsMap (authorID, subFieldID) SELECT ?, ? WHERE NOT EXISTS (SELECT * FROM authorToSubfieldsMap WHERE authorID=? AND subFieldID=?)");
         stmt.setString(1, entry.authorId);
         stmt.setString(2, entry.subfieldId);
+
+        stmt.setString(3, entry.authorId);
+        stmt.setString(4, entry.subfieldId);
         inserted = stmt.executeUpdate() > 0;
 
         return inserted;
@@ -32,14 +35,28 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
+    
+    public List<AuthorToSubfield> getAuthorSubfieldsBySubfield(String subfieldId) throws SQLException {
+        PreparedStatement stmt = db.prepareStatement("SELECT authorId FROM authorToSubfieldsMap WHERE subfieldId = ?");
+        stmt.setString(1, subfieldId);
+        ResultSet rs = stmt.executeQuery();
+        List<AuthorToSubfield> authorToSubfields = new ArrayList<>();
 
-    public boolean clearAll() throws SQLException {
+        while (rs.next()) {
+            String authorId = rs.getString(1);
+            AuthorToSubfield authorToSubfield = new AuthorToSubfield(authorId, subfieldId);
+            authorToSubfields.add(authorToSubfield);
+        }
+        return authorToSubfields;
+    }
+
+    public boolean clearAllForYear(String year) throws SQLException {
         boolean cleared = false;
-        PreparedStatement stmt = db.prepareStatement(
-                "DELETE FROM authorToSubfieldsMap");
-
+        PreparedStatement stmt = db.prepareStatement("DELETE FROM authorToSubfieldsMap WHERE subfieldId LIKE ?");
+        stmt.setString(1, "%" + year);
         cleared = stmt.executeUpdate() > 0;
 
         return cleared;
     }
+
 }
