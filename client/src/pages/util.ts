@@ -388,6 +388,7 @@ const getCustomBarChartXAxisCategoriesForSubfields = () => {
 
 export const getChartData = () => {
     if (store.overallStats.value) {
+        const generatedColors = getArrayOfHexadecimalColors(store.overallStats.value.subfields.length);
         return {
             pieData: {
                 rating_currentYear: {
@@ -463,7 +464,7 @@ export const getChartData = () => {
                             },
                             }
                         },
-                        colors: getArrayOfHexadecimalColors(10),
+                        colors: generatedColors,
                         dataLabels: {
                             enabled: true,
                             textAnchor: 'start',
@@ -527,7 +528,7 @@ export const getChartData = () => {
                             },
                             }
                         },
-                        colors: getArrayOfHexadecimalColors(10),
+                        colors: generatedColors,
                         dataLabels: {
                             enabled: true,
                             textAnchor: 'start',
