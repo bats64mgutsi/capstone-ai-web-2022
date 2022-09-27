@@ -58,7 +58,6 @@ public class HttpClient {
     private String makeProxyUrl(String path) {
         final String urlEscapedPath = URLEncoder.encode(path, StandardCharsets.UTF_8);
         final String key = getNextKey();
-        System.out.printf("Using %s", key);
         return "https://api.webscrapingapi.com/v1?api_key="+key+"&url="+urlEscapedPath;
     }
 
