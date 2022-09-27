@@ -194,9 +194,10 @@ public class GoogleScholarService {
     }
 
     private List<GoogleScholarPublication> extractPublicationsFromProfileDoc(Document authorProfileDoc) {
+        final List<GoogleScholarPublication> out = new LinkedList<>();
+
         try {
             final Elements publicationElements = authorProfileDoc.getElementById("gsc_a_b").children();
-            final List<GoogleScholarPublication> out = new LinkedList<>();
             for (final Element tr : publicationElements) {
                 final Element titleElement = tr.children().first().children().first();
                 final Element citationsElement = tr.child(1);
@@ -210,11 +211,12 @@ public class GoogleScholarService {
 
                 out.add(new GoogleScholarPublication(new Publication("", numberOfCitations, titleElement.text(), yearElement.text(), "https://scholar.google.com" + titleElement.attr("href")), new LinkedList<>()));
             }
+        } catch(Exception e) {
+            logger.log(Level.SEVERE, e.toString());
 
+            // Catch all other errors we may have missed relating to authors;
+        } finally {
             return out;
-        } catch(NullPointerException e) {
-            final String s = authorProfileDoc.html();
-            throw e;
         }
     }
 
