@@ -48,8 +48,12 @@ public class HttpClient {
                 return fetchWebPage(path);
             }
         } catch(IOException e) {
-            // Retry
-            return fetchWebPage(path);
+            try {
+                Thread.sleep(1000);
+                return fetchWebPage(path);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         return "";
