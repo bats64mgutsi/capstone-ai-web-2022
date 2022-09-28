@@ -1,7 +1,6 @@
 package backend.ApplicationModels;
 
 import backend.DatabaseModels.Institution;
-import backend.DatabaseModels.Subfield;
 
 import java.util.List;
 

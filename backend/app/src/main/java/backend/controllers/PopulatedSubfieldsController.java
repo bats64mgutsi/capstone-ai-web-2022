@@ -2,7 +2,6 @@ package backend.controllers;
 
 import backend.DatabaseModels.*;
 import backend.Locator;
-import backend.ApplicationModels.PopulatedInstitution;
 import backend.ApplicationModels.PopulatedSubfield;
 import backend.Tables.*;
 import backend.services.*;
@@ -14,7 +13,7 @@ public class PopulatedSubfieldsController {
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
     final HashingService hashingService = (HashingService) Locator.instance.get(HashingService.class);
     final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance.get(AuthorToSubfieldTable.class);
-
+//returns a list of populated subifields(a subfiled that has the number of authors studying it this year and last year as integers variables)
     public List<PopulatedSubfield> listSubfields() throws SQLException {
         List<String> aiKeywords = aiKeywordsTable.listAll();
         List<PopulatedSubfield> populatedSubfields = new ArrayList<>();

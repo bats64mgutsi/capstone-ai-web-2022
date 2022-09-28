@@ -29,26 +29,7 @@ public class SubfieldsTable extends SqlTable {
         Subfield subfield = new Subfield(subfieldId, name);
         return subfield;   
     }
-    // public List<Subfield> getAuthorSubfields(String authorId) throws SQLException {
-    //     PreparedStatement stmt = db.prepareStatement("SELECT subFieldID FROM authorSubfieldsMap WHERE authorId = ?");
-    //     List<Subfield> subfields = new ArrayList<>();
-    //     stmt.setString(1, authorId);
-    //     ResultSet rs = stmt.executeQuery();
-    //     while (rs.next()) {
-    //         String id = rs.getString(1);
-    //         String subFieldID = rs.getString(2);
-
-    //         PreparedStatement stmt2 = db.prepareStatement("SELECT name FROM subFields WHERE id  = ?");
-    //         stmt2.setString(1, subFieldID);
-    //         ResultSet rs2 = stmt2.executeQuery();
-    //         rs2.next();
-    //         String name = rs.getString(1);
-    //         Subfield subfield = new Subfield(id, name);
-    //         subfields.add(subfield);
-    //     }
-    //     return subfields;
-
-    // }
+    
     public boolean clearAll()throws SQLException{
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement(
