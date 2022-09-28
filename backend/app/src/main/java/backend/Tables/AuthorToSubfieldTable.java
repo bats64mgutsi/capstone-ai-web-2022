@@ -3,7 +3,6 @@ package backend.Tables;
 import java.sql.*;
 import java.util.*;
 
-import backend.DatabaseModels.Subfield;
 
 import backend.DatabaseModels.AuthorToSubfield;
 
@@ -21,7 +20,7 @@ public class AuthorToSubfieldTable extends SqlTable {
 
         return inserted;
     }
-
+ //finds all the author to subfield objects that match the given authorId
     public List<AuthorToSubfield> getAuthorSubfields(String authorId) throws SQLException {
         PreparedStatement stmt = db.prepareStatement("SELECT subFieldId FROM authorToSubfieldsMap WHERE authorId = ?");
         stmt.setString(1, authorId);
@@ -35,7 +34,7 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
-    
+    //finds all the author to subfield objects that match the given subfieldId
     public List<AuthorToSubfield> getAuthorSubfieldsBySubfield(String subfieldId) throws SQLException {
         PreparedStatement stmt = db.prepareStatement("SELECT authorId FROM authorToSubfieldsMap WHERE subfieldId = ?");
         stmt.setString(1, subfieldId);
@@ -49,7 +48,7 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
-
+ //removes all the author to subfield objects from the database
     public boolean clearAllForYear(String year) throws SQLException {
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement("DELETE FROM authorToSubfieldsMap WHERE subfieldId LIKE ?");

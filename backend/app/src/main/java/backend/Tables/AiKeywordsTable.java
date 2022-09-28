@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AiKeywordsTable extends SqlTable {
+    //adds a keyword to the database
     public boolean insertKeyword(String keyword) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
@@ -14,7 +15,7 @@ public class AiKeywordsTable extends SqlTable {
         inserted = stmt.executeUpdate() > 0;
         return inserted;
     }
-
+// returns all the keywords from the database
     public List<String> listAll() throws SQLException {
         List<String> keywords = new ArrayList<>();
         Statement stmt = db.createStatement();
@@ -26,7 +27,7 @@ public class AiKeywordsTable extends SqlTable {
 
         return keywords;
     }
-
+// deletes all the keywords from the database
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
         PreparedStatement stmt = db.prepareStatement("DELETE FROM aiKeywords");

@@ -18,7 +18,7 @@ public class AuthorsTable extends SqlTable {
     public AuthorsTable() {
         this.tableName = "authors";
     }
-
+     //adds an author object to the database
     public boolean insertAuthor(Author author) throws SQLException {
         boolean inserted = false;
         PreparedStatement stmt = db.prepareStatement(
@@ -40,7 +40,7 @@ public class AuthorsTable extends SqlTable {
         return inserted;
 
     }
-
+    //changes an author that matches the given authorId with the given author object
     public boolean updateAuthor(String authorId, Author author) throws SQLException {
         boolean updated = false;
         PreparedStatement stmt = db.prepareStatement(
@@ -55,7 +55,7 @@ public class AuthorsTable extends SqlTable {
         updated = stmt.executeUpdate() > 0;
         return updated;
     }
-
+     //removes an author that mataches the authorId given from the database
     public boolean deleteAuthor(String authorId) throws SQLException {
         boolean deleted = false;
         PreparedStatement stmt = db.prepareStatement(String.format("DELETE FROM %s WHERE authorId = ?", tableName));
@@ -72,14 +72,14 @@ public class AuthorsTable extends SqlTable {
     public List<Author> listAll() throws SQLException {
         return listAllCurrentYear();
     }
-
+    //removes all authors from the database
     public boolean clearAll() throws SQLException {
         boolean deleted = false;
         PreparedStatement stmt = db.prepareStatement(String.format("DELETE FROM %s", tableName));
         deleted = stmt.executeUpdate() > 0;
         return deleted;
     }
-
+    //finds and returns an author given a specific authorId
     public Author get(String authorId) throws SQLException {
         PreparedStatement stmt = db
                 .prepareStatement(String.format("SELECT id, surname, initials, title, institution, rating FROM %s WHERE id = ?", tableName));
@@ -125,16 +125,18 @@ public class AuthorsTable extends SqlTable {
 
         return authors;
     }
-
+//finds and returns all the authors that were added last year to the database
     public List<Author> listAllPrevYear() throws SQLException {
         int prevYear = Calendar.getInstance().get(Calendar.YEAR)-1;
         return listAll(Integer.toString(prevYear));
     };
-
+//finds and returns all the authors that were added this year to the database
     private List<Author> listAllCurrentYear() throws SQLException {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         return listAll(Integer.toString(currentYear));
     };
+
+    //finds and returns all the authors in our database
 
     private List<Author> listAll(String year) throws SQLException {
         LinkedList<Author> out = new LinkedList<>();
