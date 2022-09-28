@@ -12,8 +12,11 @@ import java.util.*;
 public class PopulatedSubfieldsController {
     final AiKeywordsTable aiKeywordsTable = (AiKeywordsTable) Locator.instance.get(AiKeywordsTable.class);
     final HashingService hashingService = (HashingService) Locator.instance.get(HashingService.class);
-    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance.get(AuthorToSubfieldTable.class);
-//returns a list of populated subifields(a subfiled that has the number of authors studying it this year and last year as integers variables)
+    final AuthorToSubfieldTable authorToSubfieldTable = (AuthorToSubfieldTable) Locator.instance
+            .get(AuthorToSubfieldTable.class);
+
+    // returns a list of populated subifields(a subfiled that has the number of
+    // authors studying it this year and last year as integers variables)
     public List<PopulatedSubfield> listSubfields() throws SQLException {
         List<String> aiKeywords = aiKeywordsTable.listAll();
         List<PopulatedSubfield> populatedSubfields = new ArrayList<>();
@@ -37,7 +40,8 @@ public class PopulatedSubfieldsController {
 
             int numberOfAuthorsCurrentYear = authors.size();
             int numberOfAuthorsPrevYear = authors2.size();
-            PopulatedSubfield populatedSubfield = new PopulatedSubfield(subfield, numberOfAuthorsCurrentYear, numberOfAuthorsPrevYear);
+            PopulatedSubfield populatedSubfield = new PopulatedSubfield(subfield, numberOfAuthorsCurrentYear,
+                    numberOfAuthorsPrevYear);
             populatedSubfields.add(populatedSubfield);
         }
 

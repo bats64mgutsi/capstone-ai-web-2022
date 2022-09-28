@@ -3,14 +3,14 @@ package backend.Tables;
 import java.sql.*;
 import java.util.*;
 
-
 import backend.DatabaseModels.AuthorToSubfield;
 
 public class AuthorToSubfieldTable extends SqlTable {
 
     public boolean insertAuthorToSubfield(AuthorToSubfield entry) throws SQLException {
         boolean inserted = false;
-        PreparedStatement stmt = db.prepareStatement("INSERT into authorToSubfieldsMap (authorID, subFieldID) SELECT ?, ? WHERE NOT EXISTS (SELECT * FROM authorToSubfieldsMap WHERE authorID=? AND subFieldID=?)");
+        PreparedStatement stmt = db.prepareStatement(
+                "INSERT into authorToSubfieldsMap (authorID, subFieldID) SELECT ?, ? WHERE NOT EXISTS (SELECT * FROM authorToSubfieldsMap WHERE authorID=? AND subFieldID=?)");
         stmt.setString(1, entry.authorId);
         stmt.setString(2, entry.subfieldId);
 
@@ -20,7 +20,8 @@ public class AuthorToSubfieldTable extends SqlTable {
 
         return inserted;
     }
- //finds all the author to subfield objects that match the given authorId
+
+    // finds all the author to subfield objects that match the given authorId
     public List<AuthorToSubfield> getAuthorSubfields(String authorId) throws SQLException {
         PreparedStatement stmt = db.prepareStatement("SELECT subFieldId FROM authorToSubfieldsMap WHERE authorId = ?");
         stmt.setString(1, authorId);
@@ -34,7 +35,8 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
-    //finds all the author to subfield objects that match the given subfieldId
+
+    // finds all the author to subfield objects that match the given subfieldId
     public List<AuthorToSubfield> getAuthorSubfieldsBySubfield(String subfieldId) throws SQLException {
         PreparedStatement stmt = db.prepareStatement("SELECT authorId FROM authorToSubfieldsMap WHERE subfieldId = ?");
         stmt.setString(1, subfieldId);
@@ -48,7 +50,8 @@ public class AuthorToSubfieldTable extends SqlTable {
         }
         return authorToSubfields;
     }
- //removes all the author to subfield objects from the database
+
+    // removes all the author to subfield objects from the database
     public boolean clearAllForYear(String year) throws SQLException {
         boolean cleared = false;
         PreparedStatement stmt = db.prepareStatement("DELETE FROM authorToSubfieldsMap WHERE subfieldId LIKE ?");

@@ -1,6 +1,4 @@
 package backend.http;
-
-import backend.ApplicationModels.NrfAuthor;
 import backend.Locator;
 import backend.controllers.AiKeywordsController;
 

@@ -1,10 +1,7 @@
 package backend.http;
 
-import backend.ApplicationModels.PopulatedInstitution;
 import backend.ApplicationModels.PopulatedSubfield;
-import backend.DatabaseModels.Institution;
 import backend.Locator;
-import backend.controllers.InstitutionsController;
 import backend.controllers.PopulatedSubfieldsController;
 
 import com.google.gson.Gson;
