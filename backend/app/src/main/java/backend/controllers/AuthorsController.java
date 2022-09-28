@@ -49,7 +49,8 @@ public class AuthorsController {
         mutableAuthors.sort(Comparator.comparing(el -> el.rating));
         return mutableAuthors;
     }
-//returns the author profile belonging to the given authorID
+
+    // returns the author profile belonging to the given authorID
     public AuthorProfile getProfile(String authorId) throws SQLException {
         final Author author = authorsTable.get(authorId);
 
@@ -65,7 +66,9 @@ public class AuthorsController {
         final Institution institution = institutionsTable.getInstitution(author.institution);
         return new AuthorProfile(author, subfields, publications, citationCount, institution);
     }
-    //returns all the subfields belonging to the given authorID using the authrodToSubfield mapping table
+
+    // returns all the subfields belonging to the given authorID using the
+    // authrodToSubfield mapping table
     private List<Subfield> getAuthorSubfields(String authorId) throws SQLException {
         final List<AuthorToSubfield> authorToSubfields = authorToSubfieldTable.getAuthorSubfields(authorId);
         final List<Subfield> subfields = new LinkedList<>();
