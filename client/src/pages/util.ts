@@ -17,6 +17,13 @@ import {
 } from "../core";
 import { Buffer } from 'buffer';
 
+/**
+ * Makes appropriate calls to the backendclient
+ * to the fetch and store author, author profile, institution,
+ * overall stat, and ai filter data in the state
+ * @param No parameters expected
+ * @returns No returns
+ */
 export const refreshData = async () => {
     if (!store.authors.value.length) {
         await getAndSetAuthors();
@@ -39,24 +46,48 @@ export const refreshData = async () => {
     }
 
     if (!store.aiFilters.value.length) {
-        const stats = await getAIFiltersFromBackend();
-        setAIFiltersInState(stats);
+        await getAndSetAIFilters();
     }
 }
 
+/**
+ * A helper method that gets author data
+ * from the backend and sets it into the state
+ * @param No parameters expected
+ * @returns No returns
+ */
 const getAndSetAuthors = async () => {
     const authors = await getAuthorsFromBackend();
     setAuthorsInState(authors);
 }
 
+/**
+ * A helper method that gets author data
+ * from the backend
+ * @param No parameters expected
+ * @returns No returns
+ */
 const getAuthorsFromBackend = async () => {
     return await backendClient().getAuthors();
 }
 
+/**
+ * A helper method that sets author data
+ * into the state
+ * @param authors A lits of authors fetched 
+ * from the backend
+ * @returns No returns
+ */
 const setAuthorsInState = (authors: Author[]) => {
     store.setAuthors(authors);
 }
 
+/**
+ * A helper method that gets an author's profile data
+ * from the backend and sets it into the state
+ * @param authorId The id of the author
+ * @returns No returns
+ */
 const getAndSetAuthorProfile = async (authorId: string) => {
     const profile = await getAuthorProfileFromBackend(authorId);
     setCurrentlySelectedAuthorProfileInState(profile);
@@ -83,6 +114,12 @@ const setInstitutionStatsInState = (stats: InstitutionStat[]) => {
     store.setInstitutionStats(stats);
 }
 
+/**
+ * A helper method that gets an author's profile data
+ * from the backend and sets it into the state
+ * @param authorId The id of the author
+ * @returns No returns
+ */
 const getAndSetOverallStats = async () => {
     const stats = await backendClient().getOverallStats();
     setOverallStatsInState(stats);
@@ -92,6 +129,12 @@ const setOverallStatsInState = (stats: OverallStat) => {
     store.setOverallStats(stats);
 }
 
+/**
+ * A helper method that gets sufield data
+ * from the backend and sets it into the state
+ * @param No parameters expected
+ * @returns No returns
+ */
 const getAndSetSubfieldStats = async () => {
     const stats = await getSubfieldStatsFromBackend();
     setSubfieldStatsInState(stats);
@@ -103,19 +146,6 @@ const getSubfieldStatsFromBackend = async () => {
 
 const setSubfieldStatsInState = (stats: SubfieldStat[]) => {
     store.setSubfieldStats(stats);
-}
-
-const getAndSetCommunityStats = async () => {
-    const stats = await getCommunityStatsFromBackend();
-    setCommunityStatsInState(stats);
-}
-
-const getCommunityStatsFromBackend = async () => {
-    return await backendClient().getCommunityStats();
-}
-
-const setCommunityStatsInState = (stats: CommunityStat[]) => {
-    store.setCommunityStats(stats);
 }
 
 const getAIFiltersFromBackend = async () => {
@@ -178,6 +208,12 @@ export const logAdminOut = () => {
     deleteAccessToken();
 }
 
+/**
+ * A helper method that gets ai filter data
+ * from the backend and sets it into the state
+ * @param No parameters expected
+ * @returns No returns
+ */
 const getAndSetAIFilters = async () => {
     const aiFilters = await getAIFiltersFromBackend();
     setAIFiltersInState(aiFilters);
@@ -281,6 +317,13 @@ const getCustomBarChartXAxisCategoriesForSubfields = () => {
     return dataSeries;
 }
 
+/**
+ * A helper method that configures
+ * the overall stat data into 
+ * chart data
+ * @param No parameters expected
+ * @returns An object with the appropriate chart data
+ */
 export const getChartData = () => {
     if (store.overallStats.value) {
         const generatedColors = getArrayOfHexadecimalColors(store.overallStats.value.subfields.length);
