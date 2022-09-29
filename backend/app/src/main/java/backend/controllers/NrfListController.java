@@ -37,6 +37,29 @@ public class NrfListController {
     final PopulatedSubfieldsController populatedSubfieldsController = (PopulatedSubfieldsController) Locator.instance.get(PopulatedSubfieldsController.class);
 
     public void setAuthors(List<NrfAuthor> authors, String year) throws SQLException {
+        final List<String> aiKeywords = aiKeywordsTable.listAll();
+        // Filter authors
+        authors = authors.stream().filter(el -> {
+            final List<String> subfieldsStr = new ArrayList<>();
+            try {
+                subfieldsStr.addAll(el.primaryResearchFields);
+            } catch(Exception ignored) {}
+
+            try {
+                subfieldsStr.addAll(el.secondaryResearchFields);
+            } catch (Exception ignored) {}
+
+            try {
+                subfieldsStr.addAll(el.specialisations);
+            } catch(Exception ignored) {}
+
+            final List<Subfield> subfields = subfieldsStr.stream().map(sEl -> new Subfield(sEl, sEl)).toList();
+            return FilteringUtils.hasIntersectionIgnoreCase(subfields, aiKeywords);
+
+        }).toList();
+
+        logger.info(String.format("Loading %d authors", authors.size()));
+
         clearTables(year);
         final Set<Subfield> allSubFields = new HashSet<>();
         final List<GoogleScholarAuthorProfile> authorProfiles = googleScholarService.fetchProfiles(authors);
