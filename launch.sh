@@ -11,10 +11,10 @@ if [[ -z "${AI_WEB_DB_USERNAME}" ]]; then
     exit 1
 fi
 
-if [[ -z "${AI_WEB_DB_PASSWORD}" ]]; then
-    echo "ERROR: Environment variable AI_WEB_DB_PASSWORD should be set the password for the MySQL database to use."
-    exit 1
-fi
+# if [[ -z "${AI_WEB_DB_PASSWORD}" ]]; then
+#     echo "ERROR: Environment variable AI_WEB_DB_PASSWORD should be set the password for the MySQL database to use."
+#     exit 1
+# fi
 
 cd backend
 source ./gradlew run

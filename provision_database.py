@@ -14,7 +14,7 @@ def runSql(dbUsername: str, drivingInput: str):
     if(completedProcess.returncode != 0):
         exit(completedProcess.returncode)
 
-def insertAdmins(dbUsername: str, admins: list[dict[str, str]]):
+def insertAdmins(dbUsername: str, admins):
     drivingInput = "USE aiweb;\n"
     for admin in admins:
         username = admin["username"]
@@ -42,7 +42,7 @@ def main():
 
     print("Database setup complete!\n")
     print("Now let's add system administrators to the system.")
-    admins: list[dict[str, str]] = []
+    admins = []
     while True:
         username = input("Enter administrator email (Enter quit to save): ")
         if(username.strip().lower() == "quit"):
