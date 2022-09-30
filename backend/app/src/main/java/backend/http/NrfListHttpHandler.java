@@ -36,6 +36,7 @@ public class NrfListHttpHandler extends BaseHttpHandler {
             final String[] credentials = BasicAuth.getUsernameAndPassword(basicAuthString);
             final boolean isAdmin = authorizationController.isAdmin(credentials[0], credentials[1]);
 
+            System.out.println("Poguss");
             if (!isAdmin) {
                 return "AuthenticationError: Bad credentials given.";
             }
@@ -43,6 +44,7 @@ public class NrfListHttpHandler extends BaseHttpHandler {
             Type listType = new TypeToken<LinkedList<NrfAuthor>>() {
             }.getType();
             LinkedList<NrfAuthor> nrfAuthors = new Gson().fromJson(requestBody, listType);
+            System.out.println("Poguss");
 
             asyncSetAuthors = new Thread(() -> {
                 try {

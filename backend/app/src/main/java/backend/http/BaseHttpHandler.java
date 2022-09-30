@@ -17,7 +17,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
         int statusCode = 200;
         if(!exchange.getRequestMethod().equals("OPTIONS")) {
             try {
+                System.out.println("Pre fetch");
                 String requestBody = IOUtils.toString(exchange.getRequestBody());
+                System.out.println("Post fetch");
+
                 response = getResponse(UrlParser.parsePaths(exchange.getRequestURI().getPath()), exchange.getRequestHeaders(), requestBody, mimeType);
             } catch (Exception e) {
                 response = e.toString();

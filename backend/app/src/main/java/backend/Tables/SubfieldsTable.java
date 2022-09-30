@@ -21,7 +21,7 @@ public class SubfieldsTable extends SqlTable {
         return inserted;
     }
     public Subfield getSubfield(String subfieldId) throws SQLException{
-        PreparedStatement stmt = db.prepareStatement("SELECT name FROM subfields WHERE id = ?");
+        PreparedStatement stmt = db.prepareStatement("SELECT name FROM subFields WHERE id = ?");
         stmt.setString(1, subfieldId);
         ResultSet rs = stmt.executeQuery();
         rs.next();
@@ -42,7 +42,7 @@ public class SubfieldsTable extends SqlTable {
 
     public List<Subfield> listAll()throws SQLException{
         List<Subfield> out = new ArrayList<>();
-        PreparedStatement stmt = db.prepareStatement(String.format("SELECT * FROM subfields"));
+        PreparedStatement stmt = db.prepareStatement(String.format("SELECT * FROM subFields"));
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             String id = rs.getString(1);

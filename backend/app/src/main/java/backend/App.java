@@ -34,7 +34,7 @@ public class App {
         public void run() {
             final HttpServer server;
             try {
-                server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+                server = HttpServer.create(new InetSocketAddress("localhost", 3001), 0);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -62,7 +62,7 @@ public class App {
         public void run() {
             final HttpServer server;
             try {
-                server = HttpServer.create(new InetSocketAddress("localhost", 8002), 0);
+                server = HttpServer.create(new InetSocketAddress("localhost", 3002), 0);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
